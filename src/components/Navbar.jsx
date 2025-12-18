@@ -18,10 +18,7 @@ const Navbar = () => {
                   alt="ScholarStream Logo"
                 />
               </div>
-              <Link
-                to="/"
-                className="text-3xl font-bold text-primary"
-              >
+              <Link to="/" className="text-3xl font-bold text-primary">
                 Scholar Stream
               </Link>
             </div>
@@ -50,7 +47,7 @@ const Navbar = () => {
               </Link>
               <Link
                 to="/register"
-                className="px-6 py-2.5 rounded-lg font-semibold bg-gradient-to-r from-primary to-accent text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                className="px-6 py-2.5 rounded-lg font-semibold bg-linear-to-r from-primary to-accent text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
               >
                 Register
               </Link>
@@ -112,7 +109,7 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to="/register"
-                  className="flex-1 py-2.5 text-center rounded-lg font-semibold bg-gradient-to-r from-primary to-secondary text-white shadow-lg hover:shadow-xl transition-all"
+                  className="flex-1 py-2.5 text-center rounded-lg font-semibold bg-linear-to-r from-primary to-secondary text-white shadow-lg hover:shadow-xl transition-all"
                   onClick={() => setIsOpen(false)}
                 >
                   Register
