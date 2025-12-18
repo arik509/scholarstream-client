@@ -20,22 +20,22 @@ const Navbar = () => {
               </div>
               <Link
                 to="/"
-                className="text-2xl font-bold bg-linear-to-r from-[#7c3aed] to-[#14b8a6] bg-clip-text text-transparent "
+                className="text-3xl font-bold text-primary"
               >
-                ScholarStream
+                Scholar Stream
               </Link>
             </div>
 
             <div className="hidden lg:flex items-center gap-8">
               <Link
                 to="/"
-                className="font-semibold text-gray-700 hover:text-[#7c3aed] transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#7c3aed] hover:after:w-full after:transition-all after:duration-300"
+                className="font-semibold text-gray-700 hover:text-primary transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all after:duration-300"
               >
                 Home
               </Link>
               <Link
                 to="/scholarships"
-                className="font-semibold text-gray-700 hover:text-[#7c3aed] transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#7c3aed] hover:after:w-full after:transition-all after:duration-300"
+                className="font-semibold text-gray-700 hover:text-primary transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all after:duration-300"
               >
                 All Scholarships
               </Link>
@@ -44,13 +44,13 @@ const Navbar = () => {
             <div className="hidden lg:flex items-center gap-3">
               <Link
                 to="/login"
-                className="px-6 py-2.5 rounded-lg font-semibold text-[#7c3aed] border-2 border-[#7c3aed] hover:bg-[#7c3aed] hover:text-white transition-all duration-300 hover:scale-105"
+                className="px-6 py-2.5 rounded-lg font-semibold text-primary border-2 border-primary hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105"
               >
                 Login
               </Link>
               <Link
                 to="/register"
-                className="px-6 py-2.5 rounded-lg font-semibold bg-linear-to-r from-[#7c3aed] to-[#14b8a6] text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 hover:from-[#6d28d9] hover:to-[#0f9e8a]"
+                className="px-6 py-2.5 rounded-lg font-semibold bg-gradient-to-r from-primary to-accent text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
               >
                 Register
               </Link>
@@ -90,14 +90,14 @@ const Navbar = () => {
             <div className="lg:hidden pb-4 space-y-2">
               <Link
                 to="/"
-                className="block py-3 px-4 rounded-lg hover:bg-purple-50 text-gray-700 hover:text-[#7c3aed] transition-colors font-semibold"
+                className="block py-3 px-4 rounded-lg hover:bg-purple-50 text-gray-700 hover:text-primary transition-colors font-semibold"
                 onClick={() => setIsOpen(false)}
               >
                 Home
               </Link>
               <Link
                 to="/scholarships"
-                className="block py-3 px-4 rounded-lg hover:bg-purple-50 text-gray-700 hover:text-[#7c3aed] transition-colors font-semibold"
+                className="block py-3 px-4 rounded-lg hover:bg-purple-50 text-gray-700 hover:text-primary transition-colors font-semibold"
                 onClick={() => setIsOpen(false)}
               >
                 All Scholarships
@@ -105,14 +105,14 @@ const Navbar = () => {
               <div className="flex gap-3 px-4 pt-2">
                 <Link
                   to="/login"
-                  className="flex-1 py-2.5 text-center rounded-lg font-semibold text-[#7c3aed] border-2 border-[#7c3aed] hover:bg-[#7c3aed] hover:text-white transition-all"
+                  className="flex-1 py-2.5 text-center rounded-lg font-semibold text-primary border-2 border-primary hover:bg-primary hover:text-white transition-all"
                   onClick={() => setIsOpen(false)}
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className="flex-1 py-2.5 text-center rounded-lg font-semibold bg-linear-to-r from-[#7c3aed] to-[#14b8a6] text-white shadow-lg hover:shadow-xl transition-all"
+                  className="flex-1 py-2.5 text-center rounded-lg font-semibold bg-gradient-to-r from-primary to-secondary text-white shadow-lg hover:shadow-xl transition-all"
                   onClick={() => setIsOpen(false)}
                 >
                   Register
