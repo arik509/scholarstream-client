@@ -10,6 +10,8 @@ import PrivateRoute from './routes/PrivateRoute';
 import ManageUsers from './pages/Dashboard/Admin/ManageUsers';
 import MyProfile from './pages/Dashboard/MyProfile';
 import AddScholarship from './pages/Dashboard/Admin/AddScholarship';
+import Analytics from './pages/Dashboard/Admin/Analytics';
+import MyApplications from './pages/Dashboard/Student/MyApplications';
 
 
 const router = createBrowserRouter([
@@ -48,12 +50,20 @@ const router = createBrowserRouter([
         element: <MyProfile></MyProfile>
       },
       {
+        path: "/dashboard/my-applications",
+        element: <MyApplications></MyApplications>
+      },
+      {
         path: "/dashboard/add-scholarship",
         element: <AddScholarship></AddScholarship>
       },
       {
         path: "/dashboard/manage-users",
         element: <ManageUsers></ManageUsers>
+      },
+      {
+          path: "/dashboard/analytics",
+          element: <Analytics></Analytics>
       }
     ]
   }
