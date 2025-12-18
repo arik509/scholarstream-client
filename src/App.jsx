@@ -4,6 +4,7 @@ import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import AllScholarships from './pages/AllScholarships';
 import PrivateRoute from './routes/PrivateRoute';
 
 const router = createBrowserRouter([
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <Register />
+      },
+      {
+        path: "scholarships",
+        element: <AllScholarships />
       },
       {
         path: "dashboard",
