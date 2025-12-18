@@ -7,16 +7,17 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import AllScholarships from './pages/AllScholarships';
 import PrivateRoute from './routes/PrivateRoute';
-import ManageUsers from './pages/Dashboard/Admin/ManageUsers';
+import AdminRoute from './routes/AdminRoute';
+import ModeratorRoute from './routes/ModeratorRoute';
 import MyProfile from './pages/Dashboard/MyProfile';
 import AddScholarship from './pages/Dashboard/Admin/AddScholarship';
+import ManageScholarships from './pages/Dashboard/Admin/ManageScholarships';
+import ManageUsers from './pages/Dashboard/Admin/ManageUsers';
 import Analytics from './pages/Dashboard/Admin/Analytics';
 import MyApplications from './pages/Dashboard/Student/MyApplications';
 import MyReviews from './pages/Dashboard/Student/MyReviews';
-import AllReviews from './pages/Dashboard/Moderator/AllReviews';
 import ManageApplications from './pages/Dashboard/Moderator/ManageApplications';
-import ManageScholarships from './pages/Dashboard/Admin/ManageScholarships';
-
+import AllReviews from './pages/Dashboard/Moderator/AllReviews';
 
 const router = createBrowserRouter([
   {
@@ -51,39 +52,63 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <MyProfile></MyProfile>
+        element: <MyProfile />
       },
       {
-        path: "/dashboard/my-applications",
-        element: <MyApplications></MyApplications>
+        path: "my-applications",
+        element: <MyApplications />
       },
       {
-        path: "/dashboard/my-reviews",
-        element: <MyReviews></MyReviews>
+        path: "my-reviews",
+        element: <MyReviews />
       },
       {
-        path: "/dashboard/manage-applications",
-        element: <ManageApplications></ManageApplications>
+        path: "manage-applications",
+        element: (
+          <ModeratorRoute>
+            <ManageApplications />
+          </ModeratorRoute>
+        )
       },
       {
-        path: "/dashboard/all-reviews",
-        element: <AllReviews></AllReviews>
+        path: "all-reviews",
+        element: (
+          <ModeratorRoute>
+            <AllReviews />
+          </ModeratorRoute>
+        )
       },
       {
-        path: "/dashboard/add-scholarship",
-        element: <AddScholarship></AddScholarship>
+        path: "add-scholarship",
+        element: (
+          <AdminRoute>
+            <AddScholarship />
+          </AdminRoute>
+        )
       },
       {
-        path: "/dashboard/manage-scholarships",
-        element: <ManageScholarships></ManageScholarships>
+        path: "manage-scholarships",
+        element: (
+          <AdminRoute>
+            <ManageScholarships />
+          </AdminRoute>
+        )
       },
       {
-        path: "/dashboard/manage-users",
-        element: <ManageUsers></ManageUsers>
+        path: "manage-users",
+        element: (
+          <AdminRoute>
+            <ManageUsers />
+          </AdminRoute>
+        )
       },
       {
-          path: "/dashboard/analytics",
-          element: <Analytics></Analytics>
+        path: "analytics",
+        element: (
+          <AdminRoute>
+            <Analytics />
+          </AdminRoute>
+        )
       }
     ]
   }

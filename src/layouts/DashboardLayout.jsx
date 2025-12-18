@@ -4,17 +4,32 @@ import { useAuth } from '../contexts/AuthContext';
 const DashboardLayout = () => {
   const { user } = useAuth();
 
-  const allLinks = [
+  const studentLinks = [
     { path: '/dashboard', label: 'My Profile', icon: '👤', end: true },
-    { path: '/dashboard/my-applications', label: 'My Applications', icon: '📝', roles: ['Student'] },
-    { path: '/dashboard/my-reviews', label: 'My Reviews', icon: '⭐', roles: ['Student'] },
-    { path: '/dashboard/manage-applications', label: 'Manage Applications', icon: '📋', roles: ['Moderator'] },
-    { path: '/dashboard/all-reviews', label: 'All Reviews', icon: '💬', roles: ['Moderator'] },
-    { path: '/dashboard/add-scholarship', label: 'Add Scholarship', icon: '➕', roles: ['Admin'] },
-    { path: '/dashboard/manage-scholarships', label: 'Manage Scholarships', icon: '📚', roles: ['Admin'] },
-    { path: '/dashboard/manage-users', label: 'Manage Users', icon: '👥', roles: ['Admin'] },
-    { path: '/dashboard/analytics', label: 'Analytics', icon: '📊', roles: ['Admin'] }
+    { path: '/dashboard/my-applications', label: 'My Applications', icon: '📝' },
+    { path: '/dashboard/my-reviews', label: 'My Reviews', icon: '⭐' }
   ];
+
+  const moderatorLinks = [
+    { path: '/dashboard', label: 'My Profile', icon: '👤', end: true },
+    { path: '/dashboard/manage-applications', label: 'Manage Applications', icon: '📋' },
+    { path: '/dashboard/all-reviews', label: 'All Reviews', icon: '💬' }
+  ];
+
+  const adminLinks = [
+    { path: '/dashboard', label: 'My Profile', icon: '👤', end: true },
+    { path: '/dashboard/add-scholarship', label: 'Add Scholarship', icon: '➕' },
+    { path: '/dashboard/manage-scholarships', label: 'Manage Scholarships', icon: '📚' },
+    { path: '/dashboard/manage-users', label: 'Manage Users', icon: '👥' },
+    { path: '/dashboard/analytics', label: 'Analytics', icon: '📊' }
+  ];
+
+  let links = studentLinks;
+  if (user?.role === 'Moderator') {
+    links = moderatorLinks;
+  } else if (user?.role === 'Admin') {
+    links = adminLinks;
+  }
 
   return (
     <div className="drawer lg:drawer-open">
@@ -48,7 +63,7 @@ const DashboardLayout = () => {
           </div>
           
           <ul className="space-y-2">
-            {allLinks.map((link) => (
+            {links.map((link) => (
               <li key={link.path}>
                 <NavLink
                   to={link.path}
