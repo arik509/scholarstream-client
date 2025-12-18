@@ -9,6 +9,7 @@ import {
   updateProfile
 } from 'firebase/auth';
 import { auth } from '../firebase/firebase.config';
+import axiosInstance from '../config/api';
 
 const AuthContext = createContext();
 
@@ -24,6 +25,16 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const saveUserToDatabase = async (userData) => {
+    try {
+      const { data } = await axiosInstance.post('/api/users/register', userData);
+      return data;
+    } catch (error) {
+      console.error('Error saving user to database:', error);
+      throw error;
+    }
+  };
+
   const registerUser = async (email, password, name, photoURL) => {
     setLoading(true);
     const result = await createUserWithEmailAndPassword(auth, email, password);
@@ -31,6 +42,14 @@ export const AuthProvider = ({ children }) => {
       displayName: name, 
       photoURL: photoURL 
     });
+
+    await saveUserToDatabase({
+      name,
+      email,
+      photoURL: photoURL || '',
+      role: 'Student'
+    });
+
     return result;
   };
 
@@ -39,10 +58,19 @@ export const AuthProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  const googleLogin = () => {
+  const googleLogin = async () => {
     setLoading(true);
     const provider = new GoogleAuthProvider();
-    return signInWithPopup(auth, provider);
+    const result = await signInWithPopup(auth, provider);
+
+    await saveUserToDatabase({
+      name: result.user.displayName,
+      email: result.user.email,
+      photoURL: result.user.photoURL || '',
+      role: 'Student'
+    });
+
+    return result;
   };
 
   const logoutUser = () => {
@@ -51,8 +79,18 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        try {
+          const { data } = await axiosInstance.get(`/api/users/${currentUser.email}`);
+          setUser({ ...currentUser, role: data.role || 'Student' });
+        } catch (error) {
+          console.error('Error fetching user role:', error);
+          setUser(currentUser);
+        }
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     });
 
