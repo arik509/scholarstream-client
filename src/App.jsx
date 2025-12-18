@@ -12,6 +12,10 @@ import MyProfile from './pages/Dashboard/MyProfile';
 import AddScholarship from './pages/Dashboard/Admin/AddScholarship';
 import Analytics from './pages/Dashboard/Admin/Analytics';
 import MyApplications from './pages/Dashboard/Student/MyApplications';
+import MyReviews from './pages/Dashboard/Student/MyReviews';
+import AllReviews from './pages/Dashboard/Moderator/AllReviews';
+import ManageApplications from './pages/Dashboard/Moderator/ManageApplications';
+import ManageScholarships from './pages/Dashboard/Admin/ManageScholarships';
 
 
 const router = createBrowserRouter([
@@ -54,8 +58,24 @@ const router = createBrowserRouter([
         element: <MyApplications></MyApplications>
       },
       {
+        path: "/dashboard/my-reviews",
+        element: <MyReviews></MyReviews>
+      },
+      {
+        path: "/dashboard/manage-applications",
+        element: <ManageApplications></ManageApplications>
+      },
+      {
+        path: "/dashboard/all-reviews",
+        element: <AllReviews></AllReviews>
+      },
+      {
         path: "/dashboard/add-scholarship",
         element: <AddScholarship></AddScholarship>
+      },
+      {
+        path: "/dashboard/manage-scholarships",
+        element: <ManageScholarships></ManageScholarships>
       },
       {
         path: "/dashboard/manage-users",
