@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 const TopScholarships = () => {
   return (
     <section className="py-16 bg-base-100">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="w-11/12 mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-800 mb-4">Top Scholarships</h2>
           <p className="text-gray-600 text-lg">Explore the most popular scholarship opportunities</p>
