@@ -9,6 +9,7 @@ import AllScholarships from './pages/AllScholarships';
 import PrivateRoute from './routes/PrivateRoute';
 import ManageUsers from './pages/Dashboard/Admin/ManageUsers';
 import MyProfile from './pages/Dashboard/MyProfile';
+import AddScholarship from './pages/Dashboard/Admin/AddScholarship';
 
 
 const router = createBrowserRouter([
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <MyProfile></MyProfile>
+      },
+      {
+        path: "/dashboard/add-scholarship",
+        element: <AddScholarship></AddScholarship>
       },
       {
         path: "/dashboard/manage-users",
