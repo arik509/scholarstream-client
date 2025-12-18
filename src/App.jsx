@@ -1,24 +1,28 @@
-import { createBrowserRouter, RouterProvider } from 'react-router';
+import { createBrowserRouter, RouterProvider } from "react-router";
 
-import Home from './pages/Home';
-import MainLayout from './layouts/MainLayout';
-
+import MainLayout from "./layouts/MainLayout";
+import Home from "./pages/Home";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout></MainLayout>,
+    element: <MainLayout />,
     children: [
       {
         index: true,
-        element: <Home></Home>
-      }
-    ]
-  }
+        element: <Home />,
+      },
+    ],
+  },
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
 
 export default App;
