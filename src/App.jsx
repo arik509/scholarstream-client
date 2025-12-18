@@ -1,12 +1,15 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { AuthProvider } from './contexts/AuthContext';
 import MainLayout from './layouts/MainLayout';
+import DashboardLayout from './layouts/DashboardLayout';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AllScholarships from './pages/AllScholarships';
 import PrivateRoute from './routes/PrivateRoute';
-import DashboardLayout from './layouts/DashboardLayout';
+import ManageUsers from './pages/Dashboard/Admin/ManageUsers';
+import MyProfile from './pages/Dashboard/MyProfile';
+
 
 const router = createBrowserRouter([
   {
@@ -18,24 +21,34 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: "/login",
+        path: "login",
         element: <Login />
       },
       {
-        path: "/register",
+        path: "register",
         element: <Register />
       },
       {
-        path: "/scholarships",
+        path: "scholarships",
         element: <AllScholarships />
+      }
+    ]
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        index: true,
+        element: <MyProfile></MyProfile>
       },
       {
-        path: "/dashboard",
-        element: (
-          <PrivateRoute>
-            <DashboardLayout></DashboardLayout>
-          </PrivateRoute>
-        )
+        path: "/dashboard/manage-users",
+        element: <ManageUsers></ManageUsers>
       }
     ]
   }
