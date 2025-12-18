@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import AllScholarships from './pages/AllScholarships';
 import PrivateRoute from './routes/PrivateRoute';
+import DashboardLayout from './layouts/DashboardLayout';
 
 const router = createBrowserRouter([
   {
@@ -17,24 +18,22 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: "login",
+        path: "/login",
         element: <Login />
       },
       {
-        path: "register",
+        path: "/register",
         element: <Register />
       },
       {
-        path: "scholarships",
+        path: "/scholarships",
         element: <AllScholarships />
       },
       {
-        path: "dashboard",
+        path: "/dashboard",
         element: (
           <PrivateRoute>
-            <div className="min-h-screen flex items-center justify-center">
-              <h1 className="text-4xl font-bold text-primary">Dashboard Coming Soon</h1>
-            </div>
+            <DashboardLayout></DashboardLayout>
           </PrivateRoute>
         )
       }
