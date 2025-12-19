@@ -18,6 +18,10 @@ import MyApplications from './pages/Dashboard/Student/MyApplications';
 import MyReviews from './pages/Dashboard/Student/MyReviews';
 import ManageApplications from './pages/Dashboard/Moderator/ManageApplications';
 import AllReviews from './pages/Dashboard/Moderator/AllReviews';
+import ScholarshipDetails from './pages/ScholarshipDetails';
+import Checkout from './pages/Checkout';
+import PaymentSuccess from './pages/PaymentSuccess';
+import PaymentFailed from './pages/PaymentFailed';
 
 const router = createBrowserRouter([
   {
@@ -39,7 +43,35 @@ const router = createBrowserRouter([
       {
         path: "scholarships",
         element: <AllScholarships />
-      }
+      },
+      {
+        path: "scholarships/:id",
+        element: <ScholarshipDetails></ScholarshipDetails>
+      },
+      {
+        path: "checkout/:id",
+        element: (
+          <PrivateRoute>
+            <Checkout></Checkout>
+          </PrivateRoute>
+        )
+      },
+      {
+        path: "payment-success",
+        element: (
+          <PrivateRoute>
+            <PaymentSuccess></PaymentSuccess>
+          </PrivateRoute>
+        )
+      },
+      {
+        path: "payment-failed",
+        element: (
+          <PrivateRoute>
+            <PaymentFailed></PaymentFailed>
+          </PrivateRoute>
+        )
+      }   
     ]
   },
   {
@@ -109,7 +141,7 @@ const router = createBrowserRouter([
             <Analytics />
           </AdminRoute>
         )
-      }
+      }   
     ]
   }
 ]);
