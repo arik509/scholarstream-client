@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router';
+import { useParams, useNavigate, useLocation } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import axiosInstance from '../config/api';
 
@@ -7,9 +7,13 @@ const Checkout = () => {
   const { id } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [scholarship, setScholarship] = useState(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
+  
+  // Get applicationId from state if it's a retry payment
+  const existingApplicationId = location.state?.applicationId;
 
   useEffect(() => {
     fetchScholarship();
@@ -29,42 +33,67 @@ const Checkout = () => {
   const handlePayment = async () => {
     setProcessing(true);
 
-    const applicationData = {
-      scholarshipId: scholarship._id,
-      userId: user.uid,
-      userName: user.displayName,
-      userEmail: user.email,
-      universityName: scholarship.universityName,
-      scholarshipCategory: scholarship.scholarshipCategory,
-      degree: scholarship.degree,
-      applicationFees: scholarship.applicationFees,
-      serviceCharge: scholarship.serviceCharge,
-      applicationStatus: 'pending',
-      paymentStatus: 'unpaid',
-      applicationDate: new Date(),
-      feedback: ''
-    };
-
     try {
+      // Simulate payment (70% success rate)
       const paymentSuccess = Math.random() > 0.3;
 
-      if (paymentSuccess) {
-        applicationData.paymentStatus = 'paid';
-        await axiosInstance.post('/api/applications', applicationData);
-        navigate('/payment-success', { 
-          state: { 
-            scholarship,
-            amount: scholarship.applicationFees + scholarship.serviceCharge 
-          } 
-        });
+      if (existingApplicationId) {
+        // RETRY PAYMENT - Update existing application
+        if (paymentSuccess) {
+          await axiosInstance.patch(`/api/applications/${existingApplicationId}/payment`, {
+            paymentStatus: 'paid'
+          });
+          navigate('/payment-success', { 
+            state: { 
+              scholarship,
+              amount: scholarship.applicationFees + scholarship.serviceCharge 
+            } 
+          });
+        } else {
+          navigate('/payment-failed', { 
+            state: { 
+              scholarship,
+              error: 'Payment processing failed. Please try again.',
+              applicationId: existingApplicationId
+            } 
+          });
+        }
       } else {
-        await axiosInstance.post('/api/applications', applicationData);
-        navigate('/payment-failed', { 
-          state: { 
-            scholarship,
-            error: 'Payment processing failed. Please try again.' 
-          } 
-        });
+        // NEW APPLICATION
+        const applicationData = {
+          scholarshipId: scholarship._id,
+          userId: user.uid,
+          userName: user.displayName,
+          userEmail: user.email,
+          universityName: scholarship.universityName,
+          scholarshipCategory: scholarship.scholarshipCategory,
+          degree: scholarship.degree,
+          applicationFees: scholarship.applicationFees,
+          serviceCharge: scholarship.serviceCharge,
+          applicationStatus: 'pending',
+          paymentStatus: paymentSuccess ? 'paid' : 'unpaid',
+          applicationDate: new Date(),
+          feedback: ''
+        };
+
+        const { data } = await axiosInstance.post('/api/applications', applicationData);
+
+        if (paymentSuccess) {
+          navigate('/payment-success', { 
+            state: { 
+              scholarship,
+              amount: scholarship.applicationFees + scholarship.serviceCharge 
+            } 
+          });
+        } else {
+          navigate('/payment-failed', { 
+            state: { 
+              scholarship,
+              error: 'Payment processing failed. Please try again.',
+              applicationId: data.insertedId
+            } 
+          });
+        }
       }
     } catch (error) {
       console.error('Error processing payment:', error);
@@ -87,7 +116,18 @@ const Checkout = () => {
       <div className="max-w-2xl mx-auto">
         <div className="card bg-base-100 shadow-2xl">
           <div className="card-body">
-            <h1 className="text-3xl font-bold text-gray-800 mb-6">Payment Checkout</h1>
+            <h1 className="text-3xl font-bold text-gray-800 mb-6">
+              {existingApplicationId ? 'Retry Payment' : 'Payment Checkout'}
+            </h1>
+
+            {existingApplicationId && (
+              <div className="alert alert-warning mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <span>Retrying payment for existing application</span>
+              </div>
+            )}
 
             <div className="space-y-4 mb-6">
               <div className="flex justify-between items-center p-4 bg-base-200 rounded-lg">

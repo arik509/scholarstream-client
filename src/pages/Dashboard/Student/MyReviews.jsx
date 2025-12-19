@@ -6,6 +6,11 @@ const MyReviews = () => {
   const { user } = useAuth();
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editingReview, setEditingReview] = useState(null);
+  const [editData, setEditData] = useState({
+    ratingPoint: 5,
+    reviewComment: ''
+  });
 
   useEffect(() => {
     if (user?.email) {
@@ -34,6 +39,36 @@ const MyReviews = () => {
     } catch (error) {
       console.error('Error deleting review:', error);
       alert('Failed to delete review');
+    }
+  };
+
+  const openEditModal = (review) => {
+    setEditingReview(review);
+    setEditData({
+      ratingPoint: review.ratingPoint,
+      reviewComment: review.reviewComment
+    });
+    document.getElementById('edit_modal').showModal();
+  };
+
+  const handleUpdateReview = async () => {
+    if (!editData.reviewComment.trim()) {
+      alert('Please write a review comment');
+      return;
+    }
+
+    try {
+      await axiosInstance.patch(`/api/reviews/${editingReview._id}`, editData);
+      setReviews(reviews.map(r => 
+        r._id === editingReview._id 
+          ? { ...r, ...editData } 
+          : r
+      ));
+      document.getElementById('edit_modal').close();
+      alert('Review updated successfully!');
+    } catch (error) {
+      console.error('Error updating review:', error);
+      alert('Failed to update review');
     }
   };
 
@@ -88,7 +123,12 @@ const MyReviews = () => {
                       <td>{new Date(review.reviewDate).toLocaleDateString()}</td>
                       <td>
                         <div className="flex gap-2">
-                          <button className="btn btn-info btn-sm">Edit</button>
+                          <button 
+                            onClick={() => openEditModal(review)}
+                            className="btn btn-info btn-sm"
+                          >
+                            Edit
+                          </button>
                           <button 
                             onClick={() => handleDelete(review._id)}
                             className="btn btn-error btn-sm"
@@ -105,6 +145,59 @@ const MyReviews = () => {
           </div>
         </div>
       )}
+
+      {/* Edit Modal */}
+      <dialog id="edit_modal" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg mb-4">Edit Review</h3>
+          {editingReview && (
+            <div className="space-y-4">
+              <div>
+                <p className="font-semibold mb-2">{editingReview.universityName}</p>
+              </div>
+              
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text font-semibold">Rating</span>
+                </label>
+                <div className="flex gap-2 items-center">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => setEditData({ ...editData, ratingPoint: star })}
+                      className="text-3xl"
+                    >
+                      {star <= editData.ratingPoint ? '⭐' : '☆'}
+                    </button>
+                  ))}
+                  <span className="ml-2 font-semibold">{editData.ratingPoint}/5</span>
+                </div>
+              </div>
+
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text font-semibold">Review Comment</span>
+                </label>
+                <textarea
+                  className="textarea textarea-bordered h-24"
+                  placeholder="Update your review..."
+                  value={editData.reviewComment}
+                  onChange={(e) => setEditData({ ...editData, reviewComment: e.target.value })}
+                ></textarea>
+              </div>
+            </div>
+          )}
+          <div className="modal-action">
+            <button onClick={handleUpdateReview} className="btn btn-primary">
+              Update Review
+            </button>
+            <form method="dialog">
+              <button className="btn">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
     </div>
   );
 };
