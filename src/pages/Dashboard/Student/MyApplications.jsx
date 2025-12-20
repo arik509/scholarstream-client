@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useNavigate } from 'react-router';
 import axiosInstance from '../../../config/api';
+import { FaEye, FaCreditCard, FaEdit, FaTrash, FaStar, FaTimes, FaPaperPlane } from 'react-icons/fa';
+import { MdRateReview } from 'react-icons/md';
 
 const MyApplications = () => {
   const { user } = useAuth();
@@ -134,7 +136,7 @@ const MyApplications = () => {
                         <div className="text-sm text-gray-500">{app.degree}</div>
                       </td>
                       <td>
-                        <span className="badge badge-primary">{app.scholarshipCategory}</span>
+                        <span className="badge badge-primary text-[14px] md:text-[16px]">{app.scholarshipCategory}</span>
                       </td>
                       <td>${app.applicationFees}</td>
                       <td>
@@ -163,29 +165,33 @@ const MyApplications = () => {
                         <div className="flex flex-col gap-2">
                           <button 
                             onClick={() => openDetailsModal(app)}
-                            className="btn btn-info btn-xs"
+                            className="btn btn-info btn-xs gap-1"
                           >
+                            <FaEye className="text-sm" />
                             Details
                           </button>
                           
                           {app.applicationStatus === 'pending' && app.paymentStatus === 'unpaid' && (
                             <button 
                               onClick={() => handlePay(app)}
-                              className="btn btn-success btn-xs"
+                              className="btn btn-success btn-xs gap-1"
                             >
+                              <FaCreditCard className="text-sm" />
                               Pay
                             </button>
                           )}
                           
                           {app.applicationStatus === 'pending' && (
                             <>
-                              <button className="btn btn-warning btn-xs">
+                              <button className="btn btn-warning btn-xs gap-1">
+                                <FaEdit className="text-sm" />
                                 Edit
                               </button>
                               <button 
                                 onClick={() => handleDelete(app._id)}
-                                className="btn btn-error btn-xs"
+                                className="btn btn-error btn-xs gap-1"
                               >
+                                <FaTrash className="text-sm" />
                                 Delete
                               </button>
                             </>
@@ -194,8 +200,9 @@ const MyApplications = () => {
                           {app.applicationStatus === 'completed' && (
                             <button 
                               onClick={() => openReviewModal(app)}
-                              className="btn btn-primary btn-xs"
+                              className="btn btn-primary btn-xs gap-1"
                             >
+                              <MdRateReview className="text-sm" />
                               Add Review
                             </button>
                           )}
@@ -210,10 +217,12 @@ const MyApplications = () => {
         </div>
       )}
 
-      {/* Details Modal */}
       <dialog id="details_modal" className="modal">
         <div className="modal-box max-w-2xl">
-          <h3 className="font-bold text-lg mb-4">Application Details</h3>
+          <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+            <FaEye className="text-info" />
+            Application Details
+          </h3>
           {selectedApp && (
             <div className="space-y-3">
               <div className="grid grid-cols-2 gap-4">
@@ -264,16 +273,21 @@ const MyApplications = () => {
           )}
           <div className="modal-action">
             <form method="dialog">
-              <button className="btn">Close</button>
+              <button className="btn gap-2">
+                <FaTimes />
+                Close
+              </button>
             </form>
           </div>
         </div>
       </dialog>
 
-      {/* Review Modal */}
       <dialog id="review_modal" className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg mb-4">Add Review</h3>
+          <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+            <MdRateReview className="text-primary" />
+            Add Review
+          </h3>
           {selectedApp && (
             <div className="space-y-4">
               <div>
@@ -282,7 +296,10 @@ const MyApplications = () => {
               
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-semibold">Rating</span>
+                  <span className="label-text font-semibold flex items-center gap-2">
+                    <FaStar className="text-yellow-500" />
+                    Rating
+                  </span>
                 </label>
                 <div className="flex gap-2 items-center">
                   {[1, 2, 3, 4, 5].map((star) => (
@@ -290,7 +307,7 @@ const MyApplications = () => {
                       key={star}
                       type="button"
                       onClick={() => setReviewData({ ...reviewData, ratingPoint: star })}
-                      className="text-3xl"
+                      className="text-3xl transition-transform hover:scale-110"
                     >
                       {star <= reviewData.ratingPoint ? '⭐' : '☆'}
                     </button>
@@ -313,11 +330,15 @@ const MyApplications = () => {
             </div>
           )}
           <div className="modal-action">
-            <button onClick={handleSubmitReview} className="btn btn-primary">
+            <button onClick={handleSubmitReview} className="btn btn-primary gap-2">
+              <FaPaperPlane />
               Submit Review
             </button>
             <form method="dialog">
-              <button className="btn">Cancel</button>
+              <button className="btn gap-2">
+                <FaTimes />
+                Cancel
+              </button>
             </form>
           </div>
         </div>

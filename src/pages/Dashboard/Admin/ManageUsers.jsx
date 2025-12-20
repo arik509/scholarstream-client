@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../../../config/api';
+import Swal from 'sweetalert2';
+import { FaTrash, FaUserShield, FaFilter } from 'react-icons/fa';
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
@@ -16,34 +18,92 @@ const ManageUsers = () => {
       setUsers(data);
     } catch (error) {
       console.error('Error fetching users:', error);
+      Swal.fire({
+        title: 'Error!',
+        text: 'Failed to load users',
+        icon: 'error',
+        confirmButtonColor: '#8b5cf6'
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleRoleChange = async (email, newRole) => {
-    try {
-      await axiosInstance.patch(`/api/users/${email}/role`, { role: newRole });
-      setUsers(users.map(user => 
-        user.email === email ? { ...user, role: newRole } : user
-      ));
-      alert('User role updated successfully!');
-    } catch (error) {
-      console.error('Error updating role:', error);
-      alert('Failed to update user role');
+  const handleRoleChange = async (email, newRole, userName) => {
+    const result = await Swal.fire({
+      title: 'Change User Role?',
+      html: `Change <strong>${userName}</strong>'s role to <strong>${newRole}</strong>?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#8b5cf6',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Yes, change it!',
+      cancelButtonText: 'Cancel'
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axiosInstance.patch(`/api/users/${email}/role`, { role: newRole });
+        setUsers(users.map(user => 
+          user.email === email ? { ...user, role: newRole } : user
+        ));
+        
+        Swal.fire({
+          title: 'Updated!',
+          text: `User role has been changed to ${newRole}`,
+          icon: 'success',
+          confirmButtonColor: '#8b5cf6',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      } catch (error) {
+        console.error('Error updating role:', error);
+        Swal.fire({
+          title: 'Error!',
+          text: 'Failed to update user role. Please try again.',
+          icon: 'error',
+          confirmButtonColor: '#8b5cf6'
+        });
+      }
+    } else {
+      fetchUsers();
     }
   };
 
-  const handleDeleteUser = async (email) => {
-    if (!confirm('Are you sure you want to delete this user?')) return;
+  const handleDeleteUser = async (email, userName) => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      html: `You are about to delete user <strong>${userName}</strong>. This action cannot be undone!`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Yes, delete user!',
+      cancelButtonText: 'Cancel'
+    });
 
-    try {
-      await axiosInstance.delete(`/api/users/${email}`);
-      setUsers(users.filter(user => user.email !== email));
-      alert('User deleted successfully!');
-    } catch (error) {
-      console.error('Error deleting user:', error);
-      alert('Failed to delete user');
+    if (result.isConfirmed) {
+      try {
+        await axiosInstance.delete(`/api/users/${email}`);
+        setUsers(users.filter(user => user.email !== email));
+        
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'User has been deleted successfully',
+          icon: 'success',
+          confirmButtonColor: '#8b5cf6',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      } catch (error) {
+        console.error('Error deleting user:', error);
+        Swal.fire({
+          title: 'Error!',
+          text: 'Failed to delete user. Please try again.',
+          icon: 'error',
+          confirmButtonColor: '#8b5cf6'
+        });
+      }
     }
   };
 
@@ -68,7 +128,10 @@ const ManageUsers = () => {
           <div className="flex justify-between items-center">
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-semibold">Filter by Role:</span>
+                <span className="label-text font-semibold flex items-center gap-2">
+                  <FaFilter className="text-primary" />
+                  Filter by Role:
+                </span>
               </label>
               <select 
                 className="select select-bordered"
@@ -120,11 +183,12 @@ const ManageUsers = () => {
                     </td>
                     <td>{user.email}</td>
                     <td>
-                      <span className={`badge ${
+                      <span className={`badge gap-1 ${
                         user.role === 'Admin' ? 'badge-error' : 
                         user.role === 'Moderator' ? 'badge-warning' : 
                         'badge-info'
                       }`}>
+                        <FaUserShield className="text-xs" />
                         {user.role}
                       </span>
                     </td>
@@ -132,7 +196,7 @@ const ManageUsers = () => {
                       <select 
                         className="select select-bordered select-sm"
                         value={user.role}
-                        onChange={(e) => handleRoleChange(user.email, e.target.value)}
+                        onChange={(e) => handleRoleChange(user.email, e.target.value, user.name)}
                       >
                         <option value="Student">Student</option>
                         <option value="Moderator">Moderator</option>
@@ -141,9 +205,10 @@ const ManageUsers = () => {
                     </td>
                     <td>
                       <button 
-                        onClick={() => handleDeleteUser(user.email)}
-                        className="btn btn-error btn-sm"
+                        onClick={() => handleDeleteUser(user.email, user.name)}
+                        className="btn btn-error btn-sm gap-1"
                       >
+                        <FaTrash />
                         Delete
                       </button>
                     </td>

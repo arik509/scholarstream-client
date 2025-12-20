@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
 import axiosInstance from '../../../config/api';
+import { MdEdit } from "react-icons/md";
+import { MdDeleteForever } from "react-icons/md";
 
 const MyReviews = () => {
   const { user } = useAuth();
@@ -125,15 +127,15 @@ const MyReviews = () => {
                         <div className="flex gap-2">
                           <button 
                             onClick={() => openEditModal(review)}
-                            className="btn btn-info btn-sm"
+                            className="btn  btn-sm"
                           >
-                            Edit
+                            <MdEdit />
                           </button>
                           <button 
                             onClick={() => handleDelete(review._id)}
                             className="btn btn-error btn-sm"
                           >
-                            Delete
+                            <MdDeleteForever /> Delete
                           </button>
                         </div>
                       </td>
@@ -146,7 +148,7 @@ const MyReviews = () => {
         </div>
       )}
 
-      {/* Edit Modal */}
+  
       <dialog id="edit_modal" className="modal">
         <div className="modal-box">
           <h3 className="font-bold text-lg mb-4">Edit Review</h3>

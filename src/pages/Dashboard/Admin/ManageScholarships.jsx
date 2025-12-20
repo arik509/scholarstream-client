@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../../../config/api';
 import { Link } from 'react-router';
+import Swal from 'sweetalert2';
+import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 
 const ManageScholarships = () => {
   const [scholarships, setScholarships] = useState([]);
@@ -16,21 +18,51 @@ const ManageScholarships = () => {
       setScholarships(data);
     } catch (error) {
       console.error('Error fetching scholarships:', error);
+      Swal.fire({
+        title: 'Error!',
+        text: 'Failed to load scholarships',
+        icon: 'error',
+        confirmButtonColor: '#8b5cf6'
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!confirm('Are you sure you want to delete this scholarship?')) return;
+  const handleDelete = async (id, scholarshipName) => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: `You are about to delete "${scholarshipName}". This action cannot be undone!`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
+    });
 
-    try {
-      await axiosInstance.delete(`/api/scholarships/${id}`);
-      setScholarships(scholarships.filter(s => s._id !== id));
-      alert('Scholarship deleted successfully!');
-    } catch (error) {
-      console.error('Error deleting scholarship:', error);
-      alert('Failed to delete scholarship');
+    if (result.isConfirmed) {
+      try {
+        await axiosInstance.delete(`/api/scholarships/${id}`);
+        setScholarships(scholarships.filter(s => s._id !== id));
+        
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'Scholarship has been deleted successfully',
+          icon: 'success',
+          confirmButtonColor: '#8b5cf6',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      } catch (error) {
+        console.error('Error deleting scholarship:', error);
+        Swal.fire({
+          title: 'Error!',
+          text: 'Failed to delete scholarship. Please try again.',
+          icon: 'error',
+          confirmButtonColor: '#8b5cf6'
+        });
+      }
     }
   };
 
@@ -46,7 +78,8 @@ const ManageScholarships = () => {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-800">Manage Scholarships</h1>
-        <Link to="/dashboard/add-scholarship" className="btn btn-primary">
+        <Link to="/dashboard/add-scholarship" className="btn btn-primary gap-2">
+          <FaPlus />
           Add New Scholarship
         </Link>
       </div>
@@ -85,11 +118,15 @@ const ManageScholarships = () => {
                     <td>${scholarship.applicationFees}</td>
                     <td>
                       <div className="flex gap-2">
-                        <button className="btn btn-info btn-sm">Edit</button>
+                        <button className="btn btn-info btn-sm gap-1">
+                          <FaEdit />
+                          Edit
+                        </button>
                         <button 
-                          onClick={() => handleDelete(scholarship._id)}
-                          className="btn btn-error btn-sm"
+                          onClick={() => handleDelete(scholarship._id, scholarship.scholarshipName)}
+                          className="btn btn-error btn-sm gap-1"
                         >
+                          <FaTrash />
                           Delete
                         </button>
                       </div>

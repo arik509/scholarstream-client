@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
 import axiosInstance from '../../../config/api';
+import Swal from 'sweetalert2';
 
 const AddScholarship = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState('');
-  const [error, setError] = useState('');
 
   const [formData, setFormData] = useState({
     scholarshipName: '',
@@ -35,8 +34,6 @@ const AddScholarship = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
-    setSuccess('');
 
     try {
       const scholarshipData = {
@@ -50,7 +47,14 @@ const AddScholarship = () => {
       };
 
       await axiosInstance.post('/api/scholarships', scholarshipData);
-      setSuccess('Scholarship added successfully!');
+      
+      Swal.fire({
+        title: 'Success!',
+        text: 'Scholarship has been added successfully',
+        icon: 'success',
+        confirmButtonColor: '#8b5cf6',
+        confirmButtonText: 'Great!'
+      });
       
       setFormData({
         scholarshipName: '',
@@ -69,8 +73,13 @@ const AddScholarship = () => {
         postedUserEmail: user?.email || ''
       });
     } catch (err) {
-      setError('Failed to add scholarship. Please try again.');
       console.error(err);
+      Swal.fire({
+        title: 'Error!',
+        text: 'Failed to add scholarship. Please try again.',
+        icon: 'error',
+        confirmButtonColor: '#8b5cf6'
+      });
     } finally {
       setLoading(false);
     }
@@ -79,18 +88,6 @@ const AddScholarship = () => {
   return (
     <div>
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Add New Scholarship</h1>
-
-      {success && (
-        <div className="alert alert-success mb-6">
-          <span>{success}</span>
-        </div>
-      )}
-
-      {error && (
-        <div className="alert alert-error mb-6">
-          <span>{error}</span>
-        </div>
-      )}
 
       <div className="card bg-base-100 shadow-xl">
         <div className="card-body">
@@ -288,7 +285,14 @@ const AddScholarship = () => {
 
             <div className="card-actions justify-end">
               <button type="submit" className="btn btn-primary" disabled={loading}>
-                {loading ? <span className="loading loading-spinner"></span> : 'Add Scholarship'}
+                {loading ? (
+                  <>
+                    <span className="loading loading-spinner"></span>
+                    Adding...
+                  </>
+                ) : (
+                  'Add Scholarship'
+                )}
               </button>
             </div>
           </form>

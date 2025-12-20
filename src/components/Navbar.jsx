@@ -1,20 +1,50 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import logo from "../assets/Purple & Tea.png";
 import { useAuth } from "../contexts/AuthContext";
+import Swal from 'sweetalert2';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { user, logoutUser } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
-    try {
-      await logoutUser();
-      setIsDropdownOpen(false);
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You will be logged out of your account",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#8b5cf6',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Yes, logout',
+      cancelButtonText: 'Cancel'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await logoutUser();
+          setIsDropdownOpen(false);
+          Swal.fire({
+            title: 'Logged Out!',
+            text: 'You have been successfully logged out',
+            icon: 'success',
+            confirmButtonColor: '#8b5cf6',
+            timer: 2000,
+            showConfirmButton: false
+          });
+          navigate('/');
+        } catch (error) {
+          console.error("Logout failed:", error);
+          Swal.fire({
+            title: 'Error!',
+            text: 'Failed to logout. Please try again.',
+            icon: 'error',
+            confirmButtonColor: '#8b5cf6'
+          });
+        }
+      }
+    });
   };
 
   return (
@@ -107,13 +137,13 @@ const Navbar = () => {
                             className="block px-4 py-3 rounded-lg hover:bg-purple-50 text-gray-700 hover:text-primary font-semibold transition-colors"
                             onClick={() => setIsDropdownOpen(false)}
                           >
-                             Dashboard
+                            📊 Dashboard
                           </Link>
                           <button
                             onClick={handleLogout}
                             className="w-full text-left px-4 py-3 rounded-lg hover:bg-red-50 text-error font-semibold transition-colors"
                           >
-                             Logout
+                            🚪 Logout
                           </button>
                         </div>
                       </div>
@@ -216,7 +246,7 @@ const Navbar = () => {
                     }}
                     className="w-full text-left py-3 px-4 rounded-lg hover:bg-red-50 text-error transition-colors font-semibold"
                   >
-                     Logout
+                    🚪 Logout
                   </button>
                 </>
               ) : (
