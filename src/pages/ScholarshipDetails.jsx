@@ -10,11 +10,29 @@ const ScholarshipDetails = () => {
   const [scholarship, setScholarship] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [hasApplied, setHasApplied] = useState(false);
+  const [checkingApplication, setCheckingApplication] = useState(false);
 
   useEffect(() => {
     fetchScholarshipDetails();
     fetchReviews();
-  }, [id]);
+    if (user?.email) {
+      checkIfApplied();
+    }
+  }, [id, user]);
+
+  const checkIfApplied = async () => {
+    setCheckingApplication(true);
+    try {
+      const { data } = await axiosInstance.get(`/api/applications/user/${user.email}`);
+      const applied = data.some(app => app.scholarshipId === id);
+      setHasApplied(applied);
+    } catch (error) {
+      console.error("Error checking application:", error);
+    } finally {
+      setCheckingApplication(false);
+    }
+  };
 
   const fetchScholarshipDetails = async () => {
     try {
@@ -42,6 +60,10 @@ const ScholarshipDetails = () => {
       return;
     }
     navigate(`/checkout/${id}`);
+  };
+
+  const handleViewApplication = () => {
+    navigate("/dashboard/my-applications");
   };
 
   if (loading || authLoading) {
@@ -165,12 +187,31 @@ const ScholarshipDetails = () => {
             )}
 
             {(!user || userRole === "Student") && (
-              <button 
-                onClick={handleApply} 
-                className="btn btn-primary btn-lg w-full md:w-auto"
-              >
-                Apply for Scholarship
-              </button>
+              <>
+                {checkingApplication ? (
+                  <button className="btn btn-primary btn-lg w-full md:w-auto" disabled>
+                    <span className="loading loading-spinner loading-sm"></span>
+                    Checking...
+                  </button>
+                ) : hasApplied ? (
+                  <button 
+                    onClick={handleViewApplication}
+                    className="btn btn-success btn-lg w-full md:w-auto"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Already Applied - View Status
+                  </button>
+                ) : (
+                  <button 
+                    onClick={handleApply} 
+                    className="btn btn-primary btn-lg w-full md:w-auto"
+                  >
+                    Apply for Scholarship
+                  </button>
+                )}
+              </>
             )}
 
             {user && (userRole === "Moderator" || userRole === "Admin") && (
