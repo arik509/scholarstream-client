@@ -83,10 +83,13 @@ export const AuthProvider = ({ children }) => {
       if (currentUser) {
         try {
           const { data } = await axiosInstance.get(`/api/users/${currentUser.email}`);
-          setUser({ ...currentUser, role: data.role || 'Student' });
+          setUser({ 
+            ...currentUser, 
+            role: data.role || 'Student'
+          });
         } catch (error) {
           console.error('Error fetching user role:', error);
-          setUser(currentUser);
+          setUser({ ...currentUser, role: 'Student' });
         }
       } else {
         setUser(null);

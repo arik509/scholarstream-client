@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import axiosInstance from '../config/api';
+import StripePaymentForm from '../components/StripePaymentForm';
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const Checkout = () => {
   const { id } = useParams();
@@ -10,9 +15,8 @@ const Checkout = () => {
   const location = useLocation();
   const [scholarship, setScholarship] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [processing, setProcessing] = useState(false);
+  const [clientSecret, setClientSecret] = useState('');
   
-  // Get applicationId from state if it's a retry payment
   const existingApplicationId = location.state?.applicationId;
 
   useEffect(() => {
@@ -23,6 +27,11 @@ const Checkout = () => {
     try {
       const { data } = await axiosInstance.get(`/api/scholarships/${id}`);
       setScholarship(data);
+      
+      // Create payment intent
+      const amount = data.applicationFees + data.serviceCharge;
+      const paymentIntent = await axiosInstance.post('/api/create-payment-intent', { amount });
+      setClientSecret(paymentIntent.data.clientSecret);
     } catch (error) {
       console.error('Error fetching scholarship:', error);
     } finally {
@@ -30,36 +39,15 @@ const Checkout = () => {
     }
   };
 
-  const handlePayment = async () => {
-    setProcessing(true);
-
+  const handlePaymentSuccess = async (paymentIntent) => {
     try {
-      // Simulate payment (70% success rate)
-      const paymentSuccess = Math.random() > 0.3;
-
       if (existingApplicationId) {
-        // RETRY PAYMENT - Update existing application
-        if (paymentSuccess) {
-          await axiosInstance.patch(`/api/applications/${existingApplicationId}/payment`, {
-            paymentStatus: 'paid'
-          });
-          navigate('/payment-success', { 
-            state: { 
-              scholarship,
-              amount: scholarship.applicationFees + scholarship.serviceCharge 
-            } 
-          });
-        } else {
-          navigate('/payment-failed', { 
-            state: { 
-              scholarship,
-              error: 'Payment processing failed. Please try again.',
-              applicationId: existingApplicationId
-            } 
-          });
-        }
+        // Update existing application
+        await axiosInstance.patch(`/api/applications/${existingApplicationId}/payment`, {
+          paymentStatus: 'paid'
+        });
       } else {
-        // NEW APPLICATION
+        // Create new application
         const applicationData = {
           scholarshipId: scholarship._id,
           userId: user.uid,
@@ -71,35 +59,64 @@ const Checkout = () => {
           applicationFees: scholarship.applicationFees,
           serviceCharge: scholarship.serviceCharge,
           applicationStatus: 'pending',
-          paymentStatus: paymentSuccess ? 'paid' : 'unpaid',
+          paymentStatus: 'paid',
           applicationDate: new Date(),
           feedback: ''
         };
+        await axiosInstance.post('/api/applications', applicationData);
+      }
 
+      navigate('/payment-success', { 
+        state: { 
+          scholarship,
+          amount: scholarship.applicationFees + scholarship.serviceCharge 
+        } 
+      });
+    } catch (error) {
+      console.error('Error saving application:', error);
+      alert('Payment successful but failed to save application. Please contact support.');
+    }
+  };
+
+  const handlePaymentError = async (errorMessage) => {
+    try {
+      if (!existingApplicationId) {
+        // Create application with unpaid status
+        const applicationData = {
+          scholarshipId: scholarship._id,
+          userId: user.uid,
+          userName: user.displayName,
+          userEmail: user.email,
+          universityName: scholarship.universityName,
+          scholarshipCategory: scholarship.scholarshipCategory,
+          degree: scholarship.degree,
+          applicationFees: scholarship.applicationFees,
+          serviceCharge: scholarship.serviceCharge,
+          applicationStatus: 'pending',
+          paymentStatus: 'unpaid',
+          applicationDate: new Date(),
+          feedback: ''
+        };
         const { data } = await axiosInstance.post('/api/applications', applicationData);
-
-        if (paymentSuccess) {
-          navigate('/payment-success', { 
-            state: { 
-              scholarship,
-              amount: scholarship.applicationFees + scholarship.serviceCharge 
-            } 
-          });
-        } else {
-          navigate('/payment-failed', { 
-            state: { 
-              scholarship,
-              error: 'Payment processing failed. Please try again.',
-              applicationId: data.insertedId
-            } 
-          });
-        }
+        
+        navigate('/payment-failed', { 
+          state: { 
+            scholarship,
+            error: errorMessage,
+            applicationId: data.insertedId
+          } 
+        });
+      } else {
+        navigate('/payment-failed', { 
+          state: { 
+            scholarship,
+            error: errorMessage,
+            applicationId: existingApplicationId
+          } 
+        });
       }
     } catch (error) {
-      console.error('Error processing payment:', error);
-      alert('Failed to process application. Please try again.');
-    } finally {
-      setProcessing(false);
+      console.error('Error handling payment failure:', error);
     }
   };
 
@@ -110,6 +127,15 @@ const Checkout = () => {
       </div>
     );
   }
+
+  const appearance = {
+    theme: 'stripe',
+  };
+
+  const options = {
+    clientSecret,
+    appearance,
+  };
 
   return (
     <div className="min-h-screen bg-base-200 py-12 px-4">
@@ -163,29 +189,17 @@ const Checkout = () => {
               </div>
             </div>
 
-            <div className="alert alert-info mb-6">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-              <span>This is a demo payment. Click "Pay Now" to simulate payment processing.</span>
-            </div>
+            <div className="divider">Payment Details</div>
 
-            <div className="card-actions justify-end">
-              <button 
-                onClick={() => navigate(-1)}
-                className="btn btn-ghost"
-                disabled={processing}
-              >
-                Cancel
-              </button>
-              <button 
-                onClick={handlePayment}
-                className="btn btn-primary"
-                disabled={processing}
-              >
-                {processing ? <span className="loading loading-spinner"></span> : 'Pay Now'}
-              </button>
-            </div>
+            {clientSecret && (
+              <Elements stripe={stripePromise} options={options}>
+                <StripePaymentForm 
+                  onSuccess={handlePaymentSuccess}
+                  onError={handlePaymentError}
+                  amount={scholarship.applicationFees + scholarship.serviceCharge}
+                />
+              </Elements>
+            )}
           </div>
         </div>
       </div>
