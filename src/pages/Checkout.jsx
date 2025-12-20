@@ -9,7 +9,19 @@ import Swal from 'sweetalert2';
 import { FaUniversity, FaUser, FaMoneyBillWave, FaCreditCard, FaCheckCircle } from 'react-icons/fa';
 import { MdPayment, MdWarning } from 'react-icons/md';
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+// Safe Stripe initialization with error handling
+let stripePromise = null;
+const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+
+if (stripeKey && (stripeKey.startsWith('pk_test_') || stripeKey.startsWith('pk_live_'))) {
+  try {
+    stripePromise = loadStripe(stripeKey);
+  } catch (error) {
+    console.error('Failed to initialize Stripe:', error);
+  }
+} else {
+  console.error('Invalid or missing Stripe publishable key');
+}
 
 const Checkout = () => {
   const { id } = useParams();
@@ -19,10 +31,18 @@ const Checkout = () => {
   const [scholarship, setScholarship] = useState(null);
   const [loading, setLoading] = useState(true);
   const [clientSecret, setClientSecret] = useState('');
+  const [stripeError, setStripeError] = useState(false);
   
   const existingApplicationId = location.state?.applicationId;
 
   useEffect(() => {
+    // Check if Stripe initialized successfully
+    if (!stripePromise) {
+      setStripeError(true);
+      setLoading(false);
+      return;
+    }
+    
     fetchScholarship();
   }, [id]);
 
@@ -167,6 +187,51 @@ const Checkout = () => {
     }
   };
 
+  // Show error screen if Stripe failed to load
+  if (stripeError) {
+    return (
+      <div className="min-h-screen bg-base-200 flex items-center justify-center px-4">
+        <div className="card bg-base-100 shadow-xl max-w-lg">
+          <div className="card-body text-center">
+            <MdWarning className="text-6xl text-error mx-auto mb-4" />
+            <h2 className="card-title text-error justify-center text-2xl">Payment System Unavailable</h2>
+            <div className="divider"></div>
+            <p className="text-gray-700 mb-4">Unable to load the payment system. This could be due to:</p>
+            <ul className="text-left text-sm space-y-2 bg-base-200 p-4 rounded-lg">
+              <li>❌ Missing or invalid Stripe API key</li>
+              <li>❌ Network or firewall blocking Stripe</li>
+              <li>❌ Browser extensions blocking payment scripts</li>
+              <li>❌ Ad blocker interference</li>
+            </ul>
+            <div className="alert alert-info mt-4">
+              <span className="text-sm">Please check your connection and try again, or contact support.</span>
+            </div>
+            <div className="card-actions justify-center mt-4 gap-2">
+              <button 
+                onClick={() => window.location.reload()} 
+                className="btn btn-primary gap-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
+                </svg>
+                Retry
+              </button>
+              <button 
+                onClick={() => navigate('/scholarships')} 
+                className="btn btn-outline gap-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+                </svg>
+                Go Back
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -256,7 +321,7 @@ const Checkout = () => {
               <span className="font-semibold">Payment Details</span>
             </div>
 
-            {clientSecret && (
+            {clientSecret && stripePromise && (
               <Elements stripe={stripePromise} options={options}>
                 <StripePaymentForm 
                   onSuccess={handlePaymentSuccess}

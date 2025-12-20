@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../../../config/api';
+import Swal from 'sweetalert2';
+import { FaUsers, FaBook, FaFileAlt, FaDollarSign, FaChartBar, FaChartPie } from 'react-icons/fa';
+import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const Analytics = () => {
   const [stats, setStats] = useState({
@@ -8,7 +11,11 @@ const Analytics = () => {
     totalApplications: 0,
     totalFees: 0
   });
+  const [universityData, setUniversityData] = useState([]);
+  const [categoryData, setCategoryData] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const COLORS = ['#8b5cf6', '#ec4899', '#06b6d4', '#10b981', '#f59e0b', '#ef4444'];
 
   useEffect(() => {
     fetchAnalytics();
@@ -32,8 +39,36 @@ const Analytics = () => {
         totalApplications: applications.data.length,
         totalFees
       });
+
+      const universityCount = applications.data.reduce((acc, app) => {
+        acc[app.universityName] = (acc[app.universityName] || 0) + 1;
+        return acc;
+      }, {});
+
+      const universityChartData = Object.entries(universityCount)
+        .map(([name, count]) => ({ name, applications: count }))
+        .sort((a, b) => b.applications - a.applications)
+        .slice(0, 6);
+
+      setUniversityData(universityChartData);
+
+      const categoryCount = applications.data.reduce((acc, app) => {
+        acc[app.scholarshipCategory] = (acc[app.scholarshipCategory] || 0) + 1;
+        return acc;
+      }, {});
+
+      const categoryChartData = Object.entries(categoryCount)
+        .map(([name, value]) => ({ name, value }));
+
+      setCategoryData(categoryChartData);
     } catch (error) {
       console.error('Error fetching analytics:', error);
+      Swal.fire({
+        title: 'Error!',
+        text: 'Failed to load analytics data',
+        icon: 'error',
+        confirmButtonColor: '#8b5cf6'
+      });
     } finally {
       setLoading(false);
     }
@@ -49,47 +84,146 @@ const Analytics = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Analytics Dashboard</h1>
+      <div className="flex items-center gap-3 mb-6">
+        <FaChartBar className="text-4xl text-primary" />
+        <h1 className="text-3xl font-bold text-gray-800">Analytics Dashboard</h1>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="stat bg-base-100 shadow-xl rounded-lg">
-          <div className="stat-figure text-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="stat bg-gradient-to-br from-purple-500 to-purple-600 text-white shadow-xl rounded-lg">
+          <div className="stat-figure text-white opacity-80">
+            <FaUsers className="text-4xl" />
           </div>
-          <div className="stat-title">Total Users</div>
-          <div className="stat-value text-primary">{stats.totalUsers}</div>
+          <div className="stat-title text-purple-100">Total Users</div>
+          <div className="stat-value">{stats.totalUsers}</div>
+          <div className="stat-desc text-purple-100">Registered accounts</div>
         </div>
 
-        <div className="stat bg-base-100 shadow-xl rounded-lg">
-          <div className="stat-figure text-secondary">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-            </svg>
+        <div className="stat bg-gradient-to-br from-pink-500 to-pink-600 text-white shadow-xl rounded-lg">
+          <div className="stat-figure text-white opacity-80">
+            <FaBook className="text-4xl" />
           </div>
-          <div className="stat-title">Total Scholarships</div>
-          <div className="stat-value text-secondary">{stats.totalScholarships}</div>
+          <div className="stat-title text-pink-100">Total Scholarships</div>
+          <div className="stat-value">{stats.totalScholarships}</div>
+          <div className="stat-desc text-pink-100">Available opportunities</div>
         </div>
 
-        <div className="stat bg-base-100 shadow-xl rounded-lg">
-          <div className="stat-figure text-accent">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
+        <div className="stat bg-gradient-to-br from-cyan-500 to-cyan-600 text-white shadow-xl rounded-lg">
+          <div className="stat-figure text-white opacity-80">
+            <FaFileAlt className="text-4xl" />
           </div>
-          <div className="stat-title">Total Applications</div>
-          <div className="stat-value text-accent">{stats.totalApplications}</div>
+          <div className="stat-title text-cyan-100">Total Applications</div>
+          <div className="stat-value">{stats.totalApplications}</div>
+          <div className="stat-desc text-cyan-100">Submitted by students</div>
         </div>
 
-        <div className="stat bg-base-100 shadow-xl rounded-lg">
-          <div className="stat-figure text-success">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+        <div className="stat bg-gradient-to-br from-green-500 to-green-600 text-white shadow-xl rounded-lg">
+          <div className="stat-figure text-white opacity-80">
+            <FaDollarSign className="text-4xl" />
           </div>
-          <div className="stat-title">Total Fees Collected</div>
-          <div className="stat-value text-success">${stats.totalFees}</div>
+          <div className="stat-title text-green-100">Total Fees Collected</div>
+          <div className="stat-value">${stats.totalFees}</div>
+          <div className="stat-desc text-green-100">Revenue generated</div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="card bg-base-100 shadow-xl">
+          <div className="card-body">
+            <h2 className="card-title flex items-center gap-2">
+              <FaChartBar className="text-primary" />
+              Applications by University
+            </h2>
+            <p className="text-sm text-gray-600 mb-4">Top 6 universities with most applications</p>
+            
+            {universityData.length > 0 ? (
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={universityData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis 
+                    dataKey="name" 
+                    angle={-45} 
+                    textAnchor="end" 
+                    height={100}
+                    tick={{ fontSize: 12 }}
+                  />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="applications" fill="#8b5cf6" name="Applications" />
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="text-center py-12 text-gray-500">
+                No application data available
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="card bg-base-100 shadow-xl">
+          <div className="card-body">
+            <h2 className="card-title flex items-center gap-2">
+              <FaChartPie className="text-primary" />
+              Applications by Category
+            </h2>
+            <p className="text-sm text-gray-600 mb-4">Distribution across scholarship categories</p>
+            
+            {categoryData.length > 0 ? (
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={categoryData}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {categoryData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="text-center py-12 text-gray-500">
+                No category data available
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="card bg-base-100 shadow-xl mt-6">
+        <div className="card-body">
+          <h2 className="card-title">Quick Stats</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            <div className="stat bg-base-200 rounded-lg">
+              <div className="stat-title">Average Fee per Application</div>
+              <div className="stat-value text-primary text-2xl">
+                ${stats.totalApplications > 0 ? (stats.totalFees / stats.totalApplications).toFixed(2) : 0}
+              </div>
+            </div>
+            
+            <div className="stat bg-base-200 rounded-lg">
+              <div className="stat-title">Scholarships per User</div>
+              <div className="stat-value text-secondary text-2xl">
+                {stats.totalUsers > 0 ? (stats.totalScholarships / stats.totalUsers).toFixed(2) : 0}
+              </div>
+            </div>
+            
+            <div className="stat bg-base-200 rounded-lg">
+              <div className="stat-title">Applications per Scholarship</div>
+              <div className="stat-value text-accent text-2xl">
+                {stats.totalScholarships > 0 ? (stats.totalApplications / stats.totalScholarships).toFixed(2) : 0}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

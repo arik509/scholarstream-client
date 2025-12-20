@@ -34,23 +34,23 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: "login",
+        path: "/login",
         element: <Login />
       },
       {
-        path: "register",
+        path: "/register",
         element: <Register />
       },
       {
-        path: "scholarships",
+        path: "/scholarships",
         element: <AllScholarships />
       },
       {
-        path: "scholarships/:id",
+        path: "/scholarships/:id",
         element: <ScholarshipDetails></ScholarshipDetails>
       },
       {
-        path: "checkout/:id",
+        path: "/checkout/:id",
         element: (
           <PrivateRoute>
             <Checkout></Checkout>
@@ -58,7 +58,7 @@ const router = createBrowserRouter([
         )
       },
       {
-        path: "payment-success",
+        path: "/payment-success",
         element: (
           <PrivateRoute>
             <PaymentSuccess></PaymentSuccess>
@@ -66,7 +66,7 @@ const router = createBrowserRouter([
         )
       },
       {
-        path: "payment-failed",
+        path: "/payment-failed",
         element: (
           <PrivateRoute>
             <PaymentFailed></PaymentFailed>
@@ -88,15 +88,15 @@ const router = createBrowserRouter([
         element: <MyProfile />
       },
       {
-        path: "my-applications",
+        path: "/dashboard/my-applications",
         element: <MyApplications />
       },
       {
-        path: "my-reviews",
+        path: "/dashboard/my-reviews",
         element: <MyReviews />
       },
       {
-        path: "manage-applications",
+        path: "/dashboard/manage-applications",
         element: (
           <ModeratorRoute>
             <ManageApplications />
@@ -104,7 +104,7 @@ const router = createBrowserRouter([
         )
       },
       {
-        path: "all-reviews",
+        path: "/dashboard/all-reviews",
         element: (
           <ModeratorRoute>
             <AllReviews />
@@ -112,7 +112,7 @@ const router = createBrowserRouter([
         )
       },
       {
-        path: "add-scholarship",
+        path: "/dashboard/add-scholarship",
         element: (
           <AdminRoute>
             <AddScholarship />
@@ -120,7 +120,7 @@ const router = createBrowserRouter([
         )
       },
       {
-        path: "manage-scholarships",
+        path: "/dashboard/manage-scholarships",
         element: (
           <AdminRoute>
             <ManageScholarships />
@@ -128,7 +128,7 @@ const router = createBrowserRouter([
         )
       },
       {
-        path: "manage-users",
+        path: "/dashboard/manage-users",
         element: (
           <AdminRoute>
             <ManageUsers />
@@ -136,7 +136,7 @@ const router = createBrowserRouter([
         )
       },
       {
-        path: "analytics",
+        path: "/dashboard/analytics",
         element: (
           <AdminRoute>
             <Analytics />
