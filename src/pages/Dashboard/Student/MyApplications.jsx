@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useNavigate } from 'react-router';
 import axiosInstance from '../../../config/api';
+import Swal from 'sweetalert2';
 import { FaEye, FaCreditCard, FaEdit, FaTrash, FaStar, FaTimes, FaPaperPlane } from 'react-icons/fa';
 import { MdRateReview } from 'react-icons/md';
 
@@ -29,21 +30,51 @@ const MyApplications = () => {
       setApplications(data);
     } catch (error) {
       console.error('Error fetching applications:', error);
+      Swal.fire({
+        title: 'Error!',
+        text: 'Failed to load your applications',
+        icon: 'error',
+        confirmButtonColor: '#8b5cf6'
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!confirm('Are you sure you want to delete this application?')) return;
+  const handleDelete = async (id, universityName) => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      html: `You are about to delete your application to <strong>${universityName}</strong>. This action cannot be undone!`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
+    });
 
-    try {
-      await axiosInstance.delete(`/api/applications/${id}`);
-      setApplications(applications.filter(app => app._id !== id));
-      alert('Application deleted successfully!');
-    } catch (error) {
-      console.error('Error deleting application:', error);
-      alert('Failed to delete application');
+    if (result.isConfirmed) {
+      try {
+        await axiosInstance.delete(`/api/applications/${id}`);
+        setApplications(applications.filter(app => app._id !== id));
+        
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'Your application has been deleted successfully',
+          icon: 'success',
+          confirmButtonColor: '#8b5cf6',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      } catch (error) {
+        console.error('Error deleting application:', error);
+        Swal.fire({
+          title: 'Error!',
+          text: 'Failed to delete application. Please try again.',
+          icon: 'error',
+          confirmButtonColor: '#8b5cf6'
+        });
+      }
     }
   };
 
@@ -66,7 +97,12 @@ const MyApplications = () => {
 
   const handleSubmitReview = async () => {
     if (!reviewData.reviewComment.trim()) {
-      alert('Please write a review comment');
+      Swal.fire({
+        title: 'Missing Review!',
+        text: 'Please write a review comment before submitting',
+        icon: 'warning',
+        confirmButtonColor: '#8b5cf6'
+      });
       return;
     }
 
@@ -84,11 +120,25 @@ const MyApplications = () => {
 
       await axiosInstance.post('/api/reviews', review);
       document.getElementById('review_modal').close();
-      alert('Review submitted successfully!');
+      
+      Swal.fire({
+        title: 'Thank You!',
+        text: 'Your review has been submitted successfully',
+        icon: 'success',
+        confirmButtonColor: '#8b5cf6',
+        timer: 2000,
+        showConfirmButton: false
+      });
+      
       setReviewData({ ratingPoint: 5, reviewComment: '' });
     } catch (error) {
       console.error('Error submitting review:', error);
-      alert('Failed to submit review');
+      Swal.fire({
+        title: 'Error!',
+        text: 'Failed to submit review. Please try again.',
+        icon: 'error',
+        confirmButtonColor: '#8b5cf6'
+      });
     }
   };
 
@@ -102,12 +152,26 @@ const MyApplications = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">My Applications</h1>
+      <div className="flex items-center gap-3 mb-6">
+        <h1 className="text-3xl font-bold text-gray-800">My Applications</h1>
+        {applications.length > 0 && (
+          <span className="badge badge-primary badge-lg">{applications.length}</span>
+        )}
+      </div>
 
       {applications.length === 0 ? (
         <div className="card bg-base-100 shadow-xl">
-          <div className="card-body text-center">
-            <p className="text-gray-600">You haven't applied to any scholarships yet.</p>
+          <div className="card-body text-center py-12">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 mx-auto text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <p className="text-gray-600 text-lg">You haven't applied to any scholarships yet.</p>
+            <button 
+              onClick={() => navigate('/scholarships')}
+              className="btn btn-primary mt-4"
+            >
+              Browse Scholarships
+            </button>
           </div>
         </div>
       ) : (
@@ -188,7 +252,7 @@ const MyApplications = () => {
                                 Edit
                               </button>
                               <button 
-                                onClick={() => handleDelete(app._id)}
+                                onClick={() => handleDelete(app._id, app.universityName)}
                                 className="btn btn-error btn-xs gap-1"
                               >
                                 <FaTrash className="text-sm" />

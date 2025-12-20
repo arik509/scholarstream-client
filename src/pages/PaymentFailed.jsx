@@ -1,4 +1,5 @@
 import { useLocation, Link } from 'react-router';
+import { RxCross1 } from "react-icons/rx";
 
 const PaymentFailed = () => {
   const location = useLocation();
@@ -21,7 +22,7 @@ const PaymentFailed = () => {
     <div className="min-h-screen bg-base-200 flex items-center justify-center px-4">
       <div className="card bg-base-100 shadow-2xl max-w-2xl w-full">
         <div className="card-body text-center">
-          <div className="text-6xl mb-4">❌</div>
+          <div className="text-6xl mb-4 flex justify-center text-error font-extrabold"><RxCross1 /></div>
           <h1 className="text-4xl font-bold text-error mb-4">Payment Failed</h1>
           
           <p className="text-gray-600 mb-6">

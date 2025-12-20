@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../../../config/api';
+import Swal from 'sweetalert2';
+import { FaCommentDots, FaCheckCircle, FaTimesCircle, FaClock, FaSpinner } from 'react-icons/fa';
+import { MdFeedback } from 'react-icons/md';
 
 const ManageApplications = () => {
   const [applications, setApplications] = useState([]);
@@ -17,28 +20,77 @@ const ManageApplications = () => {
       setApplications(data);
     } catch (error) {
       console.error('Error fetching applications:', error);
+      Swal.fire({
+        title: 'Error!',
+        text: 'Failed to load applications',
+        icon: 'error',
+        confirmButtonColor: '#8b5cf6'
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleStatusChange = async (id, newStatus) => {
-    try {
-      await axiosInstance.patch(`/api/applications/${id}/status`, { 
-        applicationStatus: newStatus 
-      });
-      setApplications(applications.map(app => 
-        app._id === id ? { ...app, applicationStatus: newStatus } : app
-      ));
-      alert('Status updated successfully!');
-    } catch (error) {
-      console.error('Error updating status:', error);
-      alert('Failed to update status');
+  const handleStatusChange = async (id, newStatus, userName) => {
+    const statusIcons = {
+      pending: 'question',
+      processing: 'info',
+      completed: 'success',
+      rejected: 'warning'
+    };
+
+    const result = await Swal.fire({
+      title: 'Change Application Status?',
+      html: `Change <strong>${userName}</strong>'s application status to <strong>${newStatus}</strong>?`,
+      icon: statusIcons[newStatus],
+      showCancelButton: true,
+      confirmButtonColor: '#8b5cf6',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Yes, change it!',
+      cancelButtonText: 'Cancel'
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axiosInstance.patch(`/api/applications/${id}/status`, { 
+          applicationStatus: newStatus 
+        });
+        setApplications(applications.map(app => 
+          app._id === id ? { ...app, applicationStatus: newStatus } : app
+        ));
+        
+        Swal.fire({
+          title: 'Updated!',
+          text: `Application status changed to ${newStatus}`,
+          icon: 'success',
+          confirmButtonColor: '#8b5cf6',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      } catch (error) {
+        console.error('Error updating status:', error);
+        Swal.fire({
+          title: 'Error!',
+          text: 'Failed to update status. Please try again.',
+          icon: 'error',
+          confirmButtonColor: '#8b5cf6'
+        });
+      }
+    } else {
+      fetchApplications();
     }
   };
 
   const handleFeedbackSubmit = async () => {
-    if (!selectedApp || !feedback.trim()) return;
+    if (!selectedApp || !feedback.trim()) {
+      Swal.fire({
+        title: 'Missing Feedback!',
+        text: 'Please write feedback before submitting',
+        icon: 'warning',
+        confirmButtonColor: '#8b5cf6'
+      });
+      return;
+    }
 
     try {
       await axiosInstance.patch(`/api/applications/${selectedApp._id}/feedback`, { 
@@ -50,10 +102,23 @@ const ManageApplications = () => {
       setSelectedApp(null);
       setFeedback('');
       document.getElementById('feedback_modal').close();
-      alert('Feedback added successfully!');
+      
+      Swal.fire({
+        title: 'Success!',
+        text: 'Feedback has been added successfully',
+        icon: 'success',
+        confirmButtonColor: '#8b5cf6',
+        timer: 2000,
+        showConfirmButton: false
+      });
     } catch (error) {
       console.error('Error adding feedback:', error);
-      alert('Failed to add feedback');
+      Swal.fire({
+        title: 'Error!',
+        text: 'Failed to add feedback. Please try again.',
+        icon: 'error',
+        confirmButtonColor: '#8b5cf6'
+      });
     }
   };
 
@@ -61,6 +126,15 @@ const ManageApplications = () => {
     setSelectedApp(app);
     setFeedback(app.feedback || '');
     document.getElementById('feedback_modal').showModal();
+  };
+
+  const getStatusIcon = (status) => {
+    switch(status) {
+      case 'completed': return <FaCheckCircle className="inline mr-1" />;
+      case 'rejected': return <FaTimesCircle className="inline mr-1" />;
+      case 'processing': return <FaSpinner className="inline mr-1" />;
+      default: return <FaClock className="inline mr-1" />;
+    }
   };
 
   if (loading) {
@@ -73,7 +147,11 @@ const ManageApplications = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Manage Applications</h1>
+      <div className="flex items-center gap-3 mb-6">
+        <MdFeedback className="text-4xl text-primary" />
+        <h1 className="text-3xl font-bold text-gray-800">Manage Applications</h1>
+        <span className="badge badge-primary badge-lg">{applications.length}</span>
+      </div>
 
       <div className="card bg-base-100 shadow-xl">
         <div className="card-body">
@@ -104,12 +182,20 @@ const ManageApplications = () => {
                       <select 
                         className="select select-bordered select-sm"
                         value={app.applicationStatus}
-                        onChange={(e) => handleStatusChange(app._id, e.target.value)}
+                        onChange={(e) => handleStatusChange(app._id, e.target.value, app.userName)}
                       >
-                        <option value="pending">Pending</option>
-                        <option value="processing">Processing</option>
-                        <option value="completed">Completed</option>
-                        <option value="rejected">Rejected</option>
+                        <option value="pending">
+                          {getStatusIcon('pending')} Pending
+                        </option>
+                        <option value="processing">
+                          {getStatusIcon('processing')} Processing
+                        </option>
+                        <option value="completed">
+                          {getStatusIcon('completed')} Completed
+                        </option>
+                        <option value="rejected">
+                          {getStatusIcon('rejected')} Rejected
+                        </option>
                       </select>
                     </td>
                     <td>
@@ -120,14 +206,13 @@ const ManageApplications = () => {
                       </span>
                     </td>
                     <td>
-                      <div className="flex gap-2">
-                        <button 
-                          onClick={() => openFeedbackModal(app)}
-                          className="btn btn-info btn-sm"
-                        >
-                          Feedback
-                        </button>
-                      </div>
+                      <button 
+                        onClick={() => openFeedbackModal(app)}
+                        className="btn btn-info btn-sm gap-1"
+                      >
+                        <FaCommentDots />
+                        {app.feedback ? 'Edit Feedback' : 'Add Feedback'}
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -139,10 +224,15 @@ const ManageApplications = () => {
 
       <dialog id="feedback_modal" className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg mb-4">Add Feedback</h3>
+          <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+            <MdFeedback className="text-primary" />
+            Add Feedback
+          </h3>
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Feedback for {selectedApp?.userName}</span>
+              <span className="label-text font-semibold">
+                Feedback for <span className="text-primary">{selectedApp?.userName}</span>
+              </span>
             </label>
             <textarea
               className="textarea textarea-bordered h-24"
@@ -152,8 +242,9 @@ const ManageApplications = () => {
             ></textarea>
           </div>
           <div className="modal-action">
-            <button onClick={handleFeedbackSubmit} className="btn btn-primary">
-              Submit
+            <button onClick={handleFeedbackSubmit} className="btn btn-primary gap-2">
+              <FaCheckCircle />
+              Submit Feedback
             </button>
             <form method="dialog">
               <button className="btn">Close</button>

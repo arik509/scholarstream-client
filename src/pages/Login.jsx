@@ -53,7 +53,7 @@ const Login = () => {
 
           {error && (
             <div className="alert alert-error mb-6">
-              <span className="text-sm">{error}</span>
+              <span className="text-sm">Invalid Credentials!</span>
             </div>
           )}
 

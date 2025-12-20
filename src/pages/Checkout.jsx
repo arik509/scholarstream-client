@@ -5,6 +5,9 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import axiosInstance from '../config/api';
 import StripePaymentForm from '../components/StripePaymentForm';
+import Swal from 'sweetalert2';
+import { FaUniversity, FaUser, FaMoneyBillWave, FaCreditCard, FaCheckCircle } from 'react-icons/fa';
+import { MdPayment, MdWarning } from 'react-icons/md';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
@@ -28,12 +31,19 @@ const Checkout = () => {
       const { data } = await axiosInstance.get(`/api/scholarships/${id}`);
       setScholarship(data);
       
-      // Create payment intent
       const amount = data.applicationFees + data.serviceCharge;
       const paymentIntent = await axiosInstance.post('/api/create-payment-intent', { amount });
       setClientSecret(paymentIntent.data.clientSecret);
     } catch (error) {
       console.error('Error fetching scholarship:', error);
+      Swal.fire({
+        title: 'Error!',
+        text: 'Failed to load scholarship details',
+        icon: 'error',
+        confirmButtonColor: '#8b5cf6'
+      }).then(() => {
+        navigate('/scholarships');
+      });
     } finally {
       setLoading(false);
     }
@@ -42,12 +52,10 @@ const Checkout = () => {
   const handlePaymentSuccess = async (paymentIntent) => {
     try {
       if (existingApplicationId) {
-        // Update existing application
         await axiosInstance.patch(`/api/applications/${existingApplicationId}/payment`, {
           paymentStatus: 'paid'
         });
       } else {
-        // Create new application
         const applicationData = {
           scholarshipId: scholarship._id,
           userId: user.uid,
@@ -66,22 +74,45 @@ const Checkout = () => {
         await axiosInstance.post('/api/applications', applicationData);
       }
 
-      navigate('/payment-success', { 
-        state: { 
-          scholarship,
-          amount: scholarship.applicationFees + scholarship.serviceCharge 
-        } 
+      Swal.fire({
+        title: 'Payment Successful!',
+        html: `
+          <div class="text-center">
+            <p class="text-lg mb-2">Your application has been submitted successfully!</p>
+            <p class="text-sm text-gray-600">Amount paid: <strong>$${scholarship.applicationFees + scholarship.serviceCharge}</strong></p>
+            <p class="text-sm text-gray-500 mt-2">Redirecting...</p>
+          </div>
+        `,
+        icon: 'success',
+        confirmButtonColor: '#8b5cf6',
+        timer: 3000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        allowOutsideClick: false
+      }).then(() => {
+        navigate('/payment-success', { 
+          state: { 
+            scholarship,
+            amount: scholarship.applicationFees + scholarship.serviceCharge 
+          } 
+        });
       });
     } catch (error) {
       console.error('Error saving application:', error);
-      alert('Payment successful but failed to save application. Please contact support.');
+      Swal.fire({
+        title: 'Warning!',
+        text: 'Payment successful but failed to save application. Please contact support.',
+        icon: 'warning',
+        confirmButtonColor: '#8b5cf6'
+      });
     }
   };
 
   const handlePaymentError = async (errorMessage) => {
     try {
+      let applicationId = existingApplicationId;
+
       if (!existingApplicationId) {
-        // Create application with unpaid status
         const applicationData = {
           scholarshipId: scholarship._id,
           userId: user.uid,
@@ -98,25 +129,41 @@ const Checkout = () => {
           feedback: ''
         };
         const { data } = await axiosInstance.post('/api/applications', applicationData);
-        
-        navigate('/payment-failed', { 
-          state: { 
-            scholarship,
-            error: errorMessage,
-            applicationId: data.insertedId
-          } 
-        });
-      } else {
-        navigate('/payment-failed', { 
-          state: { 
-            scholarship,
-            error: errorMessage,
-            applicationId: existingApplicationId
-          } 
-        });
+        applicationId = data.insertedId;
       }
+
+      Swal.fire({
+        title: 'Payment Failed!',
+        html: `
+          <div class="text-center">
+            <p class="text-lg mb-2">Your payment could not be processed</p>
+            <p class="text-sm text-gray-600 mb-2">${errorMessage}</p>
+            <p class="text-sm text-gray-500">Redirecting...</p>
+          </div>
+        `,
+        icon: 'error',
+        confirmButtonColor: '#8b5cf6',
+        timer: 3000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        allowOutsideClick: false
+      }).then(() => {
+        navigate('/payment-failed', { 
+          state: { 
+            scholarship,
+            error: errorMessage,
+            applicationId: applicationId
+          } 
+        });
+      });
     } catch (error) {
       console.error('Error handling payment failure:', error);
+      Swal.fire({
+        title: 'Error!',
+        text: 'An unexpected error occurred. Please contact support.',
+        icon: 'error',
+        confirmButtonColor: '#8b5cf6'
+      });
     }
   };
 
@@ -142,54 +189,72 @@ const Checkout = () => {
       <div className="max-w-2xl mx-auto">
         <div className="card bg-base-100 shadow-2xl">
           <div className="card-body">
-            <h1 className="text-3xl font-bold text-gray-800 mb-6">
-              {existingApplicationId ? 'Retry Payment' : 'Payment Checkout'}
-            </h1>
+            <div className="flex items-center gap-3 mb-6">
+              <MdPayment className="text-4xl text-primary" />
+              <h1 className="text-3xl font-bold text-gray-800">
+                {existingApplicationId ? 'Retry Payment' : 'Payment Checkout'}
+              </h1>
+            </div>
 
             {existingApplicationId && (
               <div className="alert alert-warning mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
+                <MdWarning className="text-xl" />
                 <span>Retrying payment for existing application</span>
               </div>
             )}
 
             <div className="space-y-4 mb-6">
               <div className="flex justify-between items-center p-4 bg-base-200 rounded-lg">
-                <span className="font-semibold">Scholarship:</span>
-                <span>{scholarship.scholarshipName}</span>
+                <span className="font-semibold flex items-center gap-2">
+                  <FaCheckCircle className="text-primary" />
+                  Scholarship:
+                </span>
+                <span className="text-right">{scholarship.scholarshipName}</span>
               </div>
 
               <div className="flex justify-between items-center p-4 bg-base-200 rounded-lg">
-                <span className="font-semibold">University:</span>
-                <span>{scholarship.universityName}</span>
+                <span className="font-semibold flex items-center gap-2">
+                  <FaUniversity className="text-primary" />
+                  University:
+                </span>
+                <span className="text-right">{scholarship.universityName}</span>
               </div>
 
               <div className="flex justify-between items-center p-4 bg-base-200 rounded-lg">
-                <span className="font-semibold">Applicant:</span>
-                <span>{user.displayName}</span>
+                <span className="font-semibold flex items-center gap-2">
+                  <FaUser className="text-primary" />
+                  Applicant:
+                </span>
+                <span className="text-right">{user.displayName}</span>
               </div>
 
-              <div className="divider"></div>
+              <div className="divider">
+                <FaMoneyBillWave className="text-primary text-xl" />
+              </div>
 
               <div className="flex justify-between items-center p-4 bg-base-200 rounded-lg">
                 <span>Application Fee:</span>
-                <span>${scholarship.applicationFees}</span>
+                <span className="font-semibold">${scholarship.applicationFees}</span>
               </div>
 
               <div className="flex justify-between items-center p-4 bg-base-200 rounded-lg">
                 <span>Service Charge:</span>
-                <span>${scholarship.serviceCharge}</span>
+                <span className="font-semibold">${scholarship.serviceCharge}</span>
               </div>
 
               <div className="flex justify-between items-center p-4 bg-primary text-white rounded-lg text-lg font-bold">
-                <span>Total Amount:</span>
+                <span className="flex items-center gap-2">
+                  <FaCreditCard />
+                  Total Amount:
+                </span>
                 <span>${scholarship.applicationFees + scholarship.serviceCharge}</span>
               </div>
             </div>
 
-            <div className="divider">Payment Details</div>
+            <div className="divider">
+              <FaCreditCard className="text-primary text-xl" />
+              <span className="font-semibold">Payment Details</span>
+            </div>
 
             {clientSecret && (
               <Elements stripe={stripePromise} options={options}>

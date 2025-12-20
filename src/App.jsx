@@ -22,6 +22,7 @@ import ScholarshipDetails from './pages/ScholarshipDetails';
 import Checkout from './pages/Checkout';
 import PaymentSuccess from './pages/PaymentSuccess';
 import PaymentFailed from './pages/PaymentFailed';
+import NotFound from './pages/NotFound';
 
 const router = createBrowserRouter([
   {
@@ -143,6 +144,10 @@ const router = createBrowserRouter([
         )
       }   
     ]
+  },
+  {
+    path: "*",
+    element: <NotFound></NotFound>
   }
 ]);
 
