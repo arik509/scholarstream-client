@@ -48,14 +48,30 @@ const Analytics = () => {
     fetchAnalytics();
   }, []);
 
+  const fetchWithRetry = async (url, retries = 2) => {
+    for (let i = 0; i <= retries; i++) {
+      try {
+        const response = await axiosInstance.get(url, {
+          timeout: 30000,
+        });
+        return { status: 'fulfilled', value: response };
+      } catch (error) {
+        if (i === retries) {
+          return { status: 'rejected', reason: error };
+        }
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
+  };
+
   const fetchAnalytics = async () => {
     try {
       setError(false);
 
-      const responses = await Promise.allSettled([
-        axiosInstance.get("/api/users"),
-        axiosInstance.get("/api/scholarships?limit=1000"),
-        axiosInstance.get("/api/applications"),
+      const responses = await Promise.all([
+        fetchWithRetry("/api/users"),
+        fetchWithRetry("/api/scholarships?limit=1000"),
+        fetchWithRetry("/api/applications"),
       ]);
 
       const usersData =
@@ -130,6 +146,7 @@ const Analytics = () => {
       <div className="flex flex-col justify-center items-center min-h-screen gap-4">
         <span className="loading loading-spinner loading-lg text-primary"></span>
         <p className="text-gray-600">Loading analytics data...</p>
+        <p className="text-xs text-gray-400">This may take a moment on first load</p>
       </div>
     );
   }
@@ -145,6 +162,7 @@ const Analytics = () => {
         <button
           onClick={() => {
             setLoading(true);
+            setError(false);
             fetchAnalytics();
           }}
           className="btn btn-primary"
@@ -165,7 +183,7 @@ const Analytics = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="stat bg-linear-to-br from-purple-500 to-purple-600 text-white shadow-xl rounded-lg">
+        <div className="stat bg-gradient-to-br from-purple-500 to-purple-600 text-white shadow-xl rounded-lg">
           <div className="stat-figure text-white opacity-80">
             <FaUsers className="text-4xl" />
           </div>
@@ -174,7 +192,7 @@ const Analytics = () => {
           <div className="stat-desc text-purple-100">Registered accounts</div>
         </div>
 
-        <div className="stat bg-linear-to-br from-pink-500 to-pink-600 text-white shadow-xl rounded-lg">
+        <div className="stat bg-gradient-to-br from-pink-500 to-pink-600 text-white shadow-xl rounded-lg">
           <div className="stat-figure text-white opacity-80">
             <FaBook className="text-4xl" />
           </div>
@@ -183,7 +201,7 @@ const Analytics = () => {
           <div className="stat-desc text-pink-100">Available opportunities</div>
         </div>
 
-        <div className="stat bg-linear-to-br from-cyan-500 to-cyan-600 text-white shadow-xl rounded-lg">
+        <div className="stat bg-gradient-to-br from-cyan-500 to-cyan-600 text-white shadow-xl rounded-lg">
           <div className="stat-figure text-white opacity-80">
             <FaFileAlt className="text-4xl" />
           </div>
@@ -192,7 +210,7 @@ const Analytics = () => {
           <div className="stat-desc text-cyan-100">Submitted by students</div>
         </div>
 
-        <div className="stat bg-linear-to-br from-green-500 to-green-600 text-white shadow-xl rounded-lg">
+        <div className="stat bg-gradient-to-br from-green-500 to-green-600 text-white shadow-xl rounded-lg">
           <div className="stat-figure text-white opacity-80">
             <FaDollarSign className="text-4xl" />
           </div>
