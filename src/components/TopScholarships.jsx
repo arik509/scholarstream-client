@@ -10,7 +10,7 @@ const TopScholarships = () => {
     const fetchScholarships = async () => {
       try {
         const { data } = await axiosInstance.get('/api/scholarships');
-        const topSix = data.slice(0, 6);
+        const topSix = data.scholarships.slice(0, 6);  // ✅ Fixed
         setScholarships(topSix);
       } catch (error) {
         console.error('Error fetching scholarships:', error);

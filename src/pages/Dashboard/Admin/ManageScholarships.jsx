@@ -15,7 +15,7 @@ const ManageScholarships = () => {
   const fetchScholarships = async () => {
     try {
       const { data } = await axiosInstance.get('/api/scholarships');
-      setScholarships(data);
+      setScholarships(data.scholarships);  // ✅ Fixed
     } catch (error) {
       console.error('Error fetching scholarships:', error);
       Swal.fire({
