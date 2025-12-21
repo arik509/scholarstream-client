@@ -6,7 +6,7 @@ ScholarStream is a comprehensive scholarship management platform that connects s
 
 ## Live URL
 
-🔗 [Live Site](https://your-app-name.vercel.app)
+🔗 [Live Site](https://scholarstream-client-two.vercel.app/)
 
 ## Key Features
 
