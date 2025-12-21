@@ -49,7 +49,7 @@ const Navbar = () => {
 
   return (
     <div>
-      <nav className="bg-white w-11/12 mx-auto shadow-lg sticky top-0 z-50 backdrop-blur-lg bg-opacity-95 border-b border-gray-100">
+      <nav className="bg-white w-11/12 mx-auto sticky top-0 z-50 backdrop-blur-lg bg-opacity-95 border-b border-gray-100">
         <div className="px-4 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3">
@@ -137,13 +137,13 @@ const Navbar = () => {
                             className="block px-4 py-3 rounded-lg hover:bg-purple-50 text-gray-700 hover:text-primary font-semibold transition-colors"
                             onClick={() => setIsDropdownOpen(false)}
                           >
-                            📊 Dashboard
+                             Dashboard
                           </Link>
                           <button
                             onClick={handleLogout}
                             className="w-full text-left px-4 py-3 rounded-lg hover:bg-red-50 text-error font-semibold transition-colors"
                           >
-                            🚪 Logout
+                            Logout
                           </button>
                         </div>
                       </div>

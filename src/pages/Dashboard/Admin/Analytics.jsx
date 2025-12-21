@@ -1,21 +1,47 @@
-import { useState, useEffect } from 'react';
-import axiosInstance from '../../../config/api';
-import Swal from 'sweetalert2';
-import { FaUsers, FaBook, FaFileAlt, FaDollarSign, FaChartBar, FaChartPie } from 'react-icons/fa';
-import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { useState, useEffect } from "react";
+import axiosInstance from "../../../config/api";
+import Swal from "sweetalert2";
+import {
+  FaUsers,
+  FaBook,
+  FaFileAlt,
+  FaDollarSign,
+  FaChartBar,
+  FaChartPie,
+} from "react-icons/fa";
+import {
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 const Analytics = () => {
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalScholarships: 0,
     totalApplications: 0,
-    totalFees: 0
+    totalFees: 0,
   });
   const [universityData, setUniversityData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const COLORS = ['#8b5cf6', '#ec4899', '#06b6d4', '#10b981', '#f59e0b', '#ef4444'];
+  const COLORS = [
+    "#8b5cf6",
+    "#ec4899",
+    "#06b6d4",
+    "#10b981",
+    "#f59e0b",
+    "#ef4444",
+  ];
 
   useEffect(() => {
     fetchAnalytics();
@@ -24,20 +50,23 @@ const Analytics = () => {
   const fetchAnalytics = async () => {
     try {
       const [users, scholarships, applications] = await Promise.all([
-        axiosInstance.get('/api/users'),
-        axiosInstance.get('/api/scholarships'),
-        axiosInstance.get('/api/applications')
+        axiosInstance.get("/api/users"),
+        axiosInstance.get("/api/scholarships"),
+        axiosInstance.get("/api/applications"),
       ]);
 
       const totalFees = applications.data
-        .filter(app => app.paymentStatus === 'paid')
-        .reduce((sum, app) => sum + (app.applicationFees + app.serviceCharge), 0);
+        .filter((app) => app.paymentStatus === "paid")
+        .reduce(
+          (sum, app) => sum + (app.applicationFees + app.serviceCharge),
+          0
+        );
 
       setStats({
         totalUsers: users.data.length,
         totalScholarships: scholarships.data.length,
         totalApplications: applications.data.length,
-        totalFees
+        totalFees,
       });
 
       const universityCount = applications.data.reduce((acc, app) => {
@@ -57,17 +86,18 @@ const Analytics = () => {
         return acc;
       }, {});
 
-      const categoryChartData = Object.entries(categoryCount)
-        .map(([name, value]) => ({ name, value }));
+      const categoryChartData = Object.entries(categoryCount).map(
+        ([name, value]) => ({ name, value })
+      );
 
       setCategoryData(categoryChartData);
     } catch (error) {
-      console.error('Error fetching analytics:', error);
+      console.error("Error fetching analytics:", error);
       Swal.fire({
-        title: 'Error!',
-        text: 'Failed to load analytics data',
-        icon: 'error',
-        confirmButtonColor: '#8b5cf6'
+        title: "Error!",
+        text: "Failed to load analytics data",
+        icon: "error",
+        confirmButtonColor: "#8b5cf6",
       });
     } finally {
       setLoading(false);
@@ -86,11 +116,13 @@ const Analytics = () => {
     <div>
       <div className="flex items-center gap-3 mb-6">
         <FaChartBar className="text-4xl text-primary" />
-        <h1 className="text-3xl font-bold text-gray-800">Analytics Dashboard</h1>
+        <h1 className="text-3xl font-bold text-gray-800">
+          Analytics Dashboard
+        </h1>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="stat bg-gradient-to-br from-purple-500 to-purple-600 text-white shadow-xl rounded-lg">
+        <div className="stat bg-linear-to-br from-purple-500 to-purple-600 text-white shadow-xl rounded-lg">
           <div className="stat-figure text-white opacity-80">
             <FaUsers className="text-4xl" />
           </div>
@@ -99,7 +131,7 @@ const Analytics = () => {
           <div className="stat-desc text-purple-100">Registered accounts</div>
         </div>
 
-        <div className="stat bg-gradient-to-br from-pink-500 to-pink-600 text-white shadow-xl rounded-lg">
+        <div className="stat bg-linear-to-br from-pink-500 to-pink-600 text-white shadow-xl rounded-lg">
           <div className="stat-figure text-white opacity-80">
             <FaBook className="text-4xl" />
           </div>
@@ -108,7 +140,7 @@ const Analytics = () => {
           <div className="stat-desc text-pink-100">Available opportunities</div>
         </div>
 
-        <div className="stat bg-gradient-to-br from-cyan-500 to-cyan-600 text-white shadow-xl rounded-lg">
+        <div className="stat bg-linear-to-br from-cyan-500 to-cyan-600 text-white shadow-xl rounded-lg">
           <div className="stat-figure text-white opacity-80">
             <FaFileAlt className="text-4xl" />
           </div>
@@ -117,7 +149,7 @@ const Analytics = () => {
           <div className="stat-desc text-cyan-100">Submitted by students</div>
         </div>
 
-        <div className="stat bg-gradient-to-br from-green-500 to-green-600 text-white shadow-xl rounded-lg">
+        <div className="stat bg-linear-to-br from-green-500 to-green-600 text-white shadow-xl rounded-lg">
           <div className="stat-figure text-white opacity-80">
             <FaDollarSign className="text-4xl" />
           </div>
@@ -134,23 +166,29 @@ const Analytics = () => {
               <FaChartBar className="text-primary" />
               Applications by University
             </h2>
-            <p className="text-sm text-gray-600 mb-4">Top 6 universities with most applications</p>
-            
+            <p className="text-sm text-gray-600 mb-4">
+              Top 6 universities with most applications
+            </p>
+
             {universityData.length > 0 ? (
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={universityData}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis 
-                    dataKey="name" 
-                    angle={-45} 
-                    textAnchor="end" 
+                  <XAxis
+                    dataKey="name"
+                    angle={-45}
+                    textAnchor="end"
                     height={100}
                     tick={{ fontSize: 12 }}
                   />
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="applications" fill="#8b5cf6" name="Applications" />
+                  <Bar
+                    dataKey="applications"
+                    fill="#8b5cf6"
+                    name="Applications"
+                  />
                 </BarChart>
               </ResponsiveContainer>
             ) : (
@@ -167,8 +205,10 @@ const Analytics = () => {
               <FaChartPie className="text-primary" />
               Applications by Category
             </h2>
-            <p className="text-sm text-gray-600 mb-4">Distribution across scholarship categories</p>
-            
+            <p className="text-sm text-gray-600 mb-4">
+              Distribution across scholarship categories
+            </p>
+
             {categoryData.length > 0 ? (
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
@@ -177,13 +217,18 @@ const Analytics = () => {
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                    label={({ name, percent }) =>
+                      `${name}: ${(percent * 100).toFixed(0)}%`
+                    }
                     outerRadius={80}
                     fill="#8884d8"
                     dataKey="value"
                   >
                     {categoryData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
                     ))}
                   </Pie>
                   <Tooltip />
@@ -206,21 +251,30 @@ const Analytics = () => {
             <div className="stat bg-base-200 rounded-lg">
               <div className="stat-title">Average Fee per Application</div>
               <div className="stat-value text-primary text-2xl">
-                ${stats.totalApplications > 0 ? (stats.totalFees / stats.totalApplications).toFixed(2) : 0}
+                $
+                {stats.totalApplications > 0
+                  ? (stats.totalFees / stats.totalApplications).toFixed(2)
+                  : 0}
               </div>
             </div>
-            
+
             <div className="stat bg-base-200 rounded-lg">
               <div className="stat-title">Scholarships per User</div>
               <div className="stat-value text-secondary text-2xl">
-                {stats.totalUsers > 0 ? (stats.totalScholarships / stats.totalUsers).toFixed(2) : 0}
+                {stats.totalUsers > 0
+                  ? (stats.totalScholarships / stats.totalUsers).toFixed(2)
+                  : 0}
               </div>
             </div>
-            
+
             <div className="stat bg-base-200 rounded-lg">
               <div className="stat-title">Applications per Scholarship</div>
               <div className="stat-value text-accent text-2xl">
-                {stats.totalScholarships > 0 ? (stats.totalApplications / stats.totalScholarships).toFixed(2) : 0}
+                {stats.totalScholarships > 0
+                  ? (stats.totalApplications / stats.totalScholarships).toFixed(
+                      2
+                    )
+                  : 0}
               </div>
             </div>
           </div>

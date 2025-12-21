@@ -1,27 +1,28 @@
 import { Outlet, NavLink, Link } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
+import { FaUser, FaFileAlt, FaStar, FaClipboardList, FaComments, FaPlus, FaBook, FaUsers, FaChartBar, FaHome } from 'react-icons/fa';
 
 const DashboardLayout = () => {
   const { user } = useAuth();
 
   const studentLinks = [
-    { path: '/dashboard', label: 'My Profile', icon: '👤', end: true },
-    { path: '/dashboard/my-applications', label: 'My Applications', icon: '📝' },
-    { path: '/dashboard/my-reviews', label: 'My Reviews', icon: '⭐' }
+    { path: '/dashboard', label: 'My Profile', icon: FaUser, end: true },
+    { path: '/dashboard/my-applications', label: 'My Applications', icon: FaFileAlt },
+    { path: '/dashboard/my-reviews', label: 'My Reviews', icon: FaStar }
   ];
 
   const moderatorLinks = [
-    { path: '/dashboard', label: 'My Profile', icon: '👤', end: true },
-    { path: '/dashboard/manage-applications', label: 'Manage Applications', icon: '📋' },
-    { path: '/dashboard/all-reviews', label: 'All Reviews', icon: '💬' }
+    { path: '/dashboard', label: 'My Profile', icon: FaUser, end: true },
+    { path: '/dashboard/manage-applications', label: 'Manage Applications', icon: FaClipboardList },
+    { path: '/dashboard/all-reviews', label: 'All Reviews', icon: FaComments }
   ];
 
   const adminLinks = [
-    { path: '/dashboard', label: 'My Profile', icon: '👤', end: true },
-    { path: '/dashboard/add-scholarship', label: 'Add Scholarship', icon: '➕' },
-    { path: '/dashboard/manage-scholarships', label: 'Manage Scholarships', icon: '📚' },
-    { path: '/dashboard/manage-users', label: 'Manage Users', icon: '👥' },
-    { path: '/dashboard/analytics', label: 'Analytics', icon: '📊' }
+    { path: '/dashboard', label: 'My Profile', icon: FaUser, end: true },
+    { path: '/dashboard/add-scholarship', label: 'Add Scholarship', icon: FaPlus },
+    { path: '/dashboard/manage-scholarships', label: 'Manage Scholarships', icon: FaBook },
+    { path: '/dashboard/manage-users', label: 'Manage Users', icon: FaUsers },
+    { path: '/dashboard/analytics', label: 'Analytics', icon: FaChartBar }
   ];
 
   let links = studentLinks;
@@ -63,22 +64,25 @@ const DashboardLayout = () => {
           </div>
           
           <ul className="space-y-2">
-            {links.map((link) => (
-              <li key={link.path}>
-                <NavLink
-                  to={link.path}
-                  end={link.end}
-                  className={({ isActive }) =>
-                    `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                      isActive ? 'bg-primary text-white' : 'hover:bg-base-200'
-                    }`
-                  }
-                >
-                  <span className="text-xl">{link.icon}</span>
-                  <span className="font-medium">{link.label}</span>
-                </NavLink>
-              </li>
-            ))}
+            {links.map((link) => {
+              const IconComponent = link.icon;
+              return (
+                <li key={link.path}>
+                  <NavLink
+                    to={link.path}
+                    end={link.end}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                        isActive ? 'bg-primary text-white' : 'hover:bg-base-200'
+                      }`
+                    }
+                  >
+                    <IconComponent className="text-xl" />
+                    <span className="font-medium">{link.label}</span>
+                  </NavLink>
+                </li>
+              );
+            })}
           </ul>
 
           <div className="divider"></div>
@@ -86,7 +90,7 @@ const DashboardLayout = () => {
           <ul>
             <li>
               <Link to="/" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-base-200">
-                <span className="text-xl">🏠</span>
+                <FaHome className="text-xl" />
                 <span className="font-medium">Back to Home</span>
               </Link>
             </li>

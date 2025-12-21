@@ -73,8 +73,13 @@ export const AuthProvider = ({ children }) => {
     return result;
   };
 
-  const logoutUser = () => {
+  const logoutUser = async () => {
     setLoading(true);
+    try {
+      await axiosInstance.post('/api/logout');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
     return signOut(auth);
   };
 
@@ -82,6 +87,11 @@ export const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         try {
+          await axiosInstance.post('/api/jwt', { 
+            email: currentUser.email,
+            uid: currentUser.uid 
+          });
+          
           const { data } = await axiosInstance.get(`/api/users/${currentUser.email}`);
           setUser({ 
             ...currentUser, 
@@ -92,6 +102,11 @@ export const AuthProvider = ({ children }) => {
           setUser({ ...currentUser, role: 'Student' });
         }
       } else {
+        try {
+          await axiosInstance.post('/api/logout');
+        } catch (error) {
+          console.error('Logout cleanup error:', error);
+        }
         setUser(null);
       }
       setLoading(false);
