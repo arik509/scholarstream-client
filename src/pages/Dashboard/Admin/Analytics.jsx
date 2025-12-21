@@ -33,6 +33,7 @@ const Analytics = () => {
   const [universityData, setUniversityData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const COLORS = [
     "#8b5cf6",
@@ -49,13 +50,27 @@ const Analytics = () => {
 
   const fetchAnalytics = async () => {
     try {
-      const [users, scholarships, applications] = await Promise.all([
+      setError(false);
+
+      const responses = await Promise.allSettled([
         axiosInstance.get("/api/users"),
-        axiosInstance.get("/api/scholarships"),
+        axiosInstance.get("/api/scholarships?limit=1000"),
         axiosInstance.get("/api/applications"),
       ]);
 
-      const totalFees = applications.data
+      const usersData =
+        responses[0].status === "fulfilled" ? responses[0].value.data : [];
+      const scholarshipsResponse =
+        responses[1].status === "fulfilled"
+          ? responses[1].value.data
+          : { scholarships: [] };
+      const applicationsData =
+        responses[2].status === "fulfilled" ? responses[2].value.data : [];
+
+      const scholarshipsData =
+        scholarshipsResponse.scholarships || scholarshipsResponse;
+
+      const totalFees = applicationsData
         .filter((app) => app.paymentStatus === "paid")
         .reduce(
           (sum, app) => sum + (app.applicationFees + app.serviceCharge),
@@ -63,13 +78,17 @@ const Analytics = () => {
         );
 
       setStats({
-        totalUsers: users.data.length,
-        totalScholarships: scholarships.data.length,
-        totalApplications: applications.data.length,
+        totalUsers: Array.isArray(usersData) ? usersData.length : 0,
+        totalScholarships: Array.isArray(scholarshipsData)
+          ? scholarshipsData.length
+          : 0,
+        totalApplications: Array.isArray(applicationsData)
+          ? applicationsData.length
+          : 0,
         totalFees,
       });
 
-      const universityCount = applications.data.reduce((acc, app) => {
+      const universityCount = applicationsData.reduce((acc, app) => {
         acc[app.universityName] = (acc[app.universityName] || 0) + 1;
         return acc;
       }, {});
@@ -81,7 +100,7 @@ const Analytics = () => {
 
       setUniversityData(universityChartData);
 
-      const categoryCount = applications.data.reduce((acc, app) => {
+      const categoryCount = applicationsData.reduce((acc, app) => {
         acc[app.scholarshipCategory] = (acc[app.scholarshipCategory] || 0) + 1;
         return acc;
       }, {});
@@ -93,9 +112,11 @@ const Analytics = () => {
       setCategoryData(categoryChartData);
     } catch (error) {
       console.error("Error fetching analytics:", error);
+      setError(true);
+
       Swal.fire({
         title: "Error!",
-        text: "Failed to load analytics data",
+        text: "Failed to load analytics data. Please try again.",
         icon: "error",
         confirmButtonColor: "#8b5cf6",
       });
@@ -106,8 +127,30 @@ const Analytics = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex flex-col justify-center items-center min-h-screen gap-4">
         <span className="loading loading-spinner loading-lg text-primary"></span>
+        <p className="text-gray-600">Loading analytics data...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col justify-center items-center min-h-screen gap-4">
+        <div className="text-error text-6xl">⚠️</div>
+        <h2 className="text-2xl font-bold text-gray-800">
+          Failed to Load Analytics
+        </h2>
+        <p className="text-gray-600">There was an error loading the data.</p>
+        <button
+          onClick={() => {
+            setLoading(true);
+            fetchAnalytics();
+          }}
+          className="btn btn-primary"
+        >
+          Try Again
+        </button>
       </div>
     );
   }
@@ -154,7 +197,7 @@ const Analytics = () => {
             <FaDollarSign className="text-4xl" />
           </div>
           <div className="stat-title text-green-100">Total Fees Collected</div>
-          <div className="stat-value">${stats.totalFees}</div>
+          <div className="stat-value">${stats.totalFees.toFixed(2)}</div>
           <div className="stat-desc text-green-100">Revenue generated</div>
         </div>
       </div>
