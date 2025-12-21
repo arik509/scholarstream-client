@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import axiosInstance from '../../../config/api';
 import { Link } from 'react-router';
 import Swal from 'sweetalert2';
-import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaPlus, FaTimes } from 'react-icons/fa';
 
 const ManageScholarships = () => {
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editingScholarship, setEditingScholarship] = useState(null);
+  const [formData, setFormData] = useState({});
 
   useEffect(() => {
     fetchScholarships();
@@ -28,8 +30,57 @@ const ManageScholarships = () => {
       setLoading(false);
     }
   };
-  
-  
+
+  const handleEdit = (scholarship) => {
+    setEditingScholarship(scholarship);
+    setFormData(scholarship);
+    document.getElementById('edit_modal').showModal();
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    
+    let processedValue = value;
+    if (name === 'applicationDeadline' && value) {
+      processedValue = value.split('T')[0];
+    }
+    
+    setFormData(prev => ({
+      ...prev,
+      [name]: processedValue
+    }));
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    
+    try {
+      await axiosInstance.put(`/api/scholarships/${editingScholarship._id}`, formData);
+      
+      setScholarships(scholarships.map(s => 
+        s._id === editingScholarship._id ? { ...s, ...formData } : s
+      ));
+      
+      document.getElementById('edit_modal').close();
+      
+      Swal.fire({
+        title: 'Updated!',
+        text: 'Scholarship has been updated successfully',
+        icon: 'success',
+        confirmButtonColor: '#8b5cf6',
+        timer: 2000,
+        showConfirmButton: false
+      });
+    } catch (error) {
+      console.error('Error updating scholarship:', error);
+      Swal.fire({
+        title: 'Error!',
+        text: 'Failed to update scholarship. Please try again.',
+        icon: 'error',
+        confirmButtonColor: '#8b5cf6'
+      });
+    }
+  };
 
   const handleDelete = async (id, scholarshipName) => {
     const result = await Swal.fire({
@@ -120,7 +171,10 @@ const ManageScholarships = () => {
                     <td>${scholarship.applicationFees}</td>
                     <td>
                       <div className="flex gap-2">
-                        <button className="btn btn-info btn-sm gap-1">
+                        <button 
+                          onClick={() => handleEdit(scholarship)}
+                          className="btn btn-info btn-sm gap-1"
+                        >
                           <FaEdit />
                           Edit
                         </button>
@@ -140,6 +194,200 @@ const ManageScholarships = () => {
           </div>
         </div>
       </div>
+
+      <dialog id="edit_modal" className="modal">
+        <div className="modal-box max-w-4xl">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="font-bold text-2xl">Edit Scholarship</h3>
+            <button 
+              onClick={() => document.getElementById('edit_modal').close()}
+              className="btn btn-sm btn-circle btn-ghost"
+            >
+              <FaTimes />
+            </button>
+          </div>
+          
+          <form onSubmit={handleUpdate} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Scholarship Name</span>
+                </label>
+                <input
+                  type="text"
+                  name="scholarshipName"
+                  value={formData.scholarshipName || ''}
+                  onChange={handleInputChange}
+                  className="input input-bordered"
+                  required
+                />
+              </div>
+
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">University Name</span>
+                </label>
+                <input
+                  type="text"
+                  name="universityName"
+                  value={formData.universityName || ''}
+                  onChange={handleInputChange}
+                  className="input input-bordered"
+                  required
+                />
+              </div>
+
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">University Country</span>
+                </label>
+                <input
+                  type="text"
+                  name="universityCountry"
+                  value={formData.universityCountry || ''}
+                  onChange={handleInputChange}
+                  className="input input-bordered"
+                  required
+                />
+              </div>
+
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">University City</span>
+                </label>
+                <input
+                  type="text"
+                  name="universityCity"
+                  value={formData.universityCity || ''}
+                  onChange={handleInputChange}
+                  className="input input-bordered"
+                  required
+                />
+              </div>
+
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Subject Category</span>
+                </label>
+                <input
+                  type="text"
+                  name="subjectCategory"
+                  value={formData.subjectCategory || ''}
+                  onChange={handleInputChange}
+                  className="input input-bordered"
+                  required
+                />
+              </div>
+
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Scholarship Category</span>
+                </label>
+                <select
+                  name="scholarshipCategory"
+                  value={formData.scholarshipCategory || ''}
+                  onChange={handleInputChange}
+                  className="select select-bordered"
+                  required
+                >
+                  <option value="">Select Category</option>
+                  <option value="Full fund">Full fund</option>
+                  <option value="Partial">Partial</option>
+                  <option value="Self-fund">Self-fund</option>
+                </select>
+              </div>
+
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Degree</span>
+                </label>
+                <select
+                  name="degree"
+                  value={formData.degree || ''}
+                  onChange={handleInputChange}
+                  className="select select-bordered"
+                  required
+                >
+                  <option value="">Select Degree</option>
+                  <option value="Diploma">Diploma</option>
+                  <option value="Bachelor">Bachelor</option>
+                  <option value="Masters">Masters</option>
+                </select>
+              </div>
+
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Application Fees ($)</span>
+                </label>
+                <input
+                  type="number"
+                  name="applicationFees"
+                  value={formData.applicationFees || ''}
+                  onChange={handleInputChange}
+                  className="input input-bordered"
+                  required
+                  min="0"
+                />
+              </div>
+
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Application Deadline</span>
+                </label>
+                <input
+                  type="date"
+                  name="applicationDeadline"
+                  value={formData.applicationDeadline || ''}
+                  onChange={handleInputChange}
+                  className="input input-bordered"
+                  required
+                />
+              </div>
+
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Service Charge ($)</span>
+                </label>
+                <input
+                  type="number"
+                  name="serviceCharge"
+                  value={formData.serviceCharge || ''}
+                  onChange={handleInputChange}
+                  className="input input-bordered"
+                  required
+                  min="0"
+                />
+              </div>
+            </div>
+
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Scholarship Description</span>
+              </label>
+              <textarea
+                name="scholarshipDescription"
+                value={formData.scholarshipDescription || ''}
+                onChange={handleInputChange}
+                className="textarea textarea-bordered h-24"
+                required
+              ></textarea>
+            </div>
+
+            <div className="modal-action">
+              <button 
+                type="button"
+                onClick={() => document.getElementById('edit_modal').close()}
+                className="btn btn-ghost"
+              >
+                Cancel
+              </button>
+              <button type="submit" className="btn btn-primary">
+                Update Scholarship
+              </button>
+            </div>
+          </form>
+        </div>
+      </dialog>
     </div>
   );
 };
