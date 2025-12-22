@@ -127,7 +127,7 @@ const Testimonials = () => {
                   
                   <div className="flex items-center gap-4 mb-6">
                     <div className="relative">
-                      <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-linear-to-br from-purple-400 to-pink-400 p-[3px]">
+                      <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-linear-to-br from-purple-400 to-pink-400 p-0.75">
                         <img
                           src={testimonial.image}
                           alt={testimonial.name}

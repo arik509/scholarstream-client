@@ -169,7 +169,7 @@ const TopScholarships = () => {
 
                     
                     <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
-                      <FaMapMarkerAlt className="text-purple-500 flex-shrink-0" />
+                      <FaMapMarkerAlt className="text-purple-500 shrink-0" />
                       <span className="truncate">
                         {scholarship.universityCity},{" "}
                         {scholarship.universityCountry}

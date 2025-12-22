@@ -1,11 +1,8 @@
 import { Link } from "react-router";
 import { motion } from "framer-motion";
-import {
-  FaFacebookF,
-  FaLinkedinIn,
-  FaInstagram,
-} from "react-icons/fa";
+import { FaFacebookF, FaLinkedinIn, FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import logo from "../assets/Purple & Tea.png";
 
 const Footer = () => {
   return (
@@ -55,12 +52,12 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
           <div>
             <Link to="/" className="inline-flex items-center gap-2 mb-4">
-              <div className="h-9 w-9 rounded-xl bg-linear-to-br from-purple-600 via-pink-500 to-blue-500 flex items-center justify-center text-white font-bold text-lg shadow-lg">
-                SS
+              <div className="flex gap-4 items-center">
+                <img src={logo} alt="" className="w-12.5" />
+                <span className="text-xl font-extrabold bg-linear-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent mt-2">
+                  ScholarStream
+                </span>
               </div>
-              <span className="text-xl font-extrabold bg-linear-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
-                ScholarStream
-              </span>
             </Link>
             <p className="text-sm text-gray-600 max-w-xs">
               Discover, track, and apply to global scholarships with a single
@@ -196,10 +193,7 @@ const Footer = () => {
               Get weekly handpicked scholarships and application tips in your
               inbox.
             </p>
-            <form
-              onSubmit={(e) => e.preventDefault()}
-              className="space-y-3"
-            >
+            <form onSubmit={(e) => e.preventDefault()} className="space-y-3">
               <div className="flex items-center gap-2 bg-gray-50 rounded-xl border border-gray-200 px-3 py-2.5 focus-within:border-purple-400 focus-within:ring-1 focus-within:ring-purple-400">
                 <input
                   type="email"
@@ -245,10 +239,7 @@ const Footer = () => {
             >
               Privacy Policy
             </Link>
-            <Link
-              to="/terms"
-              className="hover:text-gray-700 transition-colors"
-            >
+            <Link to="/terms" className="hover:text-gray-700 transition-colors">
               Terms of Service
             </Link>
             <Link
