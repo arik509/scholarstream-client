@@ -1,6 +1,14 @@
-import { Link } from 'react-router';
-import { useState, useEffect } from 'react';
-import axiosInstance from '../config/api';
+import { Link } from "react-router";
+import { useState, useEffect } from "react";
+import axiosInstance from "../config/api";
+import { motion } from "framer-motion";
+import {
+  FaMapMarkerAlt,
+  FaUniversity,
+  FaDollarSign,
+  FaArrowRight,
+  FaStar,
+} from "react-icons/fa";
 
 const TopScholarships = () => {
   const [scholarships, setScholarships] = useState([]);
@@ -9,11 +17,11 @@ const TopScholarships = () => {
   useEffect(() => {
     const fetchScholarships = async () => {
       try {
-        const { data } = await axiosInstance.get('/api/scholarships');
-        const topSix = data.scholarships.slice(0, 6);  // ✅ Fixed
+        const { data } = await axiosInstance.get("/api/scholarships");
+        const topSix = data.scholarships.slice(0, 6);
         setScholarships(topSix);
       } catch (error) {
-        console.error('Error fetching scholarships:', error);
+        console.error("Error fetching scholarships:", error);
       } finally {
         setLoading(false);
       }
@@ -22,17 +30,58 @@ const TopScholarships = () => {
     fetchScholarships();
   }, []);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: {
+      opacity: 0,
+      y: 50,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+
   if (loading) {
     return (
-      <section className="py-16 bg-base-100">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">Top Scholarships</h2>
-            <p className="text-gray-600 text-lg">Explore the most popular scholarship opportunities</p>
+      <section className="py-16 lg:py-24 bg-linear-to-b from-gray-50 to-white">
+        <div className="w-11/12 mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 lg:mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+                Top Scholarships
+              </h2>
+              <p className="text-gray-600 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto">
+                Explore the most popular scholarship opportunities
+              </p>
+            </motion.div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {[1, 2, 3, 4, 5, 6].map((item) => (
-              <div key={item} className="skeleton h-96 rounded-lg"></div>
+              <div key={item} className="animate-pulse">
+                <div className="bg-gray-200 h-64 rounded-2xl"></div>
+                <div className="mt-4 space-y-3">
+                  <div className="h-6 bg-gray-200 rounded"></div>
+                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -41,61 +90,140 @@ const TopScholarships = () => {
   }
 
   return (
-    <section className="py-16 bg-base-100">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">Top Scholarships</h2>
-          <p className="text-gray-600 text-lg">Explore the most popular scholarship opportunities</p>
-        </div>
-        
+    <section className="py-16 lg:py-24 bg-linear-to-b from-gray-50 to-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          className="text-center mb-12 lg:mb-16"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+            Top Scholarships
+          </h2>
+          <p className="text-gray-600 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto">
+            Explore the most popular scholarship opportunities
+          </p>
+        </motion.div>
+
         {scholarships.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-gray-600 text-xl">No scholarships available at the moment.</p>
-          </div>
+          <motion.div
+            className="text-center py-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <p className="text-gray-600 text-xl">
+              No scholarships available at the moment.
+            </p>
+          </motion.div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {scholarships.map((scholarship) => (
-                <div key={scholarship._id} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300 border border-gray-100">
-                  <figure className="h-48 overflow-hidden">
-                    <img 
-                      src={scholarship.universityImage} 
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              {scholarships.map((scholarship, index) => (
+                <motion.div
+                  key={scholarship._id}
+                  variants={cardVariants}
+                  whileHover={{ y: -8 }}
+                  className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
+                >
+                  
+                  {index === 0 && (
+                    <div className="absolute top-4 right-4 z-10 bg-linear-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg">
+                      <FaStar className="text-xs" />
+                      Featured
+                    </div>
+                  )}
+
+                
+                  <div className="relative h-48 sm:h-56 overflow-hidden">
+                    <motion.img
+                      src={scholarship.universityImage}
                       alt={scholarship.universityName}
-                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                      className="w-full h-full object-cover"
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ duration: 0.4 }}
                     />
-                  </figure>
-                  <div className="card-body">
-                    <h3 className="card-title text-xl font-bold text-gray-800">
-                      {scholarship.scholarshipName}
-                    </h3>
-                    <p className="text-gray-600">{scholarship.universityName}</p>
-                    <div className="flex items-center gap-2 text-sm text-gray-500 mt-2">
-                      <span>📍 {scholarship.universityCity}, {scholarship.universityCountry}</span>
-                    </div>
-                    <div className="flex items-center gap-2 mt-2">
-                      <div className="badge badge-primary">{scholarship.scholarshipCategory}</div>
-                      <div className="badge badge-secondary">{scholarship.degree}</div>
-                    </div>
-                    <div className="mt-2">
-                      <p className="text-sm text-gray-600">
-                        Application Fee: <span className="font-bold text-primary">${scholarship.applicationFees}</span>
-                      </p>
-                    </div>
-                    <div className="card-actions justify-end mt-4">
-                      <Link to={`/scholarships/${scholarship._id}`} className="btn btn-primary btn-sm">
-                        View Details
-                      </Link>
+                    <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent"></div>
+
+                    
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <div className="flex items-center gap-2 text-white">
+                        <FaUniversity className="text-sm" />
+                        <p className="font-semibold text-sm truncate">
+                          {scholarship.universityName}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
+
+                 
+                  <div className="p-5 sm:p-6">
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 line-clamp-2 group-hover:text-purple-600 transition-colors">
+                      {scholarship.scholarshipName}
+                    </h3>
+
+                    
+                    <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                      <FaMapMarkerAlt className="text-purple-500 flex-shrink-0" />
+                      <span className="truncate">
+                        {scholarship.universityCity},{" "}
+                        {scholarship.universityCountry}
+                      </span>
+                    </div>
+
+                    
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold">
+                        {scholarship.scholarshipCategory}
+                      </span>
+                      <span className="px-3 py-1 bg-pink-100 text-pink-700 rounded-full text-xs font-semibold">
+                        {scholarship.degree}
+                      </span>
+                    </div>
+
+                    
+                    <div className="flex items-center gap-2 mb-4 p-3 bg-linear-to-r from-purple-50 to-pink-50 rounded-lg">
+                      <FaDollarSign className="text-purple-600" />
+                      <div>
+                        <p className="text-xs text-gray-600">Application Fee</p>
+                        <p className="text-lg font-bold text-purple-600">
+                          ${scholarship.applicationFees}
+                        </p>
+                      </div>
+                    </div>
+
+                    
+                    <Link
+                      to={`/scholarships/${scholarship._id}`}
+                      className="flex items-center justify-center gap-2 w-full py-3 bg-linear-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 group/btn"
+                    >
+                      <span>View Details</span>
+                      <FaArrowRight className="text-sm group-hover/btn:translate-x-1 transition-transform" />
+                    </Link>
+                  </div>
+                </motion.div>
               ))}
-            </div>
-            
-            <div className="text-center mt-12">
-              <Link to="/scholarships" className="btn btn-primary btn-lg">
-                View All Scholarships
+            </motion.div>
+
+            <motion.div
+              className="text-center mt-12 lg:mt-16"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 0.6 }}
+            >
+              <Link
+                to="/scholarships"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-linear-to-r from-purple-600 to-pink-600 text-white font-bold text-base sm:text-lg rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
+              >
+                <span>View All Scholarships</span>
+                <FaArrowRight />
               </Link>
-            </div>
+            </motion.div>
           </>
         )}
       </div>

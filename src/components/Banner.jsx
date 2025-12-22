@@ -12,14 +12,14 @@ const Banner = () => {
 
   return (
     <section
-      className="relative h-125 sm:h-[550px] md:h-[600px] lg:h-[700px] bg-cover bg-center bg-no-repeat overflow-hidden"
+      className="relative h-125 sm:h-137.5 md:h-150 lg:h-175 bg-cover bg-center bg-no-repeat overflow-hidden"
       style={{ backgroundImage: `url(${bannerImage})` }}
     >
       
       <div className="absolute inset-0 bg-linear-to-br from-indigo-900/95 via-purple-900/90 to-pink-900/85 animate-linear"></div>
 
       
-      <div className="absolute inset-0 opacity-30  w-11/12 mx-auto">
+      <div className="absolute inset-0 opacity-30 ">
         {[...Array(20)].map((_, i) => (
           <div
             key={i}
@@ -34,7 +34,7 @@ const Banner = () => {
         ))}
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 h-full flex items-center">
+      <div className="relative z-10 max-w-11/12 mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 h-full flex items-center">
         <div
           className={`max-w-3xl transition-all duration-1000 transform ${
             isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
@@ -44,7 +44,7 @@ const Banner = () => {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-white/20 backdrop-blur-sm rounded-full text-white mb-4 sm:mb-6 animate-pulse">
             <FaTrophy className="text-yellow-300 text-xs sm:text-sm" />
             <span className="text-xs sm:text-sm font-semibold">
-              10,00+ Scholarships Available
+              1000+ Scholarships Available
             </span>
           </div>
 
