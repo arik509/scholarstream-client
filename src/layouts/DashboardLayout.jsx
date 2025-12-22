@@ -1,6 +1,8 @@
 import { Outlet, NavLink, Link } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
+import { motion } from 'framer-motion';
 import { FaUser, FaFileAlt, FaStar, FaClipboardList, FaComments, FaPlus, FaBook, FaUsers, FaChartBar, FaHome } from 'react-icons/fa';
+import logo from "../assets/Purple & Tea.png"
 
 const DashboardLayout = () => {
   const { user } = useAuth();
@@ -32,70 +34,170 @@ const DashboardLayout = () => {
     links = adminLinks;
   }
 
+  const sidebarVariants = {
+    hidden: { x: -300, opacity: 0 },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { x: -20, opacity: 0 },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: { duration: 0.3 }
+    }
+  };
+
   return (
     <div className="drawer lg:drawer-open">
       <input id="dashboard-drawer" type="checkbox" className="drawer-toggle" />
       
-      <div className="drawer-content flex flex-col bg-base-200">
-        <div className="navbar bg-base-100 lg:hidden shadow-md">
+      <div className="drawer-content flex flex-col bg-linear-to-b from-gray-50 to-white">
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="navbar bg-white lg:hidden shadow-lg border-b-2 border-gray-100"
+        >
           <div className="flex-none">
-            <label htmlFor="dashboard-drawer" className="btn btn-square btn-ghost">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-6 h-6 stroke-current">
+            <label htmlFor="dashboard-drawer" className="btn btn-ghost btn-square hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-6 h-6 stroke-current text-purple-600">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
               </svg>
             </label>
           </div>
           <div className="flex-1">
-            <span className="text-xl font-bold text-primary">Dashboard</span>
+            <span className="text-xl font-extrabold bg-linear-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
+              Dashboard
+            </span>
           </div>
-        </div>
+        </motion.div>
         
         <div className="p-4 lg:p-8 min-h-screen">
           <Outlet />
         </div>
       </div>
       
-      <div className="drawer-side">
+      <div className="drawer-side z-50">
         <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
-        <div className="menu p-4 w-72 min-h-full bg-base-100 text-base-content">
-          <div className="mb-8 px-4">
-            <Link to="/" className="text-2xl font-bold text-primary">ScholarStream</Link>
-            <p className="text-sm text-gray-500 mt-1">{user?.role || 'Student'} Dashboard</p>
-          </div>
+        <motion.div
+          variants={sidebarVariants}
+          initial="hidden"
+          animate="visible"
+          className="menu p-6 w-80 min-h-full bg-white shadow-2xl border-r-2 border-gray-100"
+        >
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="mb-8 px-4"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <div className="h-10 w-10">
+                <img src={logo} alt="" />
+              </div>
+              <Link to="/" className="text-2xl font-extrabold bg-linear-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent mt-2">
+                ScholarStream
+              </Link>
+            </div>
+            <div className="px-4 py-2 bg-linear-to-r from-purple-50 via-pink-50 to-blue-50 rounded-xl border border-purple-100">
+              <p className="text-sm font-semibold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                {user?.role || 'Student'} Dashboard
+              </p>
+            </div>
+          </motion.div>
           
-          <ul className="space-y-2">
-            {links.map((link) => {
+          <motion.ul
+            variants={sidebarVariants}
+            className="space-y-2"
+          >
+            {links.map((link, index) => {
               const IconComponent = link.icon;
               return (
-                <li key={link.path}>
+                <motion.li
+                  key={link.path}
+                  variants={itemVariants}
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
                   <NavLink
                     to={link.path}
                     end={link.end}
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                        isActive ? 'bg-primary text-white' : 'hover:bg-base-200'
+                      `flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                        isActive 
+                          ? 'bg-linear-to-r from-purple-600 via-pink-600 to-blue-600 text-white shadow-lg scale-105' 
+                          : 'text-gray-700 hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 hover:text-purple-600'
                       }`
                     }
                   >
                     <IconComponent className="text-xl" />
-                    <span className="font-medium">{link.label}</span>
+                    <span>{link.label}</span>
                   </NavLink>
-                </li>
+                </motion.li>
               );
             })}
-          </ul>
+          </motion.ul>
 
-          <div className="divider"></div>
+          <div className="my-6 px-4">
+            <div className="h-px bg-linear-to-r from-transparent via-purple-300 to-transparent"></div>
+          </div>
 
-          <ul>
-            <li>
-              <Link to="/" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-base-200">
+          <motion.ul variants={sidebarVariants}>
+            <motion.li
+              variants={itemVariants}
+              whileHover={{ x: 5 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Link
+                to="/"
+                className="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-gray-700 hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 hover:text-purple-600 transition-all duration-300"
+              >
                 <FaHome className="text-xl" />
-                <span className="font-medium">Back to Home</span>
+                <span>Back to Home</span>
               </Link>
-            </li>
-          </ul>
-        </div>
+            </motion.li>
+          </motion.ul>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="mt-auto pt-6"
+          >
+            <div className="p-4 bg-linear-to-r from-purple-600 via-pink-600 to-blue-600 rounded-2xl text-white">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="relative">
+                  <img
+                    src={user?.photoURL || "https://via.placeholder.com/150"}
+                    alt={user?.displayName || "User"}
+                    className="w-12 h-12 rounded-full border-2 border-white/30"
+                  />
+                  <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 border-2 border-white rounded-full"></div>
+                </div>
+                <div className="flex-1 overflow-hidden">
+                  <p className="font-bold text-sm truncate">
+                    {user?.displayName || 'User'}
+                  </p>
+                  <p className="text-xs opacity-90 truncate">
+                    {user?.email}
+                  </p>
+                </div>
+              </div>
+              <div className="text-[11px] opacity-75 text-center">
+                Logged in as {user?.role || 'Student'}
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   );
