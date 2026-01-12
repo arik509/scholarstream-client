@@ -106,6 +106,42 @@ const Navbar = () => {
               >
                 All Scholarships
               </NavLink>
+              <NavLink
+                to="/about"
+                className={({ isActive }) =>
+                  `font-semibold transition-all duration-200 ${
+                    isActive
+                      ? "text-transparent bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text"
+                      : "text-base-content hover:text-transparent hover:bg-linear-to-r hover:from-purple-600 hover:to-pink-600 hover:bg-clip-text"
+                  }`
+                }
+              >
+                About
+              </NavLink>
+              <NavLink
+                to="/blog"
+                className={({ isActive }) =>
+                  `font-semibold transition-all duration-200 ${
+                    isActive
+                      ? "text-transparent bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text"
+                      : "text-base-content hover:text-transparent hover:bg-linear-to-r hover:from-purple-600 hover:to-pink-600 hover:bg-clip-text"
+                  }`
+                }
+              >
+                Blog
+              </NavLink>
+              <NavLink
+                to="/privacy"
+                className={({ isActive }) =>
+                  `font-semibold transition-all duration-200 ${
+                    isActive
+                      ? "text-transparent bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text"
+                      : "text-base-content hover:text-transparent hover:bg-linear-to-r hover:from-purple-600 hover:to-pink-600 hover:bg-clip-text"
+                  }`
+                }
+              >
+                Privacy
+              </NavLink>
               {user && (
                 <NavLink
                   to="/dashboard"
@@ -292,6 +328,45 @@ const Navbar = () => {
                   onClick={() => setIsOpen(false)}
                 >
                   All Scholarships
+                </NavLink>
+                <NavLink
+                  to="/about"
+                  className={({ isActive }) =>
+                    `block py-3 px-4 rounded-xl transition-all font-semibold ${
+                      isActive
+                        ? "bg-linear-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 text-purple-600 dark:text-purple-400"
+                        : "text-base-content hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600 dark:hover:text-purple-400"
+                    }`
+                  }
+                  onClick={() => setIsOpen(false)}
+                >
+                  About
+                </NavLink>
+                <NavLink
+                  to="/blog"
+                  className={({ isActive }) =>
+                    `block py-3 px-4 rounded-xl transition-all font-semibold ${
+                      isActive
+                        ? "bg-linear-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 text-purple-600 dark:text-purple-400"
+                        : "text-base-content hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600 dark:hover:text-purple-400"
+                    }`
+                  }
+                  onClick={() => setIsOpen(false)}
+                >
+                  Blog
+                </NavLink>
+                <NavLink
+                  to="/privacy"
+                  className={({ isActive }) =>
+                    `block py-3 px-4 rounded-xl transition-all font-semibold ${
+                      isActive
+                        ? "bg-linear-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 text-purple-600 dark:text-purple-400"
+                        : "text-base-content hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600 dark:hover:text-purple-400"
+                    }`
+                  }
+                  onClick={() => setIsOpen(false)}
+                >
+                  Privacy
                 </NavLink>
 
                 {user ? (

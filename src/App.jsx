@@ -24,6 +24,9 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentFailed from "./pages/PaymentFailed";
 import NotFound from "./pages/NotFound";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import About from "./pages/About";
+import Blog from "./pages/Blog";
+import PrivacyTerms from "./pages/PrivacyTerms";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +48,18 @@ const router = createBrowserRouter([
       {
         path: "/scholarships",
         element: <AllScholarships />,
+      },
+      {
+        path: "/about",
+        element: <About></About>,
+      },
+      {
+        path: "/blog",
+        element: <Blog></Blog>,
+      },
+      {
+        path: "/privacy",
+        element: <PrivacyTerms></PrivacyTerms>,
       },
       {
         path: "/scholarships/:id",
