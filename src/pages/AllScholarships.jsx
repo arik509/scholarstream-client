@@ -42,7 +42,7 @@ const AllScholarships = () => {
     try {
       const params = new URLSearchParams({
         page: currentPage,
-        limit: 9,
+        limit: 12,
         ...(search && { search }),
         ...(country && { country }),
         ...(category && { category }),
@@ -109,7 +109,7 @@ const AllScholarships = () => {
 
   return (
     <div className="min-h-screen py-16 lg:py-20 px-4 bg-base-200 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1400px] mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -271,9 +271,9 @@ const AllScholarships = () => {
           </motion.div>
         ) : (
           <>
-            {/* Scholarship Cards */}
+            {/* Scholarship Cards - 4 Column Grid */}
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
               variants={containerVariants}
               initial="hidden"
               animate="visible"
@@ -286,7 +286,7 @@ const AllScholarships = () => {
                   className="group relative bg-base-100 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
                 >
                   {/* Image */}
-                  <div className="relative h-48 sm:h-56 overflow-hidden">
+                  <div className="relative h-48 overflow-hidden">
                     <motion.img
                       src={scholarship.universityImage}
                       alt={scholarship.universityName}
@@ -299,7 +299,7 @@ const AllScholarships = () => {
                     {/* University Name Overlay */}
                     <div className="absolute bottom-3 left-3 right-3">
                       <div className="flex items-center gap-2 text-white">
-                        <FaUniversity className="text-sm" />
+                        <FaUniversity className="text-sm flex-shrink-0" />
                         <p className="font-semibold text-sm truncate">
                           {scholarship.universityName}
                         </p>
@@ -308,8 +308,8 @@ const AllScholarships = () => {
                   </div>
 
                   {/* Card Content */}
-                  <div className="p-5 sm:p-6">
-                    <h3 className="text-lg sm:text-xl font-bold text-base-content mb-3 line-clamp-2 group-hover:text-purple-600 transition-colors">
+                  <div className="p-5">
+                    <h3 className="text-lg font-bold text-base-content mb-3 line-clamp-2 group-hover:text-purple-600 transition-colors min-h-[3.5rem]">
                       {scholarship.scholarshipName}
                     </h3>
 

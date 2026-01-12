@@ -11,9 +11,9 @@ const NotFound = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2
-      }
-    }
+        staggerChildren: 0.2,
+      },
+    },
   };
 
   const itemVariants = {
@@ -21,8 +21,8 @@ const NotFound = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5 }
-    }
+      transition: { duration: 0.5 },
+    },
   };
 
   const cardVariants = {
@@ -30,8 +30,8 @@ const NotFound = () => {
     visible: {
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.5 }
-    }
+      transition: { duration: 0.5 },
+    },
   };
 
   return (
@@ -53,7 +53,7 @@ const NotFound = () => {
             transition={{
               duration: 3,
               repeat: Infinity,
-              ease: "easeInOut"
+              ease: "easeInOut",
             }}
             className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 notfound-blob rounded-full blur-3xl"
           />
@@ -65,7 +65,7 @@ const NotFound = () => {
             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
             className="relative"
           >
-            <h1 className="text-[140px] md:text-[220px] font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 leading-none">
+            <h1 className="text-[140px] md:text-[220px] font-black text-transparent bg-clip-text bg-linear-to-r from-purple-600 via-pink-600 to-blue-600 leading-none">
               404
             </h1>
 
@@ -107,7 +107,7 @@ const NotFound = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center gap-2 min-w-[180px] justify-center cursor-pointer"
+                className="px-6 py-3 rounded-xl font-semibold bg-linear-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center gap-2 min-w-[180px] justify-center cursor-pointer"
               >
                 <FaHome />
                 Home Page
@@ -118,7 +118,7 @@ const NotFound = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-teal-500 to-cyan-600 text-white shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center gap-2 min-w-[180px] justify-center cursor-pointer"
+                className="px-6 py-3 rounded-xl font-semibold bg-linear-to-r from-teal-500 to-cyan-600 text-white shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center gap-2 min-w-[180px] justify-center cursor-pointer"
               >
                 <FaSearch />
                 Browse Scholarships
@@ -138,11 +138,13 @@ const NotFound = () => {
               className="block bg-base-100 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-base-300 p-6"
             >
               <div className="flex flex-col items-center text-center gap-3">
-                <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center notfound-card-icon-1">
+                <div className="w-16 h-16 bg-linear-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center notfound-card-icon-1">
                   <FaHome className="text-3xl text-purple-600" />
                 </div>
                 <h3 className="text-lg font-bold text-base-content">Home</h3>
-                <p className="text-sm text-base-content opacity-60">Return to homepage</p>
+                <p className="text-sm text-base-content opacity-60">
+                  Return to homepage
+                </p>
               </div>
             </Link>
           </motion.div>
@@ -153,11 +155,15 @@ const NotFound = () => {
               className="block bg-base-100 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-base-300 p-6"
             >
               <div className="flex flex-col items-center text-center gap-3">
-                <div className="w-16 h-16 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-full flex items-center justify-center notfound-card-icon-2">
+                <div className="w-16 h-16 bg-linear-to-br from-teal-100 to-cyan-100 rounded-full flex items-center justify-center notfound-card-icon-2">
                   <MdSchool className="text-3xl text-teal-600" />
                 </div>
-                <h3 className="text-lg font-bold text-base-content">Scholarships</h3>
-                <p className="text-sm text-base-content opacity-60">Explore opportunities</p>
+                <h3 className="text-lg font-bold text-base-content">
+                  Scholarships
+                </h3>
+                <p className="text-sm text-base-content opacity-60">
+                  Explore opportunities
+                </p>
               </div>
             </Link>
           </motion.div>
@@ -168,11 +174,15 @@ const NotFound = () => {
               className="block bg-base-100 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-base-300 p-6"
             >
               <div className="flex flex-col items-center text-center gap-3">
-                <div className="w-16 h-16 bg-gradient-to-br from-orange-100 to-red-100 rounded-full flex items-center justify-center notfound-card-icon-3">
+                <div className="w-16 h-16 bg-linear-to-br from-orange-100 to-red-100 rounded-full flex items-center justify-center notfound-card-icon-3">
                   <FaSearch className="text-3xl text-orange-600" />
                 </div>
-                <h3 className="text-lg font-bold text-base-content">Dashboard</h3>
-                <p className="text-sm text-base-content opacity-60">Check your applications</p>
+                <h3 className="text-lg font-bold text-base-content">
+                  Dashboard
+                </h3>
+                <p className="text-sm text-base-content opacity-60">
+                  Check your applications
+                </p>
               </div>
             </Link>
           </motion.div>

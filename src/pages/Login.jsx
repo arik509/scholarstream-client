@@ -1,44 +1,46 @@
-import { Link, useNavigate, useLocation } from 'react-router';
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { FcGoogle } from 'react-icons/fc';
-import { FaEnvelope, FaLock, FaExclamationCircle } from 'react-icons/fa';
-import { useAuth } from '../contexts/AuthContext';
+import { Link, useNavigate, useLocation } from "react-router";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { FcGoogle } from "react-icons/fc";
+import { FaEnvelope, FaLock, FaExclamationCircle } from "react-icons/fa";
+import { useAuth } from "../contexts/AuthContext";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { loginUser, googleLogin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || '/';
+  const from = location.state?.from?.pathname || "/";
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     try {
       await loginUser(email, password);
       navigate(from, { replace: true });
     } catch (err) {
-      setError(err.message || 'Failed to login. Please check your credentials.');
+      setError(
+        err.message || "Failed to login. Please check your credentials."
+      );
     } finally {
       setLoading(false);
     }
   };
 
   const handleGoogleLogin = async () => {
-    setError('');
+    setError("");
     setLoading(true);
 
     try {
       await googleLogin();
       navigate(from, { replace: true });
     } catch (err) {
-      setError(err.message || 'Failed to login with Google.');
+      setError(err.message || "Failed to login with Google.");
     } finally {
       setLoading(false);
     }
@@ -51,9 +53,9 @@ const Login = () => {
       y: 0,
       transition: {
         duration: 0.6,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   const itemVariants = {
@@ -61,12 +63,12 @@ const Login = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.4 }
-    }
+      transition: { duration: 0.4 },
+    },
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 py-12 px-4 login-bg">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-purple-50 via-pink-50 to-blue-50 py-12 px-4 login-bg">
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -87,7 +89,7 @@ const Login = () => {
             >
               <FaLock className="text-4xl text-purple-600" />
             </motion.div>
-            <h2 className="text-4xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
+            <h2 className="text-4xl font-extrabold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
               Welcome Back
             </h2>
             <p className="text-base-content opacity-70">
@@ -103,9 +105,7 @@ const Login = () => {
               className="mb-6 p-4 rounded-xl flex items-center gap-3 error-alert"
             >
               <FaExclamationCircle className="text-red-500 text-xl flex-shrink-0" />
-              <span className="text-sm font-semibold error-text">
-                {error}
-              </span>
+              <span className="text-sm font-semibold error-text">{error}</span>
             </motion.div>
           )}
 
@@ -146,7 +146,10 @@ const Login = () => {
                 required
               />
               <label className="label">
-                <a href="#" className="label-text-alt text-purple-600 hover:text-purple-700 hover:underline">
+                <a
+                  href="#"
+                  className="label-text-alt text-purple-600 hover:text-purple-700 hover:underline"
+                >
                   Forgot password?
                 </a>
               </label>
@@ -158,7 +161,7 @@ const Login = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               type="submit"
-              className="w-full py-3 rounded-xl font-semibold bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:shadow-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3 rounded-xl font-semibold bg-linear-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:shadow-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={loading}
             >
               {loading ? (
@@ -167,7 +170,7 @@ const Login = () => {
                   Logging in...
                 </div>
               ) : (
-                'Login'
+                "Login"
               )}
             </motion.button>
           </form>
@@ -193,7 +196,7 @@ const Login = () => {
             variants={itemVariants}
             className="text-center text-base-content opacity-70 mt-6"
           >
-            Don't have an account?{' '}
+            Don't have an account?{" "}
             <Link
               to="/register"
               className="text-purple-600 font-semibold hover:underline"

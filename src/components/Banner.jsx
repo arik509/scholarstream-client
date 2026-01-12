@@ -1,6 +1,13 @@
 import { Link } from "react-router";
 import { useState, useEffect } from "react";
-import { FaSearch, FaGraduationCap, FaTrophy, FaGlobe, FaBook, FaAward } from "react-icons/fa";
+import {
+  FaSearch,
+  FaGraduationCap,
+  FaTrophy,
+  FaGlobe,
+  FaBook,
+  FaAward,
+} from "react-icons/fa";
 import { useTheme } from "../contexts/ThemeContext";
 
 const Banner = () => {
@@ -13,23 +20,23 @@ const Banner = () => {
 
   return (
     <section
-      className="w-11/12 mx-auto relative h-125 sm:h-137.5 md:h-150 lg:h-175 bg-cover bg-center bg-no-repeat overflow-hidden rounded-2xl"
-      style={{ 
+      className=" relative h-125 sm:h-137.5 md:h-150 lg:h-175 bg-cover bg-center bg-no-repeat overflow-hidden "
+      style={{
         backgroundImage: `url(https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1920&q=80)`,
       }}
     >
-      {/* Animated gradient overlay */}
-      <div 
-        className={`absolute inset-0 animate-gradient transition-all duration-500 ${
-          theme === 'dark' 
-            ? 'bg-gradient-to-br from-indigo-950/98 via-purple-950/95 to-pink-950/92' 
-            : 'bg-gradient-to-br from-indigo-900/95 via-purple-900/90 to-pink-900/85'
+      {/* Animated linear overlay */}
+      <div
+        className={`absolute inset-0 animate-linear transition-all duration-500 ${
+          theme === "dark"
+            ? "bg-linear-to-br from-indigo-950/98 via-purple-950/95 to-pink-950/92"
+            : "bg-linear-to-br from-indigo-900/95 via-purple-900/90 to-pink-900/85"
         }`}
       ></div>
 
-      {/* Animated mesh gradient overlay */}
+      {/* Animated mesh linear overlay */}
       <div className="absolute inset-0 opacity-20">
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 animate-mesh"></div>
+        <div className="absolute inset-0 bg-linear-to-r from-purple-500 via-pink-500 to-indigo-500 animate-mesh"></div>
       </div>
 
       {/* Floating icons */}
@@ -64,7 +71,8 @@ const Banner = () => {
               height: `${Math.random() * 8 + 4}px`,
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-              background: i % 3 === 0 ? '#fbbf24' : i % 3 === 1 ? '#a78bfa' : '#f472b6',
+              background:
+                i % 3 === 0 ? "#fbbf24" : i % 3 === 1 ? "#a78bfa" : "#f472b6",
               animationDelay: `${Math.random() * 5}s`,
               animationDuration: `${8 + Math.random() * 12}s`,
             }}
@@ -87,11 +95,11 @@ const Banner = () => {
         >
           {/* Badge */}
           <div className="flex justify-center mb-4 sm:mb-6">
-            <div 
+            <div
               className={`inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 backdrop-blur-sm rounded-full text-white animate-bounce-slow transition-all ${
-                theme === 'dark' 
-                  ? 'bg-white/15 border border-white/20 shadow-lg shadow-purple-500/30' 
-                  : 'bg-white/20 shadow-lg shadow-pink-500/30'
+                theme === "dark"
+                  ? "bg-white/15 border border-white/20 shadow-lg shadow-purple-500/30"
+                  : "bg-white/20 shadow-lg shadow-pink-500/30"
               }`}
             >
               <FaTrophy className="text-yellow-300 text-xs sm:text-sm animate-pulse" />
@@ -104,24 +112,24 @@ const Banner = () => {
 
           {/* Heading */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold mb-4 sm:mb-6 leading-tight">
-            <span 
-              className={`bg-gradient-to-r bg-clip-text text-transparent animate-shimmer ${
-                theme === 'dark'
-                  ? 'from-white via-purple-100 to-pink-100'
-                  : 'from-white via-purple-200 to-pink-200'
+            <span
+              className={`bg-linear-to-r bg-clip-text text-transparent animate-shimmer ${
+                theme === "dark"
+                  ? "from-white via-purple-100 to-pink-100"
+                  : "from-white via-purple-200 to-pink-200"
               }`}
-              style={{ 
-                backgroundSize: '200% auto',
-                animation: 'shimmer 3s linear infinite'
+              style={{
+                backgroundSize: "200% auto",
+                animation: "shimmer 3s linear infinite",
               }}
             >
               Find Your Dream Scholarship Today
             </span>
           </h1>
 
-          <p 
+          <p
             className={`text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 lg:mb-10 leading-relaxed max-w-3xl mx-auto transition-colors ${
-              theme === 'dark' ? 'text-gray-50' : 'text-gray-100'
+              theme === "dark" ? "text-gray-50" : "text-gray-100"
             }`}
           >
             Discover thousands of scholarship opportunities from universities
@@ -132,9 +140,9 @@ const Banner = () => {
           <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-10 lg:mb-12">
             <Link
               to="/scholarships"
-              className="group relative inline-flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold text-base sm:text-lg rounded-full shadow-2xl hover:shadow-purple-500/50 hover:scale-105 transition-all duration-300 overflow-hidden"
+              className="group relative inline-flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-linear-to-r from-purple-600 to-pink-600 text-white font-bold text-base sm:text-lg rounded-full shadow-2xl hover:shadow-purple-500/50 hover:scale-105 transition-all duration-300 overflow-hidden"
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+              <span className="absolute inset-0 bg-linear-to-r from-pink-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
               <FaSearch className="relative z-10 text-sm sm:text-base" />
               <span className="relative z-10">Search Scholarships</span>
             </Link>
@@ -142,9 +150,9 @@ const Banner = () => {
             <Link
               to="/scholarships"
               className={`inline-flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 backdrop-blur-sm text-white font-bold text-base sm:text-lg rounded-full border-2 transition-all duration-300 ${
-                theme === 'dark'
-                  ? 'bg-white/15 border-white/40 hover:bg-white/25 hover:border-white/60'
-                  : 'bg-white/10 border-white/30 hover:bg-white/20 hover:border-white/50'
+                theme === "dark"
+                  ? "bg-white/15 border-white/40 hover:bg-white/25 hover:border-white/60"
+                  : "bg-white/10 border-white/30 hover:bg-white/20 hover:border-white/50"
               }`}
             >
               <FaGraduationCap className="text-sm sm:text-base" />
@@ -166,23 +174,23 @@ const Banner = () => {
               <div
                 key={idx}
                 className={`text-center p-2 sm:p-3 lg:p-4 backdrop-blur-sm rounded-lg sm:rounded-xl border transition-all duration-300 hover:scale-105 ${
-                  theme === 'dark'
-                    ? 'bg-white/15 border-white/30 hover:bg-white/25'
-                    : 'bg-white/10 border-white/20 hover:bg-white/20'
+                  theme === "dark"
+                    ? "bg-white/15 border-white/30 hover:bg-white/25"
+                    : "bg-white/10 border-white/20 hover:bg-white/20"
                 }`}
                 style={{ animationDelay: `${idx * 0.2}s` }}
               >
-                <stat.icon 
+                <stat.icon
                   className={`text-xl sm:text-2xl lg:text-3xl mx-auto mb-1 sm:mb-2 ${
-                    theme === 'dark' ? 'text-purple-200' : 'text-purple-300'
-                  }`} 
+                    theme === "dark" ? "text-purple-200" : "text-purple-300"
+                  }`}
                 />
                 <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white">
                   {stat.value}
                 </div>
-                <div 
+                <div
                   className={`text-xs sm:text-sm ${
-                    theme === 'dark' ? 'text-gray-100' : 'text-gray-200'
+                    theme === "dark" ? "text-gray-100" : "text-gray-200"
                   }`}
                 >
                   {stat.label}
@@ -194,7 +202,7 @@ const Banner = () => {
       </div>
 
       <style>{`
-        @keyframes gradient {
+        @keyframes linear {
           0%, 100% {
             background-position: 0% 50%;
           }
@@ -315,9 +323,9 @@ const Banner = () => {
           }
         }
 
-        .animate-gradient {
+        .animate-linear {
           background-size: 200% 200%;
-          animation: gradient 15s ease infinite;
+          animation: linear 15s ease infinite;
         }
 
         .animate-mesh {
