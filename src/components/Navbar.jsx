@@ -75,7 +75,7 @@ const Navbar = () => {
               </div>
               <Link
                 to="/"
-                className="text-2xl font-extrabold bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent"
+                className="text-2xl font-extrabold bg-linear-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent"
               >
                 ScholarStream
               </Link>
@@ -87,8 +87,8 @@ const Navbar = () => {
                 className={({ isActive }) =>
                   `font-semibold transition-all duration-200 ${
                     isActive
-                      ? "text-transparent bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text"
-                      : "text-base-content hover:text-transparent hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 hover:bg-clip-text"
+                      ? "text-transparent bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text"
+                      : "text-base-content hover:text-transparent hover:bg-linear-to-r hover:from-purple-600 hover:to-pink-600 hover:bg-clip-text"
                   }`
                 }
               >
@@ -99,8 +99,8 @@ const Navbar = () => {
                 className={({ isActive }) =>
                   `font-semibold transition-all duration-200 ${
                     isActive
-                      ? "text-transparent bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text"
-                      : "text-base-content hover:text-transparent hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 hover:bg-clip-text"
+                      ? "text-transparent bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text"
+                      : "text-base-content hover:text-transparent hover:bg-linear-to-r hover:from-purple-600 hover:to-pink-600 hover:bg-clip-text"
                   }`
                 }
               >
@@ -112,8 +112,8 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     `font-semibold transition-all duration-200 relative ${
                       isActive
-                        ? "text-transparent bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-purple-600 after:to-pink-600"
-                        : "text-base-content hover:text-transparent hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 hover:bg-clip-text after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-purple-600 after:to-pink-600 hover:after:w-full after:transition-all after:duration-300"
+                        ? "text-transparent bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-linear-to-r after:from-purple-600 after:to-pink-600"
+                        : "text-base-content hover:text-transparent hover:bg-linear-to-r hover:from-purple-600 hover:to-pink-600 hover:bg-clip-text after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-linear-to-r after:from-purple-600 after:to-pink-600 hover:after:w-full after:transition-all after:duration-300"
                     }`
                   }
                 >
@@ -132,7 +132,7 @@ const Navbar = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 transition-all duration-200 cursor-pointer"
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 transition-all duration-200 cursor-pointer"
                   >
                     <div className="relative">
                       <img
@@ -174,7 +174,7 @@ const Navbar = () => {
                           transition={{ duration: 0.2 }}
                           className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-700 z-50 overflow-hidden"
                         >
-                          <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 p-4 text-white">
+                          <div className="bg-linear-to-r from-purple-600 via-pink-600 to-blue-600 p-4 text-white">
                             <div className="flex items-center gap-3">
                               <div className="relative">
                                 <img
@@ -199,7 +199,7 @@ const Navbar = () => {
                           <div className="p-2">
                             <Link
                               to="/dashboard"
-                              className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 font-semibold transition-all group"
+                              className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 font-semibold transition-all group"
                               onClick={() => setIsDropdownOpen(false)}
                             >
                               <FaUser className="text-purple-500 group-hover:scale-110 transition-transform" />
@@ -228,7 +228,7 @@ const Navbar = () => {
                   </Link>
                   <Link
                     to="/register"
-                    className="px-6 py-2.5 rounded-xl font-semibold bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                    className="px-6 py-2.5 rounded-xl font-semibold bg-linear-to-r from-purple-600 via-pink-600 to-blue-600 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
                   >
                     Register
                   </Link>
@@ -239,7 +239,7 @@ const Navbar = () => {
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden p-2 rounded-xl hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 transition-colors"
+              className="lg:hidden p-2 rounded-xl hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 transition-colors"
             >
               {isOpen ? (
                 <FiX className="h-6 w-6 text-gray-700 dark:text-gray-300" />
@@ -272,8 +272,8 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     `block py-3 px-4 rounded-xl transition-all font-semibold ${
                       isActive
-                        ? "bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 text-purple-600 dark:text-purple-400"
-                        : "text-base-content hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600 dark:hover:text-purple-400"
+                        ? "bg-linear-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 text-purple-600 dark:text-purple-400"
+                        : "text-base-content hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600 dark:hover:text-purple-400"
                     }`
                   }
                   onClick={() => setIsOpen(false)}
@@ -285,8 +285,8 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     `block py-3 px-4 rounded-xl transition-all font-semibold ${
                       isActive
-                        ? "bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 text-purple-600 dark:text-purple-400"
-                        : "text-base-content hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600 dark:hover:text-purple-400"
+                        ? "bg-linear-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 text-purple-600 dark:text-purple-400"
+                        : "text-base-content hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600 dark:hover:text-purple-400"
                     }`
                   }
                   onClick={() => setIsOpen(false)}
@@ -301,15 +301,15 @@ const Navbar = () => {
                       className={({ isActive }) =>
                         `block py-3 px-4 rounded-xl transition-all font-semibold ${
                           isActive
-                            ? "bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 text-purple-600 dark:text-purple-400"
-                            : "text-base-content hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600 dark:hover:text-purple-400"
+                            ? "bg-linear-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 text-purple-600 dark:text-purple-400"
+                            : "text-base-content hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600 dark:hover:text-purple-400"
                         }`
                       }
                       onClick={() => setIsOpen(false)}
                     >
                       Dashboard
                     </NavLink>
-                    <div className="px-4 py-4 bg-gradient-to-r from-purple-50 via-pink-50 to-blue-50 dark:from-purple-900/20 dark:via-pink-900/20 dark:to-blue-900/20 rounded-xl border border-purple-100 dark:border-purple-800">
+                    <div className="px-4 py-4 bg-linear-to-r from-purple-50 via-pink-50 to-blue-50 dark:from-purple-900/20 dark:via-pink-900/20 dark:to-blue-900/20 rounded-xl border border-purple-100 dark:border-purple-800">
                       <div className="flex items-center gap-3">
                         <div className="relative">
                           <img
@@ -353,7 +353,7 @@ const Navbar = () => {
                     </Link>
                     <Link
                       to="/register"
-                      className="flex-1 py-2.5 text-center rounded-xl font-semibold bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 text-white shadow-lg hover:shadow-xl transition-all"
+                      className="flex-1 py-2.5 text-center rounded-xl font-semibold bg-linear-to-r from-purple-600 via-pink-600 to-blue-600 text-white shadow-lg hover:shadow-xl transition-all"
                       onClick={() => setIsOpen(false)}
                     >
                       Register

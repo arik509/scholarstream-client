@@ -3,7 +3,8 @@ import { useAuth } from '../../../contexts/AuthContext';
 import { useNavigate } from 'react-router';
 import axiosInstance from '../../../config/api';
 import Swal from 'sweetalert2';
-import { FaEye, FaCreditCard, FaEdit, FaTrash, FaStar, FaTimes, FaPaperPlane } from 'react-icons/fa';
+import { motion } from 'framer-motion';
+import { FaEye, FaCreditCard, FaEdit, FaTrash, FaStar, FaTimes, FaPaperPlane, FaFileAlt } from 'react-icons/fa';
 import { MdRateReview } from 'react-icons/md';
 
 const MyApplications = () => {
@@ -145,83 +146,117 @@ const MyApplications = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-16 h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+          <p className="text-base-content opacity-70 font-semibold">Loading applications...</p>
+        </div>
       </div>
     );
   }
 
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'completed':
+        return 'bg-gradient-to-r from-green-500 to-emerald-500';
+      case 'processing':
+        return 'bg-gradient-to-r from-yellow-500 to-orange-500';
+      case 'rejected':
+        return 'bg-gradient-to-r from-red-500 to-pink-500';
+      default:
+        return 'bg-gradient-to-r from-blue-500 to-cyan-500';
+    }
+  };
+
+  const getPaymentColor = (status) => {
+    return status === 'paid' 
+      ? 'bg-gradient-to-r from-green-500 to-emerald-500'
+      : 'bg-gradient-to-r from-red-500 to-pink-500';
+  };
+
   return (
-    <div>
-      <div className="flex items-center gap-3 mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">My Applications</h1>
-        {applications.length > 0 && (
-          <span className="badge badge-primary badge-lg">{applications.length}</span>
-        )}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      {/* Page Header */}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl lg:text-4xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            My Applications
+          </h1>
+          {applications.length > 0 && (
+            <span className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full text-sm font-bold shadow-lg">
+              {applications.length}
+            </span>
+          )}
+        </div>
       </div>
 
       {applications.length === 0 ? (
-        <div className="card bg-base-100 shadow-xl">
-          <div className="card-body text-center py-12">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 mx-auto text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            <p className="text-gray-600 text-lg">You haven't applied to any scholarships yet.</p>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-base-100 shadow-xl rounded-2xl border border-base-300 transition-colors duration-300"
+        >
+          <div className="p-12 text-center">
+            <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full flex items-center justify-center transition-colors duration-300">
+              <FaFileAlt className="text-5xl text-purple-600" />
+            </div>
+            <p className="text-base-content opacity-70 text-lg mb-6">
+              You haven't applied to any scholarships yet.
+            </p>
             <button 
               onClick={() => navigate('/scholarships')}
-              className="btn btn-primary mt-4"
+              className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
             >
               Browse Scholarships
             </button>
           </div>
-        </div>
+        </motion.div>
       ) : (
-        <div className="card bg-base-100 shadow-xl">
-          <div className="card-body">
+        <div className="bg-base-100 shadow-xl rounded-2xl border border-base-300 overflow-hidden transition-colors duration-300">
+          <div className="p-6">
             <div className="overflow-x-auto">
-              <table className="table table-zebra">
+              <table className="table">
                 <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>University</th>
-                    <th>Category</th>
-                    <th>Fees</th>
-                    <th>Status</th>
-                    <th>Payment</th>
-                    <th>Feedback</th>
-                    <th>Actions</th>
+                  <tr className="border-b border-base-300">
+                    <th className="text-base-content">#</th>
+                    <th className="text-base-content">University</th>
+                    <th className="text-base-content">Category</th>
+                    <th className="text-base-content">Fees</th>
+                    <th className="text-base-content">Status</th>
+                    <th className="text-base-content">Payment</th>
+                    <th className="text-base-content">Feedback</th>
+                    <th className="text-base-content">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {applications.map((app, index) => (
-                    <tr key={app._id}>
-                      <th>{index + 1}</th>
+                    <tr key={app._id} className="border-b border-base-300 hover:bg-base-200 transition-colors duration-200">
+                      <th className="text-base-content">{index + 1}</th>
                       <td>
-                        <div className="font-bold">{app.universityName}</div>
-                        <div className="text-sm text-gray-500">{app.degree}</div>
+                        <div className="font-bold text-base-content">{app.universityName}</div>
+                        <div className="text-sm text-base-content opacity-60">{app.degree}</div>
                       </td>
                       <td>
-                        <span className="badge badge-primary text-[14px] md:text-[16px]">{app.scholarshipCategory}</span>
+                        <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold">
+                          {app.scholarshipCategory}
+                        </span>
                       </td>
-                      <td>${app.applicationFees}</td>
+                      <td className="font-semibold text-base-content">${app.applicationFees}</td>
                       <td>
-                        <span className={`badge ${
-                          app.applicationStatus === 'completed' ? 'badge-success' :
-                          app.applicationStatus === 'processing' ? 'badge-warning' :
-                          app.applicationStatus === 'rejected' ? 'badge-error' :
-                          'badge-info'
-                        }`}>
+                        <span className={`px-3 py-1 ${getStatusColor(app.applicationStatus)} text-white rounded-full text-xs font-semibold shadow-md`}>
                           {app.applicationStatus}
                         </span>
                       </td>
                       <td>
-                        <span className={`badge ${
-                          app.paymentStatus === 'paid' ? 'badge-success' : 'badge-error'
-                        }`}>
+                        <span className={`px-3 py-1 ${getPaymentColor(app.paymentStatus)} text-white rounded-full text-xs font-semibold shadow-md`}>
                           {app.paymentStatus}
                         </span>
                       </td>
                       <td>
-                        <div className="max-w-xs truncate">
+                        <div className="max-w-xs truncate text-base-content opacity-70">
                           {app.feedback || 'No feedback yet'}
                         </div>
                       </td>
@@ -229,33 +264,33 @@ const MyApplications = () => {
                         <div className="flex flex-col gap-2">
                           <button 
                             onClick={() => openDetailsModal(app)}
-                            className="btn btn-info btn-xs gap-1"
+                            className="px-3 py-1.5 rounded-lg font-semibold bg-blue-500 hover:bg-blue-600 text-white text-xs flex items-center justify-center gap-1 transition-all"
                           >
-                            <FaEye className="text-sm" />
+                            <FaEye />
                             Details
                           </button>
                           
                           {app.applicationStatus === 'pending' && app.paymentStatus === 'unpaid' && (
                             <button 
                               onClick={() => handlePay(app)}
-                              className="btn btn-success btn-xs gap-1"
+                              className="px-3 py-1.5 rounded-lg font-semibold bg-green-500 hover:bg-green-600 text-white text-xs flex items-center justify-center gap-1 transition-all"
                             >
-                              <FaCreditCard className="text-sm" />
+                              <FaCreditCard />
                               Pay
                             </button>
                           )}
                           
                           {app.applicationStatus === 'pending' && (
                             <>
-                              <button className="btn btn-warning btn-xs gap-1">
-                                <FaEdit className="text-sm" />
+                              <button className="px-3 py-1.5 rounded-lg font-semibold bg-yellow-500 hover:bg-yellow-600 text-white text-xs flex items-center justify-center gap-1 transition-all">
+                                <FaEdit />
                                 Edit
                               </button>
                               <button 
                                 onClick={() => handleDelete(app._id, app.universityName)}
-                                className="btn btn-error btn-xs gap-1"
+                                className="px-3 py-1.5 rounded-lg font-semibold bg-red-500 hover:bg-red-600 text-white text-xs flex items-center justify-center gap-1 transition-all"
                               >
-                                <FaTrash className="text-sm" />
+                                <FaTrash />
                                 Delete
                               </button>
                             </>
@@ -264,10 +299,10 @@ const MyApplications = () => {
                           {app.applicationStatus === 'completed' && (
                             <button 
                               onClick={() => openReviewModal(app)}
-                              className="btn btn-primary btn-xs gap-1"
+                              className="px-3 py-1.5 rounded-lg font-semibold bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-xs flex items-center justify-center gap-1 transition-all"
                             >
-                              <MdRateReview className="text-sm" />
-                              Add Review
+                              <MdRateReview />
+                              Review
                             </button>
                           )}
                         </div>
@@ -281,55 +316,66 @@ const MyApplications = () => {
         </div>
       )}
 
+      {/* Details Modal */}
       <dialog id="details_modal" className="modal">
-        <div className="modal-box max-w-2xl">
-          <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-            <FaEye className="text-info" />
+        <div className="modal-box max-w-2xl bg-base-100 border border-base-300 transition-colors duration-300">
+          <h3 className="font-bold text-xl mb-6 flex items-center gap-3 text-base-content">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
+              <FaEye className="text-white" />
+            </div>
             Application Details
           </h3>
           {selectedApp && (
-            <div className="space-y-3">
+            <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-gray-600">University Name</p>
-                  <p className="font-semibold">{selectedApp.universityName}</p>
+                <div className="bg-base-200 p-4 rounded-xl transition-colors duration-300">
+                  <p className="text-sm text-base-content opacity-60 mb-1">University Name</p>
+                  <p className="font-semibold text-base-content">{selectedApp.universityName}</p>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-600">Scholarship Category</p>
-                  <p className="font-semibold">{selectedApp.scholarshipCategory}</p>
+                <div className="bg-base-200 p-4 rounded-xl transition-colors duration-300">
+                  <p className="text-sm text-base-content opacity-60 mb-1">Scholarship Category</p>
+                  <p className="font-semibold text-base-content">{selectedApp.scholarshipCategory}</p>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-600">Degree</p>
-                  <p className="font-semibold">{selectedApp.degree}</p>
+                <div className="bg-base-200 p-4 rounded-xl transition-colors duration-300">
+                  <p className="text-sm text-base-content opacity-60 mb-1">Degree</p>
+                  <p className="font-semibold text-base-content">{selectedApp.degree}</p>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-600">Application Fees</p>
-                  <p className="font-semibold">${selectedApp.applicationFees}</p>
+                <div className="bg-base-200 p-4 rounded-xl transition-colors duration-300">
+                  <p className="text-sm text-base-content opacity-60 mb-1">Application Fees</p>
+                  <p className="font-semibold text-base-content">${selectedApp.applicationFees}</p>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-600">Service Charge</p>
-                  <p className="font-semibold">${selectedApp.serviceCharge}</p>
+                <div className="bg-base-200 p-4 rounded-xl transition-colors duration-300">
+                  <p className="text-sm text-base-content opacity-60 mb-1">Service Charge</p>
+                  <p className="font-semibold text-base-content">${selectedApp.serviceCharge}</p>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-600">Total Paid</p>
-                  <p className="font-semibold text-primary">${selectedApp.applicationFees + selectedApp.serviceCharge}</p>
+                <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-4 rounded-xl border border-purple-200 dark:border-purple-800 transition-colors duration-300">
+                  <p className="text-sm text-base-content opacity-60 mb-1">Total Paid</p>
+                  <p className="font-bold text-lg bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    ${selectedApp.applicationFees + selectedApp.serviceCharge}
+                  </p>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-600">Application Status</p>
-                  <p className="font-semibold">{selectedApp.applicationStatus}</p>
+                <div className="bg-base-200 p-4 rounded-xl transition-colors duration-300">
+                  <p className="text-sm text-base-content opacity-60 mb-1">Application Status</p>
+                  <p className="font-semibold text-base-content capitalize">{selectedApp.applicationStatus}</p>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-600">Payment Status</p>
-                  <p className="font-semibold">{selectedApp.paymentStatus}</p>
+                <div className="bg-base-200 p-4 rounded-xl transition-colors duration-300">
+                  <p className="text-sm text-base-content opacity-60 mb-1">Payment Status</p>
+                  <p className="font-semibold text-base-content capitalize">{selectedApp.paymentStatus}</p>
                 </div>
-                <div className="col-span-2">
-                  <p className="text-sm text-gray-600">Application Date</p>
-                  <p className="font-semibold">{new Date(selectedApp.applicationDate).toLocaleDateString()}</p>
+                <div className="col-span-2 bg-base-200 p-4 rounded-xl transition-colors duration-300">
+                  <p className="text-sm text-base-content opacity-60 mb-1">Application Date</p>
+                  <p className="font-semibold text-base-content">
+                    {new Date(selectedApp.applicationDate).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  </p>
                 </div>
                 {selectedApp.feedback && (
-                  <div className="col-span-2">
-                    <p className="text-sm text-gray-600">Moderator Feedback</p>
-                    <p className="font-semibold">{selectedApp.feedback}</p>
+                  <div className="col-span-2 bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-200 dark:border-blue-800 transition-colors duration-300">
+                    <p className="text-sm text-base-content opacity-60 mb-2">Moderator Feedback</p>
+                    <p className="font-semibold text-base-content">{selectedApp.feedback}</p>
                   </div>
                 )}
               </div>
@@ -337,7 +383,7 @@ const MyApplications = () => {
           )}
           <div className="modal-action">
             <form method="dialog">
-              <button className="btn gap-2">
+              <button className="px-6 py-2.5 rounded-xl font-semibold text-base-content hover:bg-base-200 transition-all flex items-center gap-2">
                 <FaTimes />
                 Close
               </button>
@@ -346,46 +392,49 @@ const MyApplications = () => {
         </div>
       </dialog>
 
+      {/* Review Modal */}
       <dialog id="review_modal" className="modal">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-            <MdRateReview className="text-primary" />
+        <div className="modal-box bg-base-100 border border-base-300 transition-colors duration-300">
+          <h3 className="font-bold text-xl mb-6 flex items-center gap-3 text-base-content">
+            <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center">
+              <MdRateReview className="text-white" />
+            </div>
             Add Review
           </h3>
           {selectedApp && (
             <div className="space-y-4">
-              <div>
-                <p className="font-semibold mb-2">{selectedApp.universityName}</p>
+              <div className="bg-base-200 p-4 rounded-xl transition-colors duration-300">
+                <p className="font-semibold text-base-content">{selectedApp.universityName}</p>
               </div>
               
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-semibold flex items-center gap-2">
+                  <span className="label-text font-semibold text-base-content flex items-center gap-2">
                     <FaStar className="text-yellow-500" />
                     Rating
                   </span>
                 </label>
-                <div className="flex gap-2 items-center">
+                <div className="flex gap-2 items-center bg-base-200 p-4 rounded-xl transition-colors duration-300">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
                       key={star}
                       type="button"
                       onClick={() => setReviewData({ ...reviewData, ratingPoint: star })}
-                      className="text-3xl transition-transform hover:scale-110"
+                      className="text-3xl transition-transform hover:scale-125"
                     >
                       {star <= reviewData.ratingPoint ? '⭐' : '☆'}
                     </button>
                   ))}
-                  <span className="ml-2 font-semibold">{reviewData.ratingPoint}/5</span>
+                  <span className="ml-2 font-bold text-base-content">{reviewData.ratingPoint}/5</span>
                 </div>
               </div>
 
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-semibold">Review Comment</span>
+                  <span className="label-text font-semibold text-base-content">Review Comment</span>
                 </label>
                 <textarea
-                  className="textarea textarea-bordered h-24"
+                  className="textarea textarea-bordered h-32 bg-base-200 border-base-300 text-base-content transition-colors duration-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
                   placeholder="Share your experience with this scholarship..."
                   value={reviewData.reviewComment}
                   onChange={(e) => setReviewData({ ...reviewData, reviewComment: e.target.value })}
@@ -394,12 +443,15 @@ const MyApplications = () => {
             </div>
           )}
           <div className="modal-action">
-            <button onClick={handleSubmitReview} className="btn btn-primary gap-2">
+            <button 
+              onClick={handleSubmitReview} 
+              className="px-6 py-2.5 rounded-xl font-semibold bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2"
+            >
               <FaPaperPlane />
               Submit Review
             </button>
             <form method="dialog">
-              <button className="btn gap-2">
+              <button className="px-6 py-2.5 rounded-xl font-semibold text-base-content hover:bg-base-200 transition-all flex items-center gap-2">
                 <FaTimes />
                 Cancel
               </button>
@@ -407,7 +459,7 @@ const MyApplications = () => {
           </div>
         </div>
       </dialog>
-    </div>
+    </motion.div>
   );
 };
 

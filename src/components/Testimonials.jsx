@@ -111,9 +111,9 @@ const Testimonials = () => {
               whileHover={{ y: -10, scale: 1.02 }}
               className="relative group"
             >
-              {/* Card with gradient border on hover */}
+              {/* Card with linear border on hover */}
               <div className="relative h-full bg-base-100 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden">
-                {/* Gradient border effect */}
+                {/* linear border effect */}
                 <div className="absolute inset-0 bg-linear-to-r from-purple-400 via-pink-400 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl p-0.5">
                   <div className="h-full w-full bg-base-100 rounded-2xl"></div>
                 </div>
@@ -171,7 +171,7 @@ const Testimonials = () => {
                   </div>
                 </div>
 
-                {/* Bottom gradient bar */}
+                {/* Bottom linear bar */}
                 <div className="h-1 bg-linear-to-r from-purple-500 via-pink-500 to-blue-500"></div>
               </div>
             </motion.div>

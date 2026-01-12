@@ -25,7 +25,7 @@ const PaymentFailed = () => {
           <div className="text-6xl mb-4 flex justify-center text-error font-extrabold"><RxCross1 /></div>
           <h1 className="text-4xl font-bold text-error mb-4">Payment Failed</h1>
           
-          <p className="text-gray-600 mb-6">
+          <p className="mb-6">
             We couldn't process your payment. Your application has been saved but payment is pending.
           </p>
 

@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
 import axiosInstance from '../../../config/api';
 import Swal from 'sweetalert2';
+import { motion } from 'framer-motion';
 import { MdEdit, MdDeleteForever, MdRateReview } from "react-icons/md";
-import { FaStar, FaRegStar, FaPaperPlane } from "react-icons/fa";
+import { FaStar, FaRegStar, FaPaperPlane, FaTimes } from "react-icons/fa";
 
 const MyReviews = () => {
   const { user } = useAuth();
@@ -126,79 +127,115 @@ const MyReviews = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-16 h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+          <p className="text-base-content opacity-70 font-semibold">Loading reviews...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div>
-      <div className="flex items-center gap-3 mb-6">
-        <MdRateReview className="text-4xl text-primary" />
-        <h1 className="text-3xl font-bold text-gray-800">My Reviews</h1>
-        {reviews.length > 0 && (
-          <span className="badge badge-primary badge-lg">{reviews.length}</span>
-        )}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      {/* Page Header */}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full flex items-center justify-center transition-colors duration-300">
+            <MdRateReview className="text-2xl text-purple-600" />
+          </div>
+          <h1 className="text-3xl lg:text-4xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            My Reviews
+          </h1>
+          {reviews.length > 0 && (
+            <span className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full text-sm font-bold shadow-lg">
+              {reviews.length}
+            </span>
+          )}
+        </div>
       </div>
 
       {reviews.length === 0 ? (
-        <div className="card bg-base-100 shadow-xl">
-          <div className="card-body text-center py-12">
-            <MdRateReview className="text-6xl text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-600 text-lg">You haven't written any reviews yet.</p>
-            <p className="text-sm text-gray-500 mt-2">Complete your applications to leave reviews!</p>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-base-100 shadow-xl rounded-2xl border border-base-300 transition-colors duration-300"
+        >
+          <div className="p-12 text-center">
+            <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full flex items-center justify-center transition-colors duration-300">
+              <MdRateReview className="text-5xl text-purple-600" />
+            </div>
+            <p className="text-base-content opacity-70 text-lg mb-2">
+              You haven't written any reviews yet.
+            </p>
+            <p className="text-base-content opacity-50 text-sm">
+              Complete your applications to leave reviews!
+            </p>
           </div>
-        </div>
+        </motion.div>
       ) : (
-        <div className="card bg-base-100 shadow-xl">
-          <div className="card-body">
+        <div className="bg-base-100 shadow-xl rounded-2xl border border-base-300 overflow-hidden transition-colors duration-300">
+          <div className="p-6">
             <div className="overflow-x-auto">
-              <table className="table table-zebra">
+              <table className="table">
                 <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>University</th>
-                    <th>Rating</th>
-                    <th>Comment</th>
-                    <th>Date</th>
-                    <th>Actions</th>
+                  <tr className="border-b border-base-300">
+                    <th className="text-base-content">#</th>
+                    <th className="text-base-content">University</th>
+                    <th className="text-base-content">Rating</th>
+                    <th className="text-base-content">Comment</th>
+                    <th className="text-base-content">Date</th>
+                    <th className="text-base-content">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {reviews.map((review, index) => (
-                    <tr key={review._id}>
-                      <th>{index + 1}</th>
-                      <td className="font-semibold">{review.universityName}</td>
+                    <tr key={review._id} className="border-b border-base-300 hover:bg-base-200 transition-colors duration-200">
+                      <th className="text-base-content">{index + 1}</th>
+                      <td className="font-semibold text-base-content">{review.universityName}</td>
                       <td>
-                        <div className="flex gap-1">
+                        <div className="flex gap-1 items-center">
                           {[...Array(5)].map((_, i) => (
-                            <span key={i} className="text-yellow-500">
+                            <span key={i}>
                               {i < review.ratingPoint ? (
-                                <FaStar className="inline" />
+                                <FaStar className="inline text-yellow-500 text-sm" />
                               ) : (
-                                <FaRegStar className="inline" />
+                                <FaRegStar className="inline text-gray-400 dark:text-gray-600 text-sm" />
                               )}
                             </span>
                           ))}
-                          <span className="ml-2 text-sm text-gray-600 font-semibold">
+                          <span className="ml-2 text-sm text-base-content opacity-70 font-semibold">
                             {review.ratingPoint}/5
                           </span>
                         </div>
                       </td>
-                      <td className="max-w-xs truncate italic">"{review.reviewComment}"</td>
-                      <td className="text-sm">{new Date(review.reviewDate).toLocaleDateString()}</td>
+                      <td className="max-w-xs">
+                        <p className="truncate italic text-base-content opacity-80">
+                          "{review.reviewComment}"
+                        </p>
+                      </td>
+                      <td className="text-sm text-base-content opacity-70">
+                        {new Date(review.reviewDate).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric'
+                        })}
+                      </td>
                       <td>
                         <div className="flex gap-2">
                           <button 
                             onClick={() => openEditModal(review)}
-                            className="btn btn-warning btn-sm gap-1"
+                            className="px-3 py-1.5 rounded-lg font-semibold bg-yellow-500 hover:bg-yellow-600 text-white text-xs flex items-center gap-1 transition-all cursor-pointer"
                           >
                             <MdEdit />
                             Edit
                           </button>
                           <button 
                             onClick={() => handleDelete(review._id, review.universityName)}
-                            className="btn btn-error btn-sm gap-1"
+                            className="px-3 py-1.5 rounded-lg font-semibold bg-red-500 hover:bg-red-600 text-white text-xs flex items-center gap-1 transition-all cursor-pointer"
                           >
                             <MdDeleteForever />
                             Delete
@@ -214,46 +251,49 @@ const MyReviews = () => {
         </div>
       )}
 
+      {/* Edit Modal */}
       <dialog id="edit_modal" className="modal">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-            <MdEdit className="text-warning" />
+        <div className="modal-box bg-base-100 border border-base-300 transition-colors duration-300">
+          <h3 className="font-bold text-xl mb-6 flex items-center gap-3 text-base-content">
+            <div className="w-10 h-10 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center">
+              <MdEdit className="text-white cursor-pointer" />
+            </div>
             Edit Review
           </h3>
           {editingReview && (
             <div className="space-y-4">
-              <div>
-                <p className="font-semibold text-primary mb-2">{editingReview.universityName}</p>
+              <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-4 rounded-xl border border-purple-200 dark:border-purple-800 transition-colors duration-300">
+                <p className="font-semibold text-base-content">{editingReview.universityName}</p>
               </div>
               
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-semibold flex items-center gap-2">
+                  <span className="label-text font-semibold text-base-content flex items-center gap-2">
                     <FaStar className="text-yellow-500" />
                     Rating
                   </span>
                 </label>
-                <div className="flex gap-2 items-center">
+                <div className="flex gap-2 items-center bg-base-200 p-4 rounded-xl transition-colors duration-300">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
                       key={star}
                       type="button"
                       onClick={() => setEditData({ ...editData, ratingPoint: star })}
-                      className="text-3xl transition-transform hover:scale-110"
+                      className="text-3xl transition-transform hover:scale-125 cursor-pointer"
                     >
                       {star <= editData.ratingPoint ? '⭐' : '☆'}
                     </button>
                   ))}
-                  <span className="ml-2 font-semibold">{editData.ratingPoint}/5</span>
+                  <span className="ml-2 font-bold text-base-content">{editData.ratingPoint}/5</span>
                 </div>
               </div>
 
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-semibold">Review Comment</span>
+                  <span className="label-text font-semibold text-base-content cursor-pointer">Review Comment</span>
                 </label>
                 <textarea
-                  className="textarea textarea-bordered h-24"
+                  className="textarea textarea-bordered h-32 bg-base-200 border-base-300 text-base-content transition-colors duration-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
                   placeholder="Update your review..."
                   value={editData.reviewComment}
                   onChange={(e) => setEditData({ ...editData, reviewComment: e.target.value })}
@@ -262,17 +302,23 @@ const MyReviews = () => {
             </div>
           )}
           <div className="modal-action">
-            <button onClick={handleUpdateReview} className="btn btn-primary gap-2">
+            <button 
+              onClick={handleUpdateReview} 
+              className="px-6 py-2.5 rounded-xl font-semibold bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2 cursor-pointer"
+            >
               <FaPaperPlane />
               Update Review
             </button>
             <form method="dialog">
-              <button className="btn">Cancel</button>
+              <button className="px-6 py-2.5 rounded-xl font-semibold text-base-content hover:bg-base-200 transition-all flex items-center gap-2 cursor-pointer">
+                <FaTimes />
+                Cancel
+              </button>
             </form>
           </div>
         </div>
       </dialog>
-    </div>
+    </motion.div>
   );
 };
 

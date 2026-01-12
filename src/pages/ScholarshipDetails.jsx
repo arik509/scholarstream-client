@@ -61,7 +61,9 @@ const ScholarshipDetails = () => {
 
   const fetchReviews = async () => {
     try {
-      const { data } = await axiosInstance.get(`/api/reviews/scholarship/${id}`);
+      const { data } = await axiosInstance.get(
+        `/api/reviews/scholarship/${id}`
+      );
       setReviews(data);
     } catch (error) {
       console.error("Error fetching reviews:", error);
@@ -101,7 +103,7 @@ const ScholarshipDetails = () => {
           animate={{ opacity: 1, scale: 1 }}
           className="text-center bg-base-100 p-12 rounded-2xl shadow-xl border border-base-300"
         >
-          <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full flex items-center justify-center">
+          <div className="w-24 h-24 mx-auto mb-6 bg-linear-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full flex items-center justify-center">
             <FaExclamationTriangle className="text-4xl text-purple-600" />
           </div>
           <h2 className="text-2xl font-bold text-base-content mb-4">
@@ -109,7 +111,7 @@ const ScholarshipDetails = () => {
           </h2>
           <Link
             to="/scholarships"
-            className="inline-block px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
+            className="inline-block px-8 py-3 rounded-xl font-semibold bg-linear-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
           >
             Back to Scholarships
           </Link>
@@ -137,18 +139,20 @@ const ScholarshipDetails = () => {
               alt={scholarship.universityName}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+            <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent"></div>
             <div className="absolute bottom-6 left-6 right-6">
               <div className="flex items-center gap-2 text-white mb-2">
                 <FaUniversity className="text-xl" />
-                <p className="font-bold text-lg">{scholarship.universityName}</p>
+                <p className="font-bold text-lg">
+                  {scholarship.universityName}
+                </p>
               </div>
             </div>
           </div>
 
           <div className="p-6 lg:p-8">
             {/* Title */}
-            <h1 className="text-3xl lg:text-4xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-6">
+            <h1 className="text-3xl lg:text-4xl font-extrabold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-6">
               {scholarship.scholarshipName}
             </h1>
 
@@ -168,7 +172,7 @@ const ScholarshipDetails = () => {
             {/* Details Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
               {/* University Details */}
-              <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-6 rounded-xl transition-colors duration-300">
+              <div className="bg-linear-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-6 rounded-xl transition-colors duration-300">
                 <h3 className="font-bold text-xl text-base-content mb-4 flex items-center gap-2">
                   <FaGraduationCap className="text-purple-600" />
                   University Details
@@ -192,7 +196,8 @@ const ScholarshipDetails = () => {
                         Location
                       </p>
                       <p className="font-semibold text-base-content">
-                        {scholarship.universityCity}, {scholarship.universityCountry}
+                        {scholarship.universityCity},{" "}
+                        {scholarship.universityCountry}
                       </p>
                     </div>
                   </div>
@@ -211,7 +216,7 @@ const ScholarshipDetails = () => {
               </div>
 
               {/* Application Details */}
-              <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 p-6 rounded-xl transition-colors duration-300">
+              <div className="bg-linear-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 p-6 rounded-xl transition-colors duration-300">
                 <h3 className="font-bold text-xl text-base-content mb-4 flex items-center gap-2">
                   <FaDollarSign className="text-blue-600" />
                   Application Details
@@ -236,9 +241,10 @@ const ScholarshipDetails = () => {
                   <div className="border-t-2 border-purple-200 dark:border-purple-700 pt-3 mt-3">
                     <div className="flex justify-between items-center">
                       <span className="font-bold text-base-content">Total</span>
-                      <span className="text-2xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                      <span className="text-2xl font-extrabold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                         $
-                        {scholarship.applicationFees + scholarship.serviceCharge}
+                        {scholarship.applicationFees +
+                          scholarship.serviceCharge}
                       </span>
                     </div>
                   </div>
@@ -285,7 +291,7 @@ const ScholarshipDetails = () => {
               <div className="mt-6">
                 {checkingApplication ? (
                   <button
-                    className="w-full lg:w-auto px-8 py-4 rounded-xl font-semibold bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg opacity-70 cursor-not-allowed"
+                    className="w-full lg:w-auto px-8 py-4 rounded-xl font-semibold bg-linear-to-r from-purple-600 to-pink-600 text-white shadow-lg opacity-70 cursor-not-allowed"
                     disabled
                   >
                     <div className="flex items-center justify-center gap-2">
@@ -296,7 +302,7 @@ const ScholarshipDetails = () => {
                 ) : hasApplied ? (
                   <button
                     onClick={handleViewApplication}
-                    className="w-full lg:w-auto px-8 py-4 rounded-xl font-semibold bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                    className="w-full lg:w-auto px-8 py-4 rounded-xl font-semibold bg-linear-to-r from-green-500 to-emerald-600 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
                   >
                     <div className="flex items-center justify-center gap-2">
                       <FaCheckCircle className="text-xl" />
@@ -306,7 +312,7 @@ const ScholarshipDetails = () => {
                 ) : (
                   <button
                     onClick={handleApply}
-                    className="w-full lg:w-auto px-8 py-4 rounded-xl font-semibold bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer"
+                    className="w-full lg:w-auto px-8 py-4 rounded-xl font-semibold bg-linear-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer"
                   >
                     Apply for Scholarship
                   </button>
@@ -324,8 +330,8 @@ const ScholarshipDetails = () => {
                       Application Restricted
                     </p>
                     <p className="text-base-content opacity-70">
-                      Only students can apply for scholarships. You are logged in
-                      as <strong>{userRole}</strong>.
+                      Only students can apply for scholarships. You are logged
+                      in as <strong>{userRole}</strong>.
                     </p>
                   </div>
                 </div>
@@ -348,7 +354,7 @@ const ScholarshipDetails = () => {
 
           {reviews.length === 0 ? (
             <div className="text-center py-12">
-              <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full flex items-center justify-center">
+              <div className="w-20 h-20 mx-auto mb-4 bg-linear-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full flex items-center justify-center">
                 <FaStar className="text-3xl text-purple-600" />
               </div>
               <p className="text-base-content opacity-70 text-lg">

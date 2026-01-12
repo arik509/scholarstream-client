@@ -1,25 +1,25 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router';
-import { motion, AnimatePresence } from 'framer-motion';
-import axiosInstance from '../config/api';
-import { 
-  FaMapMarkerAlt, 
-  FaUniversity, 
-  FaDollarSign, 
+import { useState, useEffect } from "react";
+import { Link } from "react-router";
+import { motion, AnimatePresence } from "framer-motion";
+import axiosInstance from "../config/api";
+import {
+  FaMapMarkerAlt,
+  FaUniversity,
+  FaDollarSign,
   FaArrowRight,
   FaSearch,
   FaFilter,
-  FaSortAmountDown
-} from 'react-icons/fa';
+  FaSortAmountDown,
+} from "react-icons/fa";
 
 const AllScholarships = () => {
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchInput, setSearchInput] = useState('');
-  const [search, setSearch] = useState('');
-  const [country, setCountry] = useState('');
-  const [category, setCategory] = useState('');
-  const [sort, setSort] = useState('');
+  const [searchInput, setSearchInput] = useState("");
+  const [search, setSearch] = useState("");
+  const [country, setCountry] = useState("");
+  const [category, setCategory] = useState("");
+  const [sort, setSort] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
@@ -46,7 +46,7 @@ const AllScholarships = () => {
         ...(search && { search }),
         ...(country && { country }),
         ...(category && { category }),
-        ...(sort && { sort })
+        ...(sort && { sort }),
       });
 
       const { data } = await axiosInstance.get(`/api/scholarships?${params}`);
@@ -54,18 +54,18 @@ const AllScholarships = () => {
       setTotalPages(data.totalPages);
       setTotal(data.total);
     } catch (error) {
-      console.error('Error fetching scholarships:', error);
+      console.error("Error fetching scholarships:", error);
     } finally {
       setLoading(false);
     }
   };
 
   const handleReset = () => {
-    setSearchInput('');
-    setSearch('');
-    setCountry('');
-    setCategory('');
-    setSort('');
+    setSearchInput("");
+    setSearch("");
+    setCountry("");
+    setCategory("");
+    setSort("");
     setCurrentPage(1);
   };
 
@@ -99,7 +99,9 @@ const AllScholarships = () => {
       <div className="min-h-screen flex items-center justify-center bg-base-200 transition-colors duration-300">
         <div className="flex flex-col items-center gap-4">
           <div className="w-16 h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
-          <p className="text-base-content opacity-70 font-semibold">Loading scholarships...</p>
+          <p className="text-base-content opacity-70 font-semibold">
+            Loading scholarships...
+          </p>
         </div>
       </div>
     );
@@ -115,11 +117,15 @@ const AllScholarships = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent mb-4">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold bg-linear-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent mb-4">
             All Scholarships
           </h1>
           <p className="text-base-content opacity-70 text-lg sm:text-xl">
-            Found <span className="font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{total}</span> scholarship opportunities
+            Found{" "}
+            <span className="font-bold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              {total}
+            </span>{" "}
+            scholarship opportunities
           </p>
         </motion.div>
 
@@ -130,7 +136,7 @@ const AllScholarships = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="bg-base-100 rounded-2xl shadow-xl border border-base-300 mb-12 overflow-hidden transition-colors duration-300"
         >
-          <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 p-4">
+          <div className="bg-linear-to-r from-purple-600 via-pink-600 to-blue-600 p-4">
             <div className="flex items-center gap-2 text-white">
               <FaFilter className="text-xl" />
               <h2 className="text-xl font-bold">Filter & Search</h2>
@@ -162,7 +168,10 @@ const AllScholarships = () => {
                 <select
                   className="w-full px-4 py-3 rounded-xl border-2 border-base-300 bg-base-100 text-base-content focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all"
                   value={country}
-                  onChange={(e) => { setCountry(e.target.value); setCurrentPage(1); }}
+                  onChange={(e) => {
+                    setCountry(e.target.value);
+                    setCurrentPage(1);
+                  }}
                 >
                   <option value="">All Countries</option>
                   <option value="United States">United States</option>
@@ -182,7 +191,10 @@ const AllScholarships = () => {
                 <select
                   className="w-full px-4 py-3 rounded-xl border-2 border-base-300 bg-base-100 text-base-content focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all"
                   value={category}
-                  onChange={(e) => { setCategory(e.target.value); setCurrentPage(1); }}
+                  onChange={(e) => {
+                    setCategory(e.target.value);
+                    setCurrentPage(1);
+                  }}
                 >
                   <option value="">All Categories</option>
                   <option value="Full fund">Full Fund</option>
@@ -200,7 +212,10 @@ const AllScholarships = () => {
                 <select
                   className="w-full px-4 py-3 rounded-xl border-2 border-base-300 bg-base-100 text-base-content focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all"
                   value={sort}
-                  onChange={(e) => { setSort(e.target.value); setCurrentPage(1); }}
+                  onChange={(e) => {
+                    setSort(e.target.value);
+                    setCurrentPage(1);
+                  }}
                 >
                   <option value="">Default</option>
                   <option value="fees-asc">Fees: Low to High</option>
@@ -213,8 +228,8 @@ const AllScholarships = () => {
 
             {/* Reset Button */}
             <div className="flex justify-end mt-6">
-              <button 
-                onClick={handleReset} 
+              <button
+                onClick={handleReset}
                 className="px-6 py-2.5 rounded-xl font-semibold text-purple-600 dark:text-purple-400 border-2 border-purple-600 dark:border-purple-400 hover:bg-purple-600 hover:text-white transition-all duration-300 hover:scale-105"
               >
                 Reset Filters
@@ -228,7 +243,9 @@ const AllScholarships = () => {
           <div className="flex justify-center py-12">
             <div className="flex flex-col items-center gap-4">
               <div className="w-16 h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
-              <p className="text-base-content opacity-70 font-semibold">Loading scholarships...</p>
+              <p className="text-base-content opacity-70 font-semibold">
+                Loading scholarships...
+              </p>
             </div>
           </div>
         ) : scholarships.length === 0 ? (
@@ -238,13 +255,15 @@ const AllScholarships = () => {
             className="bg-base-100 rounded-2xl shadow-xl border border-base-300 transition-colors duration-300"
           >
             <div className="p-12 text-center">
-              <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full flex items-center justify-center">
+              <div className="w-24 h-24 mx-auto mb-6 bg-linear-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full flex items-center justify-center">
                 <FaSearch className="text-4xl text-purple-600" />
               </div>
-              <p className="text-base-content opacity-70 text-xl mb-6">No scholarships found</p>
-              <button 
-                onClick={handleReset} 
-                className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
+              <p className="text-base-content opacity-70 text-xl mb-6">
+                No scholarships found
+              </p>
+              <button
+                onClick={handleReset}
+                className="px-8 py-3 rounded-xl font-semibold bg-linear-to-r from-purple-600 via-pink-600 to-blue-600 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
               >
                 Clear Filters
               </button>
@@ -275,7 +294,7 @@ const AllScholarships = () => {
                       whileHover={{ scale: 1.1 }}
                       transition={{ duration: 0.4 }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                    <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent"></div>
 
                     {/* University Name Overlay */}
                     <div className="absolute bottom-3 left-3 right-3">
@@ -298,7 +317,8 @@ const AllScholarships = () => {
                     <div className="flex items-center gap-2 text-sm text-base-content opacity-70 mb-3">
                       <FaMapMarkerAlt className="text-purple-500 shrink-0" />
                       <span className="truncate">
-                        {scholarship.universityCity}, {scholarship.universityCountry}
+                        {scholarship.universityCity},{" "}
+                        {scholarship.universityCountry}
                       </span>
                     </div>
 
@@ -328,7 +348,7 @@ const AllScholarships = () => {
                     {/* View Details Button */}
                     <Link
                       to={`/scholarships/${scholarship._id}`}
-                      className="flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 group/btn"
+                      className="flex items-center justify-center gap-2 w-full py-3 bg-linear-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 group/btn"
                     >
                       <span>View Details</span>
                       <FaArrowRight className="text-sm group-hover/btn:translate-x-1 transition-transform" />
@@ -348,7 +368,7 @@ const AllScholarships = () => {
               >
                 <div className="flex items-center gap-2 bg-base-100 rounded-2xl shadow-lg p-2 border border-base-300 transition-colors duration-300">
                   <button
-                    className="px-4 py-2 rounded-xl font-semibold text-base-content hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-4 py-2 rounded-xl font-semibold text-base-content hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={currentPage === 1}
                     onClick={() => setCurrentPage(currentPage - 1)}
                   >
@@ -361,8 +381,8 @@ const AllScholarships = () => {
                         key={index}
                         className={`w-10 h-10 rounded-xl font-semibold transition-all ${
                           currentPage === index + 1
-                            ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg scale-110'
-                            : 'text-base-content hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600'
+                            ? "bg-linear-to-r from-purple-600 to-pink-600 text-white shadow-lg scale-110"
+                            : "text-base-content hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600"
                         }`}
                         onClick={() => setCurrentPage(index + 1)}
                       >
@@ -372,7 +392,7 @@ const AllScholarships = () => {
                   </div>
 
                   <button
-                    className="px-4 py-2 rounded-xl font-semibold text-base-content hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-4 py-2 rounded-xl font-semibold text-base-content hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={currentPage === totalPages}
                     onClick={() => setCurrentPage(currentPage + 1)}
                   >

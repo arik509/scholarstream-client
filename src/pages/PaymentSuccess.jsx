@@ -25,7 +25,7 @@ const PaymentSuccess = () => {
           <div className="text-6xl mb-4 text-center text-success flex justify-center items-center"><FaCheckCircle /></div>
           <h1 className="text-4xl font-bold text-success mb-4">Payment Successful!</h1>
           
-          <p className="text-gray-600 mb-6">
+          <p className=" mb-6">
             Your scholarship application has been submitted successfully.
           </p>
 
