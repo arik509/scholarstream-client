@@ -6,6 +6,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import axiosInstance from '../config/api';
 import StripePaymentForm from '../components/StripePaymentForm';
 import Swal from 'sweetalert2';
+import { motion } from 'framer-motion';
 import { FaUniversity, FaUser, FaMoneyBillWave, FaCreditCard, FaCheckCircle } from 'react-icons/fa';
 import { MdPayment, MdWarning } from 'react-icons/md';
 
@@ -190,26 +191,49 @@ const Checkout = () => {
   // Show error screen if Stripe failed to load
   if (stripeError) {
     return (
-      <div className="min-h-screen bg-base-200 flex items-center justify-center px-4">
-        <div className="card bg-base-100 shadow-xl max-w-lg">
-          <div className="card-body text-center">
-            <MdWarning className="text-6xl text-error mx-auto mb-4" />
-            <h2 className="card-title text-error justify-center text-2xl">Payment System Unavailable</h2>
-            <div className="divider"></div>
-            <p className="text-gray-700 mb-4">Unable to load the payment system. This could be due to:</p>
-            <ul className="text-left text-sm space-y-2 bg-base-200 p-4 rounded-lg">
-              <li>❌ Missing or invalid Stripe API key</li>
-              <li>❌ Network or firewall blocking Stripe</li>
-              <li>❌ Browser extensions blocking payment scripts</li>
-              <li>❌ Ad blocker interference</li>
-            </ul>
-            <div className="alert alert-info mt-4">
-              <span className="text-sm">Please check your connection and try again, or contact support.</span>
+      <div className="min-h-screen bg-base-200 flex items-center justify-center px-4 transition-colors duration-300">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-base-100 shadow-2xl max-w-lg rounded-2xl overflow-hidden border border-base-300 transition-colors duration-300"
+        >
+          <div className="p-8 text-center">
+            <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-red-100 to-orange-100 dark:from-red-900/30 dark:to-orange-900/30 rounded-full flex items-center justify-center">
+              <MdWarning className="text-4xl text-red-600" />
             </div>
-            <div className="card-actions justify-center mt-4 gap-2">
+            <h2 className="text-2xl font-bold text-base-content mb-4">Payment System Unavailable</h2>
+            
+            <div className="h-px bg-gradient-to-r from-transparent via-base-300 to-transparent my-6"></div>
+            
+            <p className="text-base-content opacity-70 mb-4">Unable to load the payment system. This could be due to:</p>
+            
+            <ul className="text-left text-sm space-y-2 bg-base-200 p-4 rounded-lg mb-4 transition-colors duration-300">
+              <li className="flex items-start gap-2">
+                <span className="text-red-500 shrink-0">❌</span>
+                <span className="text-base-content opacity-70">Missing or invalid Stripe API key</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-red-500 shrink-0">❌</span>
+                <span className="text-base-content opacity-70">Network or firewall blocking Stripe</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-red-500 shrink-0">❌</span>
+                <span className="text-base-content opacity-70">Browser extensions blocking payment scripts</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-red-500 shrink-0">❌</span>
+                <span className="text-base-content opacity-70">Ad blocker interference</span>
+              </li>
+            </ul>
+            
+            <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-4 rounded-lg mb-6 transition-colors duration-300">
+              <p className="text-sm text-base-content opacity-70">Please check your connection and try again, or contact support.</p>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <button 
                 onClick={() => window.location.reload()} 
-                className="btn btn-primary gap-2"
+                className="px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
@@ -218,7 +242,7 @@ const Checkout = () => {
               </button>
               <button 
                 onClick={() => navigate('/scholarships')} 
-                className="btn btn-outline gap-2"
+                className="px-6 py-3 rounded-xl font-semibold text-purple-600 dark:text-purple-400 border-2 border-purple-600 dark:border-purple-400 hover:bg-purple-600 hover:text-white transition-all duration-300 flex items-center justify-center gap-2"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
@@ -227,15 +251,18 @@ const Checkout = () => {
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     );
   }
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
+      <div className="flex justify-center items-center min-h-screen bg-base-200 transition-colors duration-300">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-16 h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+          <p className="text-base-content opacity-70 font-semibold">Loading payment details...</p>
+        </div>
       </div>
     );
   }
@@ -250,64 +277,82 @@ const Checkout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-base-200 py-12 px-4">
+    <div className="min-h-screen bg-base-200 py-12 px-4 transition-colors duration-300">
       <div className="max-w-2xl mx-auto">
-        <div className="card bg-base-100 shadow-2xl">
-          <div className="card-body">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="bg-base-100 shadow-2xl rounded-2xl overflow-hidden border border-base-300 transition-colors duration-300"
+        >
+          <div className="p-6 lg:p-8">
+            {/* Header */}
             <div className="flex items-center gap-3 mb-6">
-              <MdPayment className="text-4xl text-primary" />
-              <h1 className="text-3xl font-bold text-gray-800">
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full flex items-center justify-center transition-colors duration-300">
+                <MdPayment className="text-2xl text-purple-600" />
+              </div>
+              <h1 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                 {existingApplicationId ? 'Retry Payment' : 'Payment Checkout'}
               </h1>
             </div>
 
+            {/* Retry Alert */}
             {existingApplicationId && (
-              <div className="alert alert-warning mb-4">
-                <MdWarning className="text-xl" />
-                <span>Retrying payment for existing application</span>
+              <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4 rounded-lg mb-6 transition-colors duration-300">
+                <div className="flex items-center gap-3">
+                  <MdWarning className="text-xl text-yellow-600 shrink-0" />
+                  <span className="text-base-content opacity-70">Retrying payment for existing application</span>
+                </div>
               </div>
             )}
 
-            <div className="space-y-4 mb-6">
-              <div className="flex justify-between items-center p-4 bg-base-200 rounded-lg">
-                <span className="font-semibold flex items-center gap-2">
-                  <FaCheckCircle className="text-primary" />
+            {/* Details Section */}
+            <div className="space-y-3 mb-6">
+              <div className="flex justify-between items-center p-4 bg-base-200 rounded-xl transition-colors duration-300">
+                <span className="font-semibold flex items-center gap-2 text-base-content">
+                  <FaCheckCircle className="text-purple-600" />
                   Scholarship:
                 </span>
-                <span className="text-right">{scholarship.scholarshipName}</span>
+                <span className="text-right text-base-content opacity-80">{scholarship.scholarshipName}</span>
               </div>
 
-              <div className="flex justify-between items-center p-4 bg-base-200 rounded-lg">
-                <span className="font-semibold flex items-center gap-2">
-                  <FaUniversity className="text-primary" />
+              <div className="flex justify-between items-center p-4 bg-base-200 rounded-xl transition-colors duration-300">
+                <span className="font-semibold flex items-center gap-2 text-base-content">
+                  <FaUniversity className="text-purple-600" />
                   University:
                 </span>
-                <span className="text-right">{scholarship.universityName}</span>
+                <span className="text-right text-base-content opacity-80">{scholarship.universityName}</span>
               </div>
 
-              <div className="flex justify-between items-center p-4 bg-base-200 rounded-lg">
-                <span className="font-semibold flex items-center gap-2">
-                  <FaUser className="text-primary" />
+              <div className="flex justify-between items-center p-4 bg-base-200 rounded-xl transition-colors duration-300">
+                <span className="font-semibold flex items-center gap-2 text-base-content">
+                  <FaUser className="text-purple-600" />
                   Applicant:
                 </span>
-                <span className="text-right">{user.displayName}</span>
+                <span className="text-right text-base-content opacity-80">{user.displayName}</span>
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className="flex items-center gap-3 my-6">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-base-300 to-transparent"></div>
+              <FaMoneyBillWave className="text-purple-600 text-xl" />
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-base-300 to-transparent"></div>
+            </div>
+
+            {/* Payment Breakdown */}
+            <div className="space-y-3 mb-6">
+              <div className="flex justify-between items-center p-4 bg-base-200 rounded-xl transition-colors duration-300">
+                <span className="text-base-content opacity-70">Application Fee:</span>
+                <span className="font-semibold text-base-content">${scholarship.applicationFees}</span>
               </div>
 
-              <div className="divider">
-                <FaMoneyBillWave className="text-primary text-xl" />
+              <div className="flex justify-between items-center p-4 bg-base-200 rounded-xl transition-colors duration-300">
+                <span className="text-base-content opacity-70">Service Charge:</span>
+                <span className="font-semibold text-base-content">${scholarship.serviceCharge}</span>
               </div>
 
-              <div className="flex justify-between items-center p-4 bg-base-200 rounded-lg">
-                <span>Application Fee:</span>
-                <span className="font-semibold">${scholarship.applicationFees}</span>
-              </div>
-
-              <div className="flex justify-between items-center p-4 bg-base-200 rounded-lg">
-                <span>Service Charge:</span>
-                <span className="font-semibold">${scholarship.serviceCharge}</span>
-              </div>
-
-              <div className="flex justify-between items-center p-4 bg-primary text-white rounded-lg text-lg font-bold">
+              <div className="flex justify-between items-center p-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl text-lg font-bold shadow-lg">
                 <span className="flex items-center gap-2">
                   <FaCreditCard />
                   Total Amount:
@@ -316,11 +361,17 @@ const Checkout = () => {
               </div>
             </div>
 
-            <div className="divider">
-              <FaCreditCard className="text-primary text-xl" />
-              <span className="font-semibold">Payment Details</span>
+            {/* Payment Form Divider */}
+            <div className="flex items-center gap-3 my-8">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-base-300 to-transparent"></div>
+              <div className="flex items-center gap-2">
+                <FaCreditCard className="text-purple-600 text-xl" />
+                <span className="font-semibold text-base-content">Payment Details</span>
+              </div>
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-base-300 to-transparent"></div>
             </div>
 
+            {/* Stripe Payment Form */}
             {clientSecret && stripePromise && (
               <Elements stripe={stripePromise} options={options}>
                 <StripePaymentForm 
@@ -331,7 +382,19 @@ const Checkout = () => {
               </Elements>
             )}
           </div>
-        </div>
+        </motion.div>
+
+        {/* Security Notice */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="mt-6 text-center"
+        >
+          <p className="text-sm text-base-content opacity-60">
+            🔒 Your payment is secured with Stripe encryption
+          </p>
+        </motion.div>
       </div>
     </div>
   );
