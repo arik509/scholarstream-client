@@ -130,7 +130,7 @@ const ManageScholarships = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">Manage Scholarships</h1>
+        <h1 className="text-3xl font-bold ">Manage Scholarships</h1>
         <Link to="/dashboard/add-scholarship" className="btn btn-primary gap-2">
           <FaPlus />
           Add New Scholarship

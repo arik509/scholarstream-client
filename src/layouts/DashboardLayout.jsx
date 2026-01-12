@@ -14,6 +14,7 @@ import {
   FaHome,
 } from "react-icons/fa";
 import logo from "../assets/Purple & Tea.png";
+import ThemeToggle from "../contexts/ThemeToggle";
 
 const DashboardLayout = () => {
   const { user } = useAuth();
@@ -121,6 +122,9 @@ const DashboardLayout = () => {
               Dashboard
             </span>
           </div>
+          <div className="flex-none">
+            <ThemeToggle></ThemeToggle>
+          </div>
         </motion.div>
 
         {/* Page Content */}
@@ -215,12 +219,27 @@ const DashboardLayout = () => {
             </motion.li>
           </motion.ul>
 
+          {/* Theme Toggle Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className="mt-6 px-4"
+          >
+            <div className="flex items-center justify-between p-4 bg-linear-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl border border-purple-200 dark:border-purple-800 transition-colors duration-300">
+              <span className="text-sm font-semibold text-base-content">
+                Theme
+              </span>
+              <ThemeToggle />
+            </div>
+          </motion.div>
+
           {/* User Profile Card */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.5 }}
-            className="mt-auto pt-6"
+            className="mt-6 pt-6 border-t border-base-300"
           >
             <div className="p-4 bg-linear-to-r from-purple-600 via-pink-600 to-blue-600 rounded-2xl text-white shadow-lg">
               <div className="flex items-center gap-3 mb-3">

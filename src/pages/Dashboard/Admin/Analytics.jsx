@@ -179,7 +179,7 @@ const Analytics = () => {
     <div>
       <div className="flex items-center gap-3 mb-6">
         <FaChartBar className="text-4xl text-primary" />
-        <h1 className="text-3xl font-bold text-gray-800">
+        <h1 className="text-3xl font-bold ">
           Analytics Dashboard
         </h1>
       </div>

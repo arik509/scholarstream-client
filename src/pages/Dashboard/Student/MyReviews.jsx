@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from '../../../contexts/AuthContext';
-import axiosInstance from '../../../config/api';
-import Swal from 'sweetalert2';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from "react";
+import { useAuth } from "../../../contexts/AuthContext";
+import axiosInstance from "../../../config/api";
+import Swal from "sweetalert2";
+import { motion } from "framer-motion";
 import { MdEdit, MdDeleteForever, MdRateReview } from "react-icons/md";
 import { FaStar, FaRegStar, FaPaperPlane, FaTimes } from "react-icons/fa";
 
@@ -13,7 +13,7 @@ const MyReviews = () => {
   const [editingReview, setEditingReview] = useState(null);
   const [editData, setEditData] = useState({
     ratingPoint: 5,
-    reviewComment: ''
+    reviewComment: "",
   });
 
   useEffect(() => {
@@ -24,15 +24,17 @@ const MyReviews = () => {
 
   const fetchReviews = async () => {
     try {
-      const { data } = await axiosInstance.get(`/api/reviews/user/${user.email}`);
+      const { data } = await axiosInstance.get(
+        `/api/reviews/user/${user.email}`
+      );
       setReviews(data);
     } catch (error) {
-      console.error('Error fetching reviews:', error);
+      console.error("Error fetching reviews:", error);
       Swal.fire({
-        title: 'Error!',
-        text: 'Failed to load your reviews',
-        icon: 'error',
-        confirmButtonColor: '#8b5cf6'
+        title: "Error!",
+        text: "Failed to load your reviews",
+        icon: "error",
+        confirmButtonColor: "#8b5cf6",
       });
     } finally {
       setLoading(false);
@@ -41,36 +43,36 @@ const MyReviews = () => {
 
   const handleDelete = async (id, universityName) => {
     const result = await Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       html: `You are about to delete your review for <strong>${universityName}</strong>. This action cannot be undone!`,
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#ef4444',
-      cancelButtonColor: '#6b7280',
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel'
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
     });
 
     if (result.isConfirmed) {
       try {
         await axiosInstance.delete(`/api/reviews/${id}`);
-        setReviews(reviews.filter(r => r._id !== id));
-        
+        setReviews(reviews.filter((r) => r._id !== id));
+
         Swal.fire({
-          title: 'Deleted!',
-          text: 'Your review has been deleted successfully',
-          icon: 'success',
-          confirmButtonColor: '#8b5cf6',
+          title: "Deleted!",
+          text: "Your review has been deleted successfully",
+          icon: "success",
+          confirmButtonColor: "#8b5cf6",
           timer: 2000,
-          showConfirmButton: false
+          showConfirmButton: false,
         });
       } catch (error) {
-        console.error('Error deleting review:', error);
+        console.error("Error deleting review:", error);
         Swal.fire({
-          title: 'Error!',
-          text: 'Failed to delete review. Please try again.',
-          icon: 'error',
-          confirmButtonColor: '#8b5cf6'
+          title: "Error!",
+          text: "Failed to delete review. Please try again.",
+          icon: "error",
+          confirmButtonColor: "#8b5cf6",
         });
       }
     }
@@ -80,46 +82,46 @@ const MyReviews = () => {
     setEditingReview(review);
     setEditData({
       ratingPoint: review.ratingPoint,
-      reviewComment: review.reviewComment
+      reviewComment: review.reviewComment,
     });
-    document.getElementById('edit_modal').showModal();
+    document.getElementById("edit_modal").showModal();
   };
 
   const handleUpdateReview = async () => {
     if (!editData.reviewComment.trim()) {
       Swal.fire({
-        title: 'Missing Comment!',
-        text: 'Please write a review comment before updating',
-        icon: 'warning',
-        confirmButtonColor: '#8b5cf6'
+        title: "Missing Comment!",
+        text: "Please write a review comment before updating",
+        icon: "warning",
+        confirmButtonColor: "#8b5cf6",
       });
       return;
     }
 
     try {
       await axiosInstance.patch(`/api/reviews/${editingReview._id}`, editData);
-      setReviews(reviews.map(r => 
-        r._id === editingReview._id 
-          ? { ...r, ...editData } 
-          : r
-      ));
-      document.getElementById('edit_modal').close();
-      
+      setReviews(
+        reviews.map((r) =>
+          r._id === editingReview._id ? { ...r, ...editData } : r
+        )
+      );
+      document.getElementById("edit_modal").close();
+
       Swal.fire({
-        title: 'Updated!',
-        text: 'Your review has been updated successfully',
-        icon: 'success',
-        confirmButtonColor: '#8b5cf6',
+        title: "Updated!",
+        text: "Your review has been updated successfully",
+        icon: "success",
+        confirmButtonColor: "#8b5cf6",
         timer: 2000,
-        showConfirmButton: false
+        showConfirmButton: false,
       });
     } catch (error) {
-      console.error('Error updating review:', error);
+      console.error("Error updating review:", error);
       Swal.fire({
-        title: 'Error!',
-        text: 'Failed to update review. Please try again.',
-        icon: 'error',
-        confirmButtonColor: '#8b5cf6'
+        title: "Error!",
+        text: "Failed to update review. Please try again.",
+        icon: "error",
+        confirmButtonColor: "#8b5cf6",
       });
     }
   };
@@ -129,7 +131,9 @@ const MyReviews = () => {
       <div className="flex justify-center items-center min-h-screen">
         <div className="flex flex-col items-center gap-4">
           <div className="w-16 h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
-          <p className="text-base-content opacity-70 font-semibold">Loading reviews...</p>
+          <p className="text-base-content opacity-70 font-semibold">
+            Loading reviews...
+          </p>
         </div>
       </div>
     );
@@ -144,14 +148,14 @@ const MyReviews = () => {
       {/* Page Header */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full flex items-center justify-center transition-colors duration-300">
+          <div className="w-12 h-12 bg-linear-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full flex items-center justify-center transition-colors duration-300">
             <MdRateReview className="text-2xl text-purple-600" />
           </div>
-          <h1 className="text-3xl lg:text-4xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl lg:text-4xl font-extrabold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
             My Reviews
           </h1>
           {reviews.length > 0 && (
-            <span className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full text-sm font-bold shadow-lg">
+            <span className="px-4 py-2 bg-linear-to-r from-purple-600 to-pink-600 text-white rounded-full text-sm font-bold shadow-lg">
               {reviews.length}
             </span>
           )}
@@ -165,7 +169,7 @@ const MyReviews = () => {
           className="bg-base-100 shadow-xl rounded-2xl border border-base-300 transition-colors duration-300"
         >
           <div className="p-12 text-center">
-            <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full flex items-center justify-center transition-colors duration-300">
+            <div className="w-24 h-24 mx-auto mb-6 bg-linear-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full flex items-center justify-center transition-colors duration-300">
               <MdRateReview className="text-5xl text-purple-600" />
             </div>
             <p className="text-base-content opacity-70 text-lg mb-2">
@@ -193,9 +197,14 @@ const MyReviews = () => {
                 </thead>
                 <tbody>
                   {reviews.map((review, index) => (
-                    <tr key={review._id} className="border-b border-base-300 hover:bg-base-200 transition-colors duration-200">
+                    <tr
+                      key={review._id}
+                      className="border-b border-base-300 hover:bg-base-200 transition-colors duration-200"
+                    >
                       <th className="text-base-content">{index + 1}</th>
-                      <td className="font-semibold text-base-content">{review.universityName}</td>
+                      <td className="font-semibold text-base-content">
+                        {review.universityName}
+                      </td>
                       <td>
                         <div className="flex gap-1 items-center">
                           {[...Array(5)].map((_, i) => (
@@ -218,23 +227,28 @@ const MyReviews = () => {
                         </p>
                       </td>
                       <td className="text-sm text-base-content opacity-70">
-                        {new Date(review.reviewDate).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'short',
-                          day: 'numeric'
-                        })}
+                        {new Date(review.reviewDate).toLocaleDateString(
+                          "en-US",
+                          {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          }
+                        )}
                       </td>
                       <td>
                         <div className="flex gap-2">
-                          <button 
+                          <button
                             onClick={() => openEditModal(review)}
                             className="px-3 py-1.5 rounded-lg font-semibold bg-yellow-500 hover:bg-yellow-600 text-white text-xs flex items-center gap-1 transition-all cursor-pointer"
                           >
                             <MdEdit />
                             Edit
                           </button>
-                          <button 
-                            onClick={() => handleDelete(review._id, review.universityName)}
+                          <button
+                            onClick={() =>
+                              handleDelete(review._id, review.universityName)
+                            }
                             className="px-3 py-1.5 rounded-lg font-semibold bg-red-500 hover:bg-red-600 text-white text-xs flex items-center gap-1 transition-all cursor-pointer"
                           >
                             <MdDeleteForever />
@@ -255,17 +269,19 @@ const MyReviews = () => {
       <dialog id="edit_modal" className="modal">
         <div className="modal-box bg-base-100 border border-base-300 transition-colors duration-300">
           <h3 className="font-bold text-xl mb-6 flex items-center gap-3 text-base-content">
-            <div className="w-10 h-10 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-linear-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center">
               <MdEdit className="text-white cursor-pointer" />
             </div>
             Edit Review
           </h3>
           {editingReview && (
             <div className="space-y-4">
-              <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-4 rounded-xl border border-purple-200 dark:border-purple-800 transition-colors duration-300">
-                <p className="font-semibold text-base-content">{editingReview.universityName}</p>
+              <div className="bg-linear-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-4 rounded-xl border border-purple-200 dark:border-purple-800 transition-colors duration-300">
+                <p className="font-semibold text-base-content">
+                  {editingReview.universityName}
+                </p>
               </div>
-              
+
               <div className="form-control">
                 <label className="label">
                   <span className="label-text font-semibold text-base-content flex items-center gap-2">
@@ -278,33 +294,41 @@ const MyReviews = () => {
                     <button
                       key={star}
                       type="button"
-                      onClick={() => setEditData({ ...editData, ratingPoint: star })}
+                      onClick={() =>
+                        setEditData({ ...editData, ratingPoint: star })
+                      }
                       className="text-3xl transition-transform hover:scale-125 cursor-pointer"
                     >
-                      {star <= editData.ratingPoint ? '⭐' : '☆'}
+                      {star <= editData.ratingPoint ? "⭐" : "☆"}
                     </button>
                   ))}
-                  <span className="ml-2 font-bold text-base-content">{editData.ratingPoint}/5</span>
+                  <span className="ml-2 font-bold text-base-content">
+                    {editData.ratingPoint}/5
+                  </span>
                 </div>
               </div>
 
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-semibold text-base-content cursor-pointer">Review Comment</span>
+                  <span className="label-text font-semibold text-base-content cursor-pointer">
+                    Review Comment
+                  </span>
                 </label>
                 <textarea
                   className="textarea textarea-bordered h-32 bg-base-200 border-base-300 text-base-content transition-colors duration-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
                   placeholder="Update your review..."
                   value={editData.reviewComment}
-                  onChange={(e) => setEditData({ ...editData, reviewComment: e.target.value })}
+                  onChange={(e) =>
+                    setEditData({ ...editData, reviewComment: e.target.value })
+                  }
                 ></textarea>
               </div>
             </div>
           )}
           <div className="modal-action">
-            <button 
-              onClick={handleUpdateReview} 
-              className="px-6 py-2.5 rounded-xl font-semibold bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2 cursor-pointer"
+            <button
+              onClick={handleUpdateReview}
+              className="px-6 py-2.5 rounded-xl font-semibold bg-linear-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2 cursor-pointer"
             >
               <FaPaperPlane />
               Update Review

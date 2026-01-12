@@ -121,7 +121,7 @@ const ManageUsers = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Manage Users</h1>
+      <h1 className="text-3xl font-bold mb-6">Manage Users</h1>
 
       <div className="card bg-base-100 shadow-xl mb-6">
         <div className="card-body">
@@ -145,7 +145,7 @@ const ManageUsers = () => {
               </select>
             </div>
             <div className="text-right">
-              <p className="text-sm text-gray-600">Total Users: <span className="font-bold text-primary">{filteredUsers.length}</span></p>
+              <p className="text-sm ">Total Users: <span className="font-bold text-primary">{filteredUsers.length}</span></p>
             </div>
           </div>
         </div>
