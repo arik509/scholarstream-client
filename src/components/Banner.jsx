@@ -2,9 +2,11 @@ import { Link } from "react-router";
 import { useState, useEffect } from "react";
 import bannerImage from "../assets/banner.png";
 import { FaSearch, FaGraduationCap, FaTrophy, FaGlobe } from "react-icons/fa";
+import { useTheme } from "../contexts/ThemeContext";
 
 const Banner = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const { theme } = useTheme();
 
   useEffect(() => {
     setIsVisible(true);
@@ -12,11 +14,17 @@ const Banner = () => {
 
   return (
     <section
-      className="relative h-125 sm:h-137.5 md:h-150 lg:h-175 bg-cover bg-center bg-no-repeat overflow-hidden"
+      className="w-11/12 mx-auto relative h-125 sm:h-137.5 md:h-150 lg:h-175 bg-cover bg-center bg-no-repeat overflow-hidden"
       style={{ backgroundImage: `url(${bannerImage})` }}
     >
-      {/* Dark overlay with enhanced dark mode */}
-      <div className="absolute inset-0 bg-linear-to-br from-indigo-900/95 via-purple-900/90 to-pink-900/85 animate-linear"></div>
+      {/* Dark overlay - enhanced in dark mode */}
+      <div 
+        className={`absolute inset-0 animate-linear transition-all duration-500 ${
+          theme === 'dark' 
+            ? 'bg-linear-to-br from-indigo-950/98 via-purple-950/95 to-pink-950/92' 
+            : 'bg-linear-to-br from-indigo-900/95 via-purple-900/90 to-pink-900/85'
+        }`}
+      ></div>
 
       {/* Floating particles */}
       <div className="absolute inset-0 opacity-30">
@@ -34,34 +42,52 @@ const Banner = () => {
         ))}
       </div>
 
-      <div className="relative z-10 max-w-11/12 mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 h-full flex items-center">
+      <div className="relative z-10 max-w-11/12 mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 h-full flex items-center justify-center">
         <div
-          className={`max-w-3xl transition-all duration-1000 transform ${
+          className={`max-w-4xl text-center transition-all duration-1000 transform ${
             isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
           }`}
         >
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-white/20 backdrop-blur-sm rounded-full text-white mb-4 sm:mb-6 animate-pulse">
-            <FaTrophy className="text-yellow-300 text-xs sm:text-sm" />
-            <span className="text-xs sm:text-sm font-semibold">
-              1000+ Scholarships Available
-            </span>
+          <div className="flex justify-center mb-4 sm:mb-6">
+            <div 
+              className={`inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 backdrop-blur-sm rounded-full text-white animate-pulse transition-all ${
+                theme === 'dark' 
+                  ? 'bg-white/15 border border-white/20' 
+                  : 'bg-white/20'
+              }`}
+            >
+              <FaTrophy className="text-yellow-300 text-xs sm:text-sm" />
+              <span className="text-xs sm:text-sm font-semibold">
+                1000+ Scholarships Available
+              </span>
+            </div>
           </div>
 
           {/* Heading */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold mb-4 sm:mb-6 leading-tight">
-            <span className="bg-linear-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent animate-shimmer">
+            <span 
+              className={`bg-linear-to-r bg-clip-text text-transparent animate-shimmer ${
+                theme === 'dark'
+                  ? 'from-white via-purple-100 to-pink-100'
+                  : 'from-white via-purple-200 to-pink-200'
+              }`}
+            >
               Find Your Dream Scholarship Today
             </span>
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 lg:mb-10 text-gray-100 leading-relaxed">
+          <p 
+            className={`text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 lg:mb-10 leading-relaxed max-w-3xl mx-auto transition-colors ${
+              theme === 'dark' ? 'text-gray-50' : 'text-gray-100'
+            }`}
+          >
             Discover thousands of scholarship opportunities from universities
             worldwide. Start your journey to academic excellence.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mb-8 sm:mb-10 lg:mb-12">
+          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-10 lg:mb-12">
             <Link
               to="/scholarships"
               className="group relative inline-flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-linear-to-r from-purple-600 to-pink-600 text-white font-bold text-base sm:text-lg rounded-full shadow-2xl hover:shadow-purple-500/50 hover:scale-105 transition-all duration-300 overflow-hidden"
@@ -73,7 +99,11 @@ const Banner = () => {
 
             <Link
               to="/scholarships"
-              className="inline-flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-white/10 backdrop-blur-sm text-white font-bold text-base sm:text-lg rounded-full border-2 border-white/30 hover:bg-white/20 hover:border-white/50 transition-all duration-300"
+              className={`inline-flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 backdrop-blur-sm text-white font-bold text-base sm:text-lg rounded-full border-2 transition-all duration-300 ${
+                theme === 'dark'
+                  ? 'bg-white/15 border-white/40 hover:bg-white/25 hover:border-white/60'
+                  : 'bg-white/10 border-white/30 hover:bg-white/20 hover:border-white/50'
+              }`}
             >
               <FaGraduationCap className="text-sm sm:text-base" />
               <span>Learn More</span>
@@ -81,7 +111,7 @@ const Banner = () => {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-3 sm:gap-4 lg:gap-6 max-w-xl">
+          <div className="grid grid-cols-3 gap-3 sm:gap-4 lg:gap-6 max-w-3xl mx-auto">
             {[
               {
                 icon: FaGraduationCap,
@@ -93,14 +123,26 @@ const Banner = () => {
             ].map((stat, idx) => (
               <div
                 key={idx}
-                className="text-center p-2 sm:p-3 lg:p-4 bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105"
+                className={`text-center p-2 sm:p-3 lg:p-4 backdrop-blur-sm rounded-lg sm:rounded-xl border transition-all duration-300 hover:scale-105 ${
+                  theme === 'dark'
+                    ? 'bg-white/15 border-white/30 hover:bg-white/25'
+                    : 'bg-white/10 border-white/20 hover:bg-white/20'
+                }`}
                 style={{ animationDelay: `${idx * 0.2}s` }}
               >
-                <stat.icon className="text-xl sm:text-2xl lg:text-3xl text-purple-300 mx-auto mb-1 sm:mb-2" />
+                <stat.icon 
+                  className={`text-xl sm:text-2xl lg:text-3xl mx-auto mb-1 sm:mb-2 ${
+                    theme === 'dark' ? 'text-purple-200' : 'text-purple-300'
+                  }`} 
+                />
                 <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white">
                   {stat.value}
                 </div>
-                <div className="text-xs sm:text-sm text-gray-200">
+                <div 
+                  className={`text-xs sm:text-sm ${
+                    theme === 'dark' ? 'text-gray-100' : 'text-gray-200'
+                  }`}
+                >
                   {stat.label}
                 </div>
               </div>

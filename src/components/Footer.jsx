@@ -6,7 +6,7 @@ import logo from "../assets/Purple & Tea.png";
 
 const Footer = () => {
   return (
-    <footer className="relative bg-white text-gray-800 pt-24 lg:pt-32">
+    <footer className="relative bg-base-100 text-base-content pt-24 lg:pt-32 transition-colors duration-300">
       <div className="absolute -top-0.5 left-0 right-0 h-0.5 bg-linear-to-r from-purple-500 via-pink-500 to-blue-500" />
 
       <div className="max-w-11/12 mx-auto px-4 sm:px-6 lg:px-8 pb-10 lg:pb-8">
@@ -50,22 +50,24 @@ const Footer = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
+          {/* Brand Section */}
           <div>
             <Link to="/" className="inline-flex items-center gap-2 mb-4">
               <div className="flex gap-4 items-center">
-                <img src={logo} alt="" className="w-12.5" />
+                <img src={logo} alt="ScholarStream Logo" className="w-12.5" />
                 <span className="text-xl font-extrabold bg-linear-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent mt-2">
                   ScholarStream
                 </span>
               </div>
             </Link>
-            <p className="text-sm text-gray-600 max-w-xs">
+            <p className="text-sm text-base-content opacity-70 max-w-xs">
               Discover, track, and apply to global scholarships with a single
               unified platform tailored for ambitious students.
             </p>
 
+            {/* Social Links */}
             <div className="mt-5 flex items-center gap-3">
-              <p className="text-xs uppercase tracking-wide text-gray-500">
+              <p className="text-xs uppercase tracking-wide text-base-content opacity-60">
                 Follow us
               </p>
               <div className="flex items-center gap-2">
@@ -73,7 +75,7 @@ const Footer = () => {
                   href="https://x.com"
                   target="_blank"
                   rel="noreferrer"
-                  className="h-9 w-9 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-600 hover:text-purple-600 hover:bg-purple-50 hover:border-purple-200 transition-colors duration-200"
+                  className="h-9 w-9 rounded-full bg-base-200 border border-base-300 flex items-center justify-center text-base-content opacity-70 hover:text-purple-600 hover:bg-purple-50 hover:border-purple-200 transition-colors duration-200"
                 >
                   <FaXTwitter className="text-lg" />
                 </a>
@@ -81,7 +83,7 @@ const Footer = () => {
                   href="https://facebook.com"
                   target="_blank"
                   rel="noreferrer"
-                  className="h-9 w-9 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-600 hover:text-purple-600 hover:bg-purple-50 hover:border-purple-200 transition-colors duration-200"
+                  className="h-9 w-9 rounded-full bg-base-200 border border-base-300 flex items-center justify-center text-base-content opacity-70 hover:text-purple-600 hover:bg-purple-50 hover:border-purple-200 transition-colors duration-200"
                 >
                   <FaFacebookF className="text-lg" />
                 </a>
@@ -89,7 +91,7 @@ const Footer = () => {
                   href="https://www.linkedin.com"
                   target="_blank"
                   rel="noreferrer"
-                  className="h-9 w-9 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-600 hover:text-purple-600 hover:bg-purple-50 hover:border-purple-200 transition-colors duration-200"
+                  className="h-9 w-9 rounded-full bg-base-200 border border-base-300 flex items-center justify-center text-base-content opacity-70 hover:text-purple-600 hover:bg-purple-50 hover:border-purple-200 transition-colors duration-200"
                 >
                   <FaLinkedinIn className="text-lg" />
                 </a>
@@ -97,7 +99,7 @@ const Footer = () => {
                   href="https://www.instagram.com"
                   target="_blank"
                   rel="noreferrer"
-                  className="h-9 w-9 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-600 hover:text-purple-600 hover:bg-purple-50 hover:border-purple-200 transition-colors duration-200"
+                  className="h-9 w-9 rounded-full bg-base-200 border border-base-300 flex items-center justify-center text-base-content opacity-70 hover:text-purple-600 hover:bg-purple-50 hover:border-purple-200 transition-colors duration-200"
                 >
                   <FaInstagram className="text-lg" />
                 </a>
@@ -105,15 +107,16 @@ const Footer = () => {
             </div>
           </div>
 
+          {/* Platform Links */}
           <div>
-            <h4 className="text-sm font-semibold text-gray-900 tracking-wide uppercase mb-4">
+            <h4 className="text-sm font-semibold text-base-content tracking-wide uppercase mb-4">
               Platform
             </h4>
             <ul className="space-y-2.5 text-sm">
               <li>
                 <Link
                   to="/scholarships"
-                  className="text-gray-600 hover:text-purple-600 transition-colors"
+                  className="text-base-content opacity-70 hover:text-purple-600 hover:opacity-100 transition-all"
                 >
                   Browse Scholarships
                 </Link>
@@ -121,7 +124,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/"
-                  className="text-gray-600 hover:text-purple-600 transition-colors"
+                  className="text-base-content opacity-70 hover:text-purple-600 hover:opacity-100 transition-all"
                 >
                   Universities
                 </Link>
@@ -129,7 +132,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/"
-                  className="text-gray-600 hover:text-purple-600 transition-colors"
+                  className="text-base-content opacity-70 hover:text-purple-600 hover:opacity-100 transition-all"
                 >
                   Application Guides
                 </Link>
@@ -137,7 +140,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/"
-                  className="text-gray-600 hover:text-purple-600 transition-colors"
+                  className="text-base-content opacity-70 hover:text-purple-600 hover:opacity-100 transition-all"
                 >
                   Blog & Resources
                 </Link>
@@ -145,15 +148,16 @@ const Footer = () => {
             </ul>
           </div>
 
+          {/* Support Links */}
           <div>
-            <h4 className="text-sm font-semibold text-gray-900 tracking-wide uppercase mb-4">
+            <h4 className="text-sm font-semibold text-base-content tracking-wide uppercase mb-4">
               Support
             </h4>
             <ul className="space-y-2.5 text-sm">
               <li>
                 <Link
                   to="/"
-                  className="text-gray-600 hover:text-purple-600 transition-colors"
+                  className="text-base-content opacity-70 hover:text-purple-600 hover:opacity-100 transition-all"
                 >
                   Help Center
                 </Link>
@@ -161,7 +165,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/"
-                  className="text-gray-600 hover:text-purple-600 transition-colors"
+                  className="text-base-content opacity-70 hover:text-purple-600 hover:opacity-100 transition-all"
                 >
                   FAQs
                 </Link>
@@ -169,7 +173,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/"
-                  className="text-gray-600 hover:text-purple-600 transition-colors"
+                  className="text-base-content opacity-70 hover:text-purple-600 hover:opacity-100 transition-all"
                 >
                   Contact Us
                 </Link>
@@ -177,7 +181,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/"
-                  className="text-gray-600 hover:text-purple-600 transition-colors"
+                  className="text-base-content opacity-70 hover:text-purple-600 hover:opacity-100 transition-all"
                 >
                   Partner With Us
                 </Link>
@@ -185,20 +189,21 @@ const Footer = () => {
             </ul>
           </div>
 
+          {/* Newsletter Section */}
           <div>
-            <h4 className="text-sm font-semibold text-gray-900 tracking-wide uppercase mb-4">
+            <h4 className="text-sm font-semibold text-base-content tracking-wide uppercase mb-4">
               Stay updated
             </h4>
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-sm text-base-content opacity-70 mb-4">
               Get weekly handpicked scholarships and application tips in your
               inbox.
             </p>
             <form onSubmit={(e) => e.preventDefault()} className="space-y-3">
-              <div className="flex items-center gap-2 bg-gray-50 rounded-xl border border-gray-200 px-3 py-2.5 focus-within:border-purple-400 focus-within:ring-1 focus-within:ring-purple-400">
+              <div className="flex items-center gap-2 bg-base-200 rounded-xl border border-base-300 px-3 py-2.5 focus-within:border-purple-400 focus-within:ring-1 focus-within:ring-purple-400 transition-all">
                 <input
                   type="email"
                   placeholder="Enter your email"
-                  className="w-full bg-transparent border-none outline-none text-sm text-gray-900 placeholder-gray-500"
+                  className="w-full bg-transparent border-none outline-none text-sm text-base-content placeholder-base-content placeholder:opacity-50"
                 />
                 <button
                   type="submit"
@@ -207,7 +212,7 @@ const Footer = () => {
                   Subscribe
                 </button>
               </div>
-              <p className="text-[11px] text-gray-500">
+              <p className="text-[11px] text-base-content opacity-60">
                 By subscribing, you agree to our{" "}
                 <Link
                   to="/terms"
@@ -228,23 +233,27 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-10 pt-6 border-t border-gray-200 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+        {/* Bottom Bar */}
+        <div className="mt-10 pt-6 border-t border-base-300 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-base-content opacity-60">
           <p>
             © {new Date().getFullYear()} ScholarStream. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <Link
               to="/privacy"
-              className="hover:text-gray-700 transition-colors"
+              className="hover:text-base-content hover:opacity-100 transition-all"
             >
               Privacy Policy
             </Link>
-            <Link to="/terms" className="hover:text-gray-700 transition-colors">
+            <Link
+              to="/terms"
+              className="hover:text-base-content hover:opacity-100 transition-all"
+            >
               Terms of Service
             </Link>
             <Link
               to="/cookies"
-              className="hover:text-gray-700 transition-colors"
+              className="hover:text-base-content hover:opacity-100 transition-all"
             >
               Cookies
             </Link>
