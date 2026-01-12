@@ -61,8 +61,8 @@ const Testimonials = () => {
   };
 
   return (
-    <section className="relative py-16 lg:py-24 bg-linear-to-br from-purple-50 via-pink-50 to-blue-50 overflow-hidden">
-      
+    <section className="relative py-16 lg:py-24 bg-base-200 overflow-hidden transition-colors duration-300">
+      {/* Animated background blobs */}
       <div className="absolute top-0 left-0 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
       <div className="absolute top-0 right-0 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
       <div className="absolute bottom-0 left-1/2 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
@@ -91,7 +91,7 @@ const Testimonials = () => {
               What Our Students Say
             </span>
           </h2>
-          <p className="text-gray-600 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto">
+          <p className="text-base-content opacity-70 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto">
             Join thousands of students who achieved their dreams with
             ScholarStream
           </p>
@@ -111,20 +111,20 @@ const Testimonials = () => {
               whileHover={{ y: -10, scale: 1.02 }}
               className="relative group"
             >
-             
-              <div className="relative h-full bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden">
-                
+              {/* Card with gradient border on hover */}
+              <div className="relative h-full bg-base-100 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden">
+                {/* Gradient border effect */}
                 <div className="absolute inset-0 bg-linear-to-r from-purple-400 via-pink-400 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl p-0.5">
-                  <div className="h-full w-full bg-white rounded-2xl"></div>
+                  <div className="h-full w-full bg-base-100 rounded-2xl"></div>
                 </div>
 
                 <div className="relative p-6 sm:p-8">
-                  
-                  <div className="absolute top-4 right-4 text-purple-200 text-4xl opacity-50">
+                  {/* Quote icon */}
+                  <div className="absolute top-4 right-4 text-purple-300 opacity-30 text-4xl">
                     <FaQuoteLeft />
                   </div>
 
-                  
+                  {/* User info */}
                   <div className="flex items-center gap-4 mb-6">
                     <div className="relative">
                       <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-linear-to-br from-purple-400 to-pink-400 p-0.75">
@@ -134,29 +134,29 @@ const Testimonials = () => {
                           className="w-full h-full rounded-full object-cover"
                         />
                       </div>
-                     
-                      <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
+                      {/* Online indicator */}
+                      <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-base-100 rounded-full"></div>
                     </div>
                     <div>
-                      <h4 className="font-bold text-gray-800 text-lg">
+                      <h4 className="font-bold text-base-content text-lg">
                         {testimonial.name}
                       </h4>
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <div className="flex items-center gap-2 text-sm text-base-content opacity-70">
                         <FaGraduationCap className="text-purple-500" />
                         <span>{testimonial.university}</span>
                       </div>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-base-content opacity-60">
                         {testimonial.country}
                       </p>
                     </div>
                   </div>
 
-                  
-                  <p className="text-gray-700 italic leading-relaxed mb-6 text-sm sm:text-base">
+                  {/* Quote */}
+                  <p className="text-base-content opacity-80 italic leading-relaxed mb-6 text-sm sm:text-base">
                     "{testimonial.quote}"
                   </p>
 
-                  
+                  {/* Rating */}
                   <div className="flex items-center gap-1">
                     {[...Array(testimonial.rating)].map((_, i) => (
                       <motion.div
@@ -171,14 +171,14 @@ const Testimonials = () => {
                   </div>
                 </div>
 
-             
+                {/* Bottom gradient bar */}
                 <div className="h-1 bg-linear-to-r from-purple-500 via-pink-500 to-blue-500"></div>
               </div>
             </motion.div>
           ))}
         </motion.div>
 
-        
+        {/* CTA Section */}
         <motion.div
           className="text-center mt-12 lg:mt-16"
           initial={{ opacity: 0, y: 30 }}
@@ -186,16 +186,19 @@ const Testimonials = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.5 }}
         >
-          <p className="text-gray-600 mb-4 text-sm sm:text-base">
+          <p className="text-base-content opacity-70 mb-4 text-sm sm:text-base">
             Want to share your success story?
           </p>
-          <Link to="/scholarships" className="px-6 py-3 bg-linear-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-full hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer">
+          <Link
+            to="/scholarships"
+            className="inline-block px-6 py-3 bg-linear-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-full hover:scale-105 hover:shadow-xl transition-all duration-300"
+          >
             Submit Your Story
           </Link>
         </motion.div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes blob {
           0%,
           100% {

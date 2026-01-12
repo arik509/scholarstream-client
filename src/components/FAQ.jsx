@@ -59,8 +59,8 @@ const FAQ = () => {
   };
 
   return (
-    <section className="relative py-16 lg:py-24 bg-linear-to-br from-white via-purple-50/30 to-pink-50/30 overflow-hidden">
-      
+    <section className="relative py-16 lg:py-24 bg-base-100 overflow-hidden transition-colors duration-300">
+      {/* Decorative circles */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-10 left-10 w-20 h-20 border-4 border-purple-500 rounded-full"></div>
         <div className="absolute top-40 right-20 w-32 h-32 border-4 border-pink-500 rounded-full"></div>
@@ -68,7 +68,7 @@ const FAQ = () => {
         <div className="absolute bottom-40 right-1/3 w-16 h-16 border-4 border-purple-500 rounded-full"></div>
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
         <motion.div
           className="text-center mb-12 lg:mb-16"
           initial={{ opacity: 0, y: -30 }}
@@ -92,12 +92,12 @@ const FAQ = () => {
               Frequently Asked Questions
             </span>
           </h2>
-          <p className="text-gray-600 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto">
+          <p className="text-base-content opacity-70 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto">
             Get answers to common questions about scholarships and applications
           </p>
         </motion.div>
 
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto ">
           <motion.div
             className="space-y-4"
             variants={containerVariants}
@@ -108,12 +108,12 @@ const FAQ = () => {
             {faqs.map((faq, index) => (
               <motion.div key={index} variants={itemVariants} className="group">
                 <motion.div
-                  className={`relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden ${
+                  className={`relative bg-base-100 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden ${
                     activeIndex === index ? "ring-2 ring-purple-500" : ""
                   }`}
                   whileHover={{ scale: 1.01 }}
                 >
-                  
+                  {/* Active indicator bar */}
                   {activeIndex === index && (
                     <motion.div
                       className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-purple-500 via-pink-500 to-blue-500"
@@ -121,30 +121,30 @@ const FAQ = () => {
                     />
                   )}
 
-                 
+                  {/* Question button */}
                   <button
                     onClick={() =>
                       setActiveIndex(activeIndex === index ? -1 : index)
                     }
-                    className="w-full text-left p-5 sm:p-6 flex items-center gap-4 hover:bg-purple-50/50 transition-colors duration-300"
+                    className="w-full text-left p-5 sm:p-6 flex items-center gap-4 hover:bg-base-200 transition-colors duration-300 cursor-pointer"
                   >
-                    
+                    {/* Icon */}
                     <motion.div
-                      className="shrink-0 w-12 h-12 bg-linear-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-2xl shadow-lg"
+                      className="shrink-0 w-12 h-12 bg-linear-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-2xl shadow-lg cursor-pointer"
                       whileHover={{ rotate: 360 }}
                       transition={{ duration: 0.6 }}
                     >
                       {faq.icon}
                     </motion.div>
 
-                  
-                    <div className="flex-1">
-                      <h3 className="text-base sm:text-lg font-bold text-gray-800 group-hover:text-purple-600 transition-colors">
+                    {/* Question text */}
+                    <div className="flex-1 cursor-pointer">
+                      <h3 className="text-base sm:text-lg font-bold text-base-content group-hover:text-purple-600 transition-colors">
                         {faq.question}
                       </h3>
                     </div>
 
-                    
+                    {/* Toggle icon */}
                     <motion.div
                       className="shrink-0"
                       animate={{ rotate: activeIndex === index ? 180 : 0 }}
@@ -155,14 +155,14 @@ const FAQ = () => {
                           <FaMinus className="text-purple-600" />
                         </div>
                       ) : (
-                        <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-purple-100 transition-colors">
-                          <FaPlus className="text-gray-600 group-hover:text-purple-600 transition-colors" />
+                        <div className="w-8 h-8 bg-base-200 rounded-full flex items-center justify-center group-hover:bg-purple-100 transition-colors">
+                          <FaPlus className="text-base-content opacity-70 group-hover:text-purple-600 transition-colors" />
                         </div>
                       )}
                     </motion.div>
                   </button>
 
-                  
+                  {/* Answer section */}
                   <AnimatePresence>
                     {activeIndex === index && (
                       <motion.div
@@ -176,11 +176,11 @@ const FAQ = () => {
                           <motion.div
                             initial={{ y: -10 }}
                             animate={{ y: 0 }}
-                            className="bg-linear-to-r from-purple-50 to-pink-50 p-4 rounded-xl"
+                            className="bg-purple-50 p-4 rounded-xl"
                           >
                             <div className="flex items-start gap-2">
                               <FaCheckCircle className="text-green-500 mt-1 shrink-0" />
-                              <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
+                              <p className="text-black opacity-80 leading-relaxed text-sm sm:text-base">
                                 {faq.answer}
                               </p>
                             </div>
@@ -194,7 +194,7 @@ const FAQ = () => {
             ))}
           </motion.div>
 
-          
+          {/* Contact support CTA */}
           <motion.div
             className="mt-12 text-center"
             initial={{ opacity: 0, y: 30 }}
@@ -202,14 +202,14 @@ const FAQ = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.4 }}
           >
-            <div className="bg-linear-to-r from-purple-100 to-pink-100 rounded-2xl p-6 sm:p-8">
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-3">
+            <div className="bg-base-200 border border-base-300 rounded-2xl p-6 sm:p-8">
+              <h3 className="text-xl sm:text-2xl font-bold text-base-content mb-3">
                 Still have questions?
               </h3>
-              <p className="text-gray-600 mb-6 text-sm sm:text-base">
+              <p className="text-base-content opacity-70 mb-6 text-sm sm:text-base">
                 Our support team is here to help you with any queries
               </p>
-              <button className="px-6 sm:px-8 py-3 sm:py-4 bg-linear-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-full hover:scale-105 hover:shadow-xl transition-all duration-300">
+              <button className="px-6 sm:px-8 py-3 sm:py-4 bg-linear-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-full hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer">
                 Contact Support
               </button>
             </div>
