@@ -2,7 +2,7 @@
 
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: light --default;
+  themes: light --default, dark --prefersdark;
 }
 
 body{
@@ -22,4 +22,22 @@ body{
   --color-success: #22c55e;
   --color-warning: #eab308;
   --color-error: #f43f5e;
+}
+
+/* Custom dark theme colors */
+@plugin "daisyui/theme" {
+  name: "dark";
+  prefersdark: true;
+  color-scheme: dark;
+  --color-primary: #a78bfa;
+  --color-secondary: #2dd4bf;
+  --color-accent: #fb923c;
+  --color-neutral: #1f2937;
+  --color-base-100: #1f2937;
+  --color-base-200: #111827;
+  --color-base-300: #0f172a;
+  --color-info: #22d3ee;
+  --color-success: #4ade80;
+  --color-warning: #facc15;
+  --color-error: #fb7185;
 }
