@@ -15,11 +15,11 @@ const Banner = () => {
       className="relative h-125 sm:h-137.5 md:h-150 lg:h-175 bg-cover bg-center bg-no-repeat overflow-hidden"
       style={{ backgroundImage: `url(${bannerImage})` }}
     >
-      
+      {/* Dark overlay with enhanced dark mode */}
       <div className="absolute inset-0 bg-linear-to-br from-indigo-900/95 via-purple-900/90 to-pink-900/85 animate-linear"></div>
 
-      
-      <div className="absolute inset-0 opacity-30 ">
+      {/* Floating particles */}
+      <div className="absolute inset-0 opacity-30">
         {[...Array(20)].map((_, i) => (
           <div
             key={i}
@@ -40,7 +40,7 @@ const Banner = () => {
             isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
           }`}
         >
-          
+          {/* Badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-white/20 backdrop-blur-sm rounded-full text-white mb-4 sm:mb-6 animate-pulse">
             <FaTrophy className="text-yellow-300 text-xs sm:text-sm" />
             <span className="text-xs sm:text-sm font-semibold">
@@ -48,7 +48,7 @@ const Banner = () => {
             </span>
           </div>
 
-          
+          {/* Heading */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold mb-4 sm:mb-6 leading-tight">
             <span className="bg-linear-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent animate-shimmer">
               Find Your Dream Scholarship Today
@@ -60,7 +60,7 @@ const Banner = () => {
             worldwide. Start your journey to academic excellence.
           </p>
 
-          
+          {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mb-8 sm:mb-10 lg:mb-12">
             <Link
               to="/scholarships"
@@ -80,7 +80,7 @@ const Banner = () => {
             </Link>
           </div>
 
-         
+          {/* Stats */}
           <div className="grid grid-cols-3 gap-3 sm:gap-4 lg:gap-6 max-w-xl">
             {[
               {
@@ -109,7 +109,7 @@ const Banner = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes linear {
           0%,
           100% {

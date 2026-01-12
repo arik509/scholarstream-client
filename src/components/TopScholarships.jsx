@@ -57,7 +57,7 @@ const TopScholarships = () => {
 
   if (loading) {
     return (
-      <section className="py-16 lg:py-24 bg-linear-to-b from-gray-50 to-white">
+      <section className="py-16 lg:py-24 bg-base-200 transition-colors duration-300">
         <div className="w-11/12 mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 lg:mb-16">
             <motion.div
@@ -68,7 +68,7 @@ const TopScholarships = () => {
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
                 Top Scholarships
               </h2>
-              <p className="text-gray-600 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto">
+              <p className="text-base-content opacity-70 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto">
                 Explore the most popular scholarship opportunities
               </p>
             </motion.div>
@@ -76,10 +76,10 @@ const TopScholarships = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {[1, 2, 3, 4, 5, 6].map((item) => (
               <div key={item} className="animate-pulse">
-                <div className="bg-gray-200 h-64 rounded-2xl"></div>
+                <div className="bg-base-300 h-64 rounded-2xl"></div>
                 <div className="mt-4 space-y-3">
-                  <div className="h-6 bg-gray-200 rounded"></div>
-                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                  <div className="h-6 bg-base-300 rounded"></div>
+                  <div className="h-4 bg-base-300 rounded w-3/4"></div>
                 </div>
               </div>
             ))}
@@ -90,7 +90,7 @@ const TopScholarships = () => {
   }
 
   return (
-    <section className="py-16 lg:py-24 bg-linear-to-b from-gray-50 to-white">
+    <section className="py-16 lg:py-24 bg-base-200 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           className="text-center mb-12 lg:mb-16"
@@ -101,7 +101,7 @@ const TopScholarships = () => {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
             Top Scholarships
           </h2>
-          <p className="text-gray-600 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto">
+          <p className="text-base-content opacity-70 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto">
             Explore the most popular scholarship opportunities
           </p>
         </motion.div>
@@ -112,7 +112,7 @@ const TopScholarships = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            <p className="text-gray-600 text-xl">
+            <p className="text-base-content opacity-70 text-xl">
               No scholarships available at the moment.
             </p>
           </motion.div>
@@ -129,9 +129,9 @@ const TopScholarships = () => {
                   key={scholarship._id}
                   variants={cardVariants}
                   whileHover={{ y: -8 }}
-                  className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
+                  className="group relative bg-base-100 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
                 >
-                  
+                  {/* Featured Badge */}
                   {index === 0 && (
                     <div className="absolute top-4 right-4 z-10 bg-linear-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg">
                       <FaStar className="text-xs" />
@@ -139,7 +139,7 @@ const TopScholarships = () => {
                     </div>
                   )}
 
-                
+                  {/* Image */}
                   <div className="relative h-48 sm:h-56 overflow-hidden">
                     <motion.img
                       src={scholarship.universityImage}
@@ -150,7 +150,7 @@ const TopScholarships = () => {
                     />
                     <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent"></div>
 
-                    
+                    {/* University Name Overlay */}
                     <div className="absolute bottom-3 left-3 right-3">
                       <div className="flex items-center gap-2 text-white">
                         <FaUniversity className="text-sm" />
@@ -161,14 +161,14 @@ const TopScholarships = () => {
                     </div>
                   </div>
 
-                 
+                  {/* Card Content */}
                   <div className="p-5 sm:p-6">
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 line-clamp-2 group-hover:text-purple-600 transition-colors">
+                    <h3 className="text-lg sm:text-xl font-bold text-base-content mb-3 line-clamp-2 group-hover:text-purple-600 transition-colors">
                       {scholarship.scholarshipName}
                     </h3>
 
-                    
-                    <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                    {/* Location */}
+                    <div className="flex items-center gap-2 text-sm text-base-content opacity-70 mb-3">
                       <FaMapMarkerAlt className="text-purple-500 shrink-0" />
                       <span className="truncate">
                         {scholarship.universityCity},{" "}
@@ -176,7 +176,7 @@ const TopScholarships = () => {
                       </span>
                     </div>
 
-                    
+                    {/* Tags - Fixed for dark mode */}
                     <div className="flex flex-wrap gap-2 mb-4">
                       <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold">
                         {scholarship.scholarshipCategory}
@@ -186,18 +186,20 @@ const TopScholarships = () => {
                       </span>
                     </div>
 
-                    
-                    <div className="flex items-center gap-2 mb-4 p-3 bg-linear-to-r from-purple-50 to-pink-50 rounded-lg">
+                    {/* Application Fee - Fixed for dark mode */}
+                    <div className="flex items-center gap-2 mb-4 p-3 bg-purple-50 rounded-lg">
                       <FaDollarSign className="text-purple-600" />
                       <div>
-                        <p className="text-xs text-gray-600">Application Fee</p>
+                        <p className="text-xs text-black opacity-60">
+                          Application Fee
+                        </p>
                         <p className="text-lg font-bold text-purple-600">
                           ${scholarship.applicationFees}
                         </p>
                       </div>
                     </div>
 
-                    
+                    {/* View Details Button */}
                     <Link
                       to={`/scholarships/${scholarship._id}`}
                       className="flex items-center justify-center gap-2 w-full py-3 bg-linear-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 group/btn"
@@ -210,6 +212,7 @@ const TopScholarships = () => {
               ))}
             </motion.div>
 
+            {/* View All Button */}
             <motion.div
               className="text-center mt-12 lg:mt-16"
               initial={{ opacity: 0, y: 20 }}

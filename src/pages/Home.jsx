@@ -5,7 +5,7 @@ import TopScholarships from '../components/TopScholarships';
 
 const Home = () => {
   return (
-    <div>
+    <div className="min-h-screen bg-base-100 transition-colors duration-300">
       <Banner></Banner>
       <TopScholarships></TopScholarships>
       <Testimonials></Testimonials>
@@ -13,5 +13,6 @@ const Home = () => {
     </div>
   );
 };
+
 
 export default Home;
