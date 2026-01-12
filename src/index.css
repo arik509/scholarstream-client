@@ -8,3 +8,57 @@ body {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
 }
+
+/* Login page background - changes based on theme */
+.login-bg {
+  background: linear-gradient(to bottom right, #faf5ff, #fce7f3, #dbeafe);
+}
+
+[data-theme="dark"] .login-bg {
+  background: linear-gradient(to bottom right, #111827, #1f2937, #111827);
+}
+
+/* Register page background */
+.register-bg {
+  background: linear-gradient(to bottom right, #faf5ff, #fce7f3, #dbeafe);
+}
+
+[data-theme="dark"] .register-bg {
+  background: linear-gradient(to bottom right, #111827, #1f2937, #111827);
+}
+
+/* Icon backgrounds */
+.login-icon-bg {
+  background: linear-gradient(to bottom right, #f3e8ff, #fce7f3);
+}
+
+[data-theme="dark"] .login-icon-bg {
+  background: linear-gradient(to bottom right, rgba(124, 58, 237, 0.3), rgba(236, 72, 153, 0.3));
+}
+
+.register-icon-bg {
+  background: linear-gradient(to bottom right, #f3e8ff, #fce7f3);
+}
+
+[data-theme="dark"] .register-icon-bg {
+  background: linear-gradient(to bottom right, rgba(124, 58, 237, 0.3), rgba(236, 72, 153, 0.3));
+}
+
+/* Error alert */
+.error-alert {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+[data-theme="dark"] .error-alert {
+  background-color: rgba(220, 38, 38, 0.2);
+  border: 1px solid rgba(220, 38, 38, 0.8);
+}
+
+.error-text {
+  color: #b91c1c;
+}
+
+[data-theme="dark"] .error-text {
+  color: #fca5a5;
+}

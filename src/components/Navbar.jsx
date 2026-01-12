@@ -59,7 +59,7 @@ const Navbar = () => {
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="w-11/12 mx-auto"
       >
-        <div className="px-4 lg:px-0">
+        <div className="px-4 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <motion.div
               className="flex items-center gap-3"

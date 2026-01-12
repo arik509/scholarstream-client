@@ -230,7 +230,7 @@ const AllScholarships = () => {
             <div className="flex justify-end mt-6">
               <button
                 onClick={handleReset}
-                className="px-6 py-2.5 rounded-xl font-semibold text-purple-600 dark:text-purple-400 border-2 border-purple-600 dark:border-purple-400 hover:bg-purple-600 hover:text-white transition-all duration-300 hover:scale-105"
+                className="px-6 py-2.5 rounded-xl font-semibold text-purple-600 dark:text-purple-400 border-2 border-purple-600 dark:border-purple-400 hover:bg-purple-600 hover:text-white transition-all duration-300 hover:scale-105 cursor-pointer"
               >
                 Reset Filters
               </button>
@@ -368,21 +368,21 @@ const AllScholarships = () => {
               >
                 <div className="flex items-center gap-2 bg-base-100 rounded-2xl shadow-lg p-2 border border-base-300 transition-colors duration-300">
                   <button
-                    className="px-4 py-2 rounded-xl font-semibold text-base-content hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-4 py-2 rounded-xl font-semibold text-base-content hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                     disabled={currentPage === 1}
                     onClick={() => setCurrentPage(currentPage - 1)}
                   >
                     Previous
                   </button>
 
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1 cursor-pointer">
                     {[...Array(totalPages)].map((_, index) => (
                       <button
                         key={index}
                         className={`w-10 h-10 rounded-xl font-semibold transition-all ${
                           currentPage === index + 1
                             ? "bg-linear-to-r from-purple-600 to-pink-600 text-white shadow-lg scale-110"
-                            : "text-base-content hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600"
+                            : "text-base-content hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600 cursor-pointer"
                         }`}
                         onClick={() => setCurrentPage(index + 1)}
                       >
@@ -392,7 +392,7 @@ const AllScholarships = () => {
                   </div>
 
                   <button
-                    className="px-4 py-2 rounded-xl font-semibold text-base-content hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-4 py-2 rounded-xl font-semibold text-base-content hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 hover:text-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                     disabled={currentPage === totalPages}
                     onClick={() => setCurrentPage(currentPage + 1)}
                   >
