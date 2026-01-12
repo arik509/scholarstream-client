@@ -11,38 +11,38 @@ body {
 
 /* Login page background - changes based on theme */
 .login-bg {
-  background: linear-linear(to bottom right, #faf5ff, #fce7f3, #dbeafe);
+  background: linear-gradient(to bottom right, #faf5ff, #fce7f3, #dbeafe);
 }
 
 [data-theme="dark"] .login-bg {
-  background: linear-linear(to bottom right, #111827, #1f2937, #111827);
+  background: linear-gradient(to bottom right, #111827, #1f2937, #111827);
 }
 
 /* Register page background */
 .register-bg {
-  background: linear-linear(to bottom right, #faf5ff, #fce7f3, #dbeafe);
+  background: linear-gradient(to bottom right, #faf5ff, #fce7f3, #dbeafe);
 }
 
 [data-theme="dark"] .register-bg {
-  background: linear-linear(to bottom right, #111827, #1f2937, #111827);
+  background: linear-gradient(to bottom right, #111827, #1f2937, #111827);
 }
 
 /* NotFound page background */
 .notfound-bg {
-  background: linear-linear(to bottom right, #faf5ff, #ffffff, #dbeafe);
+  background: linear-gradient(to bottom right, #faf5ff, #ffffff, #dbeafe);
 }
 
 [data-theme="dark"] .notfound-bg {
-  background: linear-linear(to bottom right, #111827, #1f2937, #0f172a);
+  background: linear-gradient(to bottom right, #111827, #1f2937, #0f172a);
 }
 
 /* Icon backgrounds */
 .login-icon-bg {
-  background: linear-linear(to bottom right, #f3e8ff, #fce7f3);
+  background: linear-gradient(to bottom right, #f3e8ff, #fce7f3);
 }
 
 [data-theme="dark"] .login-icon-bg {
-  background: linear-linear(
+  background: linear-gradient(
     to bottom right,
     rgba(124, 58, 237, 0.3),
     rgba(236, 72, 153, 0.3)
@@ -50,11 +50,11 @@ body {
 }
 
 .register-icon-bg {
-  background: linear-linear(to bottom right, #f3e8ff, #fce7f3);
+  background: linear-gradient(to bottom right, #f3e8ff, #fce7f3);
 }
 
 [data-theme="dark"] .register-icon-bg {
-  background: linear-linear(
+  background: linear-gradient(
     to bottom right,
     rgba(124, 58, 237, 0.3),
     rgba(236, 72, 153, 0.3)
@@ -80,11 +80,11 @@ body {
 
 /* Card icon backgrounds */
 .notfound-card-icon-1 {
-  background: linear-linear(to bottom right, #f3e8ff, #fce7f3);
+  background: linear-gradient(to bottom right, #f3e8ff, #fce7f3);
 }
 
 [data-theme="dark"] .notfound-card-icon-1 {
-  background: linear-linear(
+  background: linear-gradient(
     to bottom right,
     rgba(124, 58, 237, 0.3),
     rgba(236, 72, 153, 0.3)
@@ -92,11 +92,11 @@ body {
 }
 
 .notfound-card-icon-2 {
-  background: linear-linear(to bottom right, #ccfbf1, #cffafe);
+  background: linear-gradient(to bottom right, #ccfbf1, #cffafe);
 }
 
 [data-theme="dark"] .notfound-card-icon-2 {
-  background: linear-linear(
+  background: linear-gradient(
     to bottom right,
     rgba(20, 184, 166, 0.3),
     rgba(34, 211, 238, 0.3)
@@ -104,11 +104,11 @@ body {
 }
 
 .notfound-card-icon-3 {
-  background: linear-linear(to bottom right, #fed7aa, #fecaca);
+  background: linear-gradient(to bottom right, #fed7aa, #fecaca);
 }
 
 [data-theme="dark"] .notfound-card-icon-3 {
-  background: linear-linear(
+  background: linear-gradient(
     to bottom right,
     rgba(249, 115, 22, 0.3),
     rgba(239, 68, 68, 0.3)
@@ -136,11 +136,11 @@ body {
 
 /* About page backgrounds */
 .about-page-bg {
-  background: linear-linear(to bottom, #ffffff, #faf5ff, #ffffff);
+  background: linear-gradient(to bottom, #ffffff, #faf5ff, #ffffff);
 }
 
 [data-theme="dark"] .about-page-bg {
-  background: linear-linear(to bottom, #1f2937, #111827, #1f2937);
+  background: linear-gradient(to bottom, #1f2937, #111827, #1f2937);
 }
 
 /* About page blobs */
@@ -162,11 +162,11 @@ body {
 
 /* Icon backgrounds */
 .about-icon-bg {
-  background: linear-linear(to bottom right, #f3e8ff, #fce7f3);
+  background: linear-gradient(to bottom right, #f3e8ff, #fce7f3);
 }
 
 [data-theme="dark"] .about-icon-bg {
-  background: linear-linear(
+  background: linear-gradient(
     to bottom right,
     rgba(124, 58, 237, 0.3),
     rgba(236, 72, 153, 0.3)
@@ -174,11 +174,11 @@ body {
 }
 
 .stat-icon-bg {
-  background: linear-linear(to bottom right, #f3e8ff, #fce7f3);
+  background: linear-gradient(to bottom right, #f3e8ff, #fce7f3);
 }
 
 [data-theme="dark"] .stat-icon-bg {
-  background: linear-linear(
+  background: linear-gradient(
     to bottom right,
     rgba(124, 58, 237, 0.3),
     rgba(236, 72, 153, 0.3)
@@ -186,11 +186,11 @@ body {
 }
 
 .value-icon-bg {
-  background: linear-linear(to bottom right, #dbeafe, #e0e7ff);
+  background: linear-gradient(to bottom right, #dbeafe, #e0e7ff);
 }
 
 [data-theme="dark"] .value-icon-bg {
-  background: linear-linear(
+  background: linear-gradient(
     to bottom right,
     rgba(59, 130, 246, 0.3),
     rgba(99, 102, 241, 0.3)
@@ -198,32 +198,24 @@ body {
 }
 
 .feature-icon-bg {
-  background: linear-linear(to bottom right, #f3e8ff, #fce7f3);
+  background: linear-gradient(to bottom right, #f3e8ff, #fce7f3);
 }
 
 [data-theme="dark"] .feature-icon-bg {
-  background: linear-linear(
+  background: linear-gradient(
     to bottom right,
     rgba(124, 58, 237, 0.3),
     rgba(236, 72, 153, 0.3)
   );
 }
 
-.about-story-bg {
-  background: linear-linear(to bottom right, #faf5ff, #fce7f3, #dbeafe);
-}
-
-[data-theme="dark"] .about-story-bg {
-  background: linear-linear(to bottom right, #111827, #1f2937, #111827);
-}
-
 /* Blog page background */
 .blog-page-bg {
-  background: linear-linear(to bottom, #ffffff, #faf5ff, #ffffff);
+  background: linear-gradient(to bottom, #ffffff, #faf5ff, #ffffff);
 }
 
 [data-theme="dark"] .blog-page-bg {
-  background: linear-linear(to bottom, #1f2937, #111827, #1f2937);
+  background: linear-gradient(to bottom, #1f2937, #111827, #1f2937);
 }
 
 /* Blog page blobs */
@@ -245,11 +237,11 @@ body {
 
 /* No results icon */
 .blog-no-results {
-  background: linear-linear(to bottom right, #f3e8ff, #fce7f3);
+  background: linear-gradient(to bottom right, #f3e8ff, #fce7f3);
 }
 
 [data-theme="dark"] .blog-no-results {
-  background: linear-linear(
+  background: linear-gradient(
     to bottom right,
     rgba(124, 58, 237, 0.3),
     rgba(236, 72, 153, 0.3)
@@ -258,11 +250,11 @@ body {
 
 /* Privacy page background */
 .privacy-page-bg {
-  background: linear-linear(to bottom, #ffffff, #faf5ff, #ffffff);
+  background: linear-gradient(to bottom, #ffffff, #faf5ff, #ffffff);
 }
 
 [data-theme="dark"] .privacy-page-bg {
-  background: linear-linear(to bottom, #1f2937, #111827, #1f2937);
+  background: linear-gradient(to bottom, #1f2937, #111827, #1f2937);
 }
 
 /* Privacy page blobs */
@@ -284,11 +276,11 @@ body {
 
 /* Privacy icon background */
 .privacy-icon-bg {
-  background: linear-linear(to bottom right, #f3e8ff, #fce7f3);
+  background: linear-gradient(to bottom right, #f3e8ff, #fce7f3);
 }
 
 [data-theme="dark"] .privacy-icon-bg {
-  background: linear-linear(
+  background: linear-gradient(
     to bottom right,
     rgba(124, 58, 237, 0.3),
     rgba(236, 72, 153, 0.3)
