@@ -34,7 +34,7 @@ const Footer = () => {
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
               <Link
-                to="/"
+                to="/register"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-purple-700 font-semibold rounded-xl text-sm sm:text-base shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
               >
                 Get Started Free
@@ -115,6 +115,14 @@ const Footer = () => {
             <ul className="space-y-2.5 text-sm">
               <li>
                 <Link
+                  to="/"
+                  className="text-base-content opacity-70 hover:text-purple-600 hover:opacity-100 transition-all"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/scholarships"
                   className="text-base-content opacity-70 hover:text-purple-600 hover:opacity-100 transition-all"
                 >
@@ -123,23 +131,15 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/"
+                  to="/about"
                   className="text-base-content opacity-70 hover:text-purple-600 hover:opacity-100 transition-all"
                 >
-                  Universities
+                  About Us
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/"
-                  className="text-base-content opacity-70 hover:text-purple-600 hover:opacity-100 transition-all"
-                >
-                  Application Guides
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/"
+                  to="/blog"
                   className="text-base-content opacity-70 hover:text-purple-600 hover:opacity-100 transition-all"
                 >
                   Blog & Resources
@@ -156,7 +156,7 @@ const Footer = () => {
             <ul className="space-y-2.5 text-sm">
               <li>
                 <Link
-                  to="/"
+                  to="/about"
                   className="text-base-content opacity-70 hover:text-purple-600 hover:opacity-100 transition-all"
                 >
                   Help Center
@@ -164,7 +164,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/"
+                  to="/blog"
                   className="text-base-content opacity-70 hover:text-purple-600 hover:opacity-100 transition-all"
                 >
                   FAQs
@@ -172,7 +172,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/"
+                  to="/about"
                   className="text-base-content opacity-70 hover:text-purple-600 hover:opacity-100 transition-all"
                 >
                   Contact Us
@@ -180,7 +180,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/"
+                  to="/about"
                   className="text-base-content opacity-70 hover:text-purple-600 hover:opacity-100 transition-all"
                 >
                   Partner With Us
@@ -215,7 +215,7 @@ const Footer = () => {
               <p className="text-[11px] text-base-content opacity-60">
                 By subscribing, you agree to our{" "}
                 <Link
-                  to="/terms"
+                  to="/privacy"
                   className="underline underline-offset-2 text-purple-600 hover:text-purple-700"
                 >
                   Terms
@@ -246,16 +246,16 @@ const Footer = () => {
               Privacy Policy
             </Link>
             <Link
-              to="/terms"
+              to="/privacy"
               className="hover:text-base-content hover:opacity-100 transition-all"
             >
               Terms of Service
             </Link>
             <Link
-              to="/cookies"
+              to="/about"
               className="hover:text-base-content hover:opacity-100 transition-all"
             >
-              Cookies
+              About
             </Link>
           </div>
         </div>
